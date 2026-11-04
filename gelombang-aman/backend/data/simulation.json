@@ -1,0 +1,141 @@
+[
+  {
+    "id": "s001",
+    "judul": "Gempa Kuat di Wilayah Pesisir",
+    "deskripsi": "Anda sedang berada di rumah di kawasan pesisir pantai. Tiba-tiba bumi bergetar keras selama lebih dari 30 detik dan Anda sulit untuk berdiri.",
+    "kategori": "sebelum_tsunami",
+    "tingkat_kesulitan": "mudah",
+    "urutan": 1,
+    "pertanyaan": [
+      {
+        "id": "q001",
+        "urutan": 1,
+        "pertanyaan": "Bumi bergetar keras selama lebih dari 30 detik dan Anda sulit berdiri. Apa yang pertama kali Anda lakukan?",
+        "pilihan": ["A. Berlindung di bawah meja sampai getaran berhenti, lalu tunggu informasi di rumah", "B. Segera keluar dan berlari ke tempat yang lebih tinggi setelah getaran berhenti", "C. Pergi ke pantai untuk melihat apakah ada gelombang", "D. Menelpon keluarga terlebih dahulu sebelum bergerak"],
+        "jawaban_benar": "B",
+        "penjelasan": "Di wilayah pesisir, gempa kuat adalah tanda peringatan pertama tsunami. Segera evakuasi ke tempat tinggi setelah getaran mereda — JANGAN tunggu informasi atau pergi ke pantai.",
+        "poin": 10
+      },
+      {
+        "id": "q002",
+        "urutan": 2,
+        "pertanyaan": "Anda tidak merasakan sirine peringatan tsunami berbunyi setelah gempa. Apa yang sebaiknya Anda lakukan?",
+        "pilihan": ["A. Kembali ke rumah karena tidak ada sirine", "B. Tetap di tempat tinggi dan tunggu pengumuman resmi", "C. Turun ke pantai untuk memastikan kondisi", "D. Menunggu tetangga bergerak lebih dulu"],
+        "jawaban_benar": "B",
+        "penjelasan": "Ketiadaan sirine BUKAN berarti situasi aman. Sistem sirine bisa tidak berfungsi. Tetap di tempat tinggi dan tunggu pengumuman resmi dari BMKG/BPBD.",
+        "poin": 10
+      },
+      {
+        "id": "q003",
+        "urutan": 3,
+        "pertanyaan": "Anda berhasil evakuasi ke bukit. Gelombang pertama sudah surut setelah 20 menit. Apa yang Anda lakukan?",
+        "pilihan": ["A. Langsung turun karena gelombang sudah surut", "B. Tetap di tempat tinggi — tsunami biasanya datang beberapa kali", "C. Kembali ke rumah untuk mengambil barang berharga", "D. Turun setengah jalan untuk melihat kondisi lebih dekat"],
+        "jawaban_benar": "B",
+        "penjelasan": "Tsunami sering datang dalam beberapa gelombang. Gelombang pertama belum tentu yang terbesar. Tetap di tempat aman hingga ada pernyataan resmi bahwa situasi sudah aman.",
+        "poin": 10
+      }
+    ]
+  },
+  {
+    "id": "s002",
+    "judul": "Air Laut Surut Secara Tiba-tiba",
+    "deskripsi": "Anda sedang berjalan di tepi pantai. Anda memperhatikan bahwa air laut tiba-tiba surut sangat jauh dan terlihat banyak ikan terdampar di pasir.",
+    "kategori": "tanda_peringatan",
+    "tingkat_kesulitan": "mudah",
+    "urutan": 2,
+    "pertanyaan": [
+      {
+        "id": "q004",
+        "urutan": 1,
+        "pertanyaan": "Air laut surut tiba-tiba dan terlihat banyak ikan terdampar. Apa yang Anda lakukan?",
+        "pilihan": ["A. Mendekati pantai untuk mengambil ikan yang terdampar", "B. Mengambil foto untuk diunggah ke media sosial", "C. SEGERA berlari ke tempat yang lebih tinggi", "D. Menunggu untuk memastikan apakah ini pertanda tsunami"],
+        "jawaban_benar": "C",
+        "penjelasan": "Surutnya air laut secara tiba-tiba adalah tanda BAHAYA tsunami yang paling jelas. Jangan tergoda mengambil ikan — SEGERA lari ke tempat tinggi!",
+        "poin": 15
+      },
+      {
+        "id": "q005",
+        "urutan": 2,
+        "pertanyaan": "Anda melihat orang-orang di pantai yang tampak bingung melihat surutnya air. Apa yang Anda lakukan?",
+        "pilihan": ["A. Diam saja karena bukan tanggung jawab Anda", "B. Teriak dan beritahu semua orang untuk segera evakuasi ke tempat tinggi", "C. Tunggu sirine berbunyi sebelum memberi tahu orang lain", "D. Hubungi media sosial untuk menyebarkan informasi"],
+        "jawaban_benar": "B",
+        "penjelasan": "Segera beritahu semua orang di sekitar Anda untuk evakuasi. Menyebarkan informasi peringatan adalah tindakan yang bisa menyelamatkan nyawa banyak orang.",
+        "poin": 10
+      }
+    ]
+  },
+  {
+    "id": "s003",
+    "judul": "Simulasi Rute Evakuasi",
+    "deskripsi": "Sirine peringatan tsunami berbunyi. Anda berada di rumah bersama keluarga, tidak jauh dari pantai. Jalan utama terlihat mulai macet.",
+    "kategori": "evakuasi",
+    "tingkat_kesulitan": "sedang",
+    "urutan": 3,
+    "pertanyaan": [
+      {
+        "id": "q006",
+        "urutan": 1,
+        "pertanyaan": "Sirine berbunyi dan jalan utama macet. Anda punya pilihan rute. Mana yang dipilih?",
+        "pilihan": ["A. Tetap di jalan utama meski macet karena lebih aman ramai-ramai", "B. Gunakan jalur evakuasi alternatif atau berjalan kaki ke tempat tinggi", "C. Kembali ke rumah dan berlindung di lantai dua", "D. Menunggu kemacetan terurai"],
+        "jawaban_benar": "B",
+        "penjelasan": "Jika jalan macet, gunakan jalur alternatif atau berjalan kaki ke tempat tinggi. Waktu sangat berharga saat evakuasi tsunami.",
+        "poin": 10
+      },
+      {
+        "id": "q007",
+        "urutan": 2,
+        "pertanyaan": "Anda perlu membawa barang dari rumah. Apa yang PALING penting untuk dibawa?",
+        "pilihan": ["A. Televisi dan barang elektronik berharga", "B. Tas siaga bencana yang sudah disiapkan sebelumnya", "C. Semua pakaian dan furnitur penting", "D. Kendaraan dan semua isi garasi"],
+        "jawaban_benar": "B",
+        "penjelasan": "Bawa tas siaga bencana yang sudah disiapkan — berisi dokumen penting, air, obat, dan kebutuhan darurat. Jangan buang waktu mengumpulkan barang lain.",
+        "poin": 10
+      },
+      {
+        "id": "q008",
+        "urutan": 3,
+        "pertanyaan": "Nenek Anda yang sudah tua tidak bisa berjalan cepat. Apa yang Anda lakukan?",
+        "pilihan": ["A. Tinggalkan nenek dan selamatkan diri sendiri lebih dulu", "B. Bantu nenek evakuasi dengan dipapah atau digendong, minta bantuan tetangga", "C. Minta nenek untuk tinggal di lantai dua rumah", "D. Tunggu ambulans datang menjemput"],
+        "jawaban_benar": "B",
+        "penjelasan": "Bantu orang yang membutuhkan, minta bantuan tetangga. Solidaritas sangat penting dalam bencana.",
+        "poin": 10
+      }
+    ]
+  },
+  {
+    "id": "s004",
+    "judul": "Setelah Gelombang Tsunami Mereda",
+    "deskripsi": "Gelombang tsunami sudah mereda. Anda berhasil selamat di tempat pengungsian. Anda ingin segera kembali ke rumah untuk mengambil barang.",
+    "kategori": "pasca_tsunami",
+    "tingkat_kesulitan": "sedang",
+    "urutan": 4,
+    "pertanyaan": [
+      {
+        "id": "q009",
+        "urutan": 1,
+        "pertanyaan": "Gelombang sudah surut. Apakah Anda langsung kembali ke rumah?",
+        "pilihan": ["A. Ya, langsung kembali karena sudah aman", "B. Tidak, tunggu pengumuman resmi dari BMKG bahwa situasi benar-benar aman", "C. Kembali setengah jalan untuk melihat kondisi rumah dari kejauhan", "D. Suruh orang lain cek dulu, baru Anda kembali"],
+        "jawaban_benar": "B",
+        "penjelasan": "Jangan kembali sebelum ada pernyataan resmi situasi aman. Gelombang susulan bisa datang dan wilayah yang tergenang masih berbahaya.",
+        "poin": 10
+      },
+      {
+        "id": "q010",
+        "urutan": 2,
+        "pertanyaan": "Anda kehilangan kontak dengan anggota keluarga setelah tsunami. Apa langkah pertama?",
+        "pilihan": ["A. Mencari sendiri ke seluruh wilayah terdampak", "B. Laporkan ke posko pengungsian dan BPBD setempat, berikan ciri-ciri fisik", "C. Tunggu mereka menghubungi Anda", "D. Langsung kembali ke lokasi kejadian untuk mencari"],
+        "jawaban_benar": "B",
+        "penjelasan": "Laporkan segera ke posko pengungsian dan BPBD. Mereka memiliki sistem koordinasi pencarian yang lebih efektif dan aman.",
+        "poin": 15
+      },
+      {
+        "id": "q011",
+        "urutan": 3,
+        "pertanyaan": "Air sumur di rumah Anda terlihat keruh setelah tsunami. Bolehkah digunakan untuk minum?",
+        "pilihan": ["A. Boleh, asalkan direbus terlebih dahulu", "B. Tidak, gunakan air dari sumber resmi atau air kemasan yang didistribusikan posko", "C. Boleh, air asin tidak berbahaya jika hanya sedikit", "D. Boleh untuk memasak tapi tidak untuk diminum langsung"],
+        "jawaban_benar": "B",
+        "penjelasan": "Air sumur yang terkontaminasi air laut dan material tsunami dapat mengandung bakteri berbahaya. Gunakan hanya air dari sumber yang sudah dipastikan aman oleh petugas.",
+        "poin": 10
+      }
+    ]
+  }
+]
