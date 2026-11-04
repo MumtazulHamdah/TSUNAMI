@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Statistik — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html" class="active">📊 Statistik</a></li>
+      <li><a href="peta.html">🗺️ Peta</a></li>
+      <li><a href="database.html">🗂️ Database</a></li>
+      <li><a href="monitoring.html">📡 Monitoring</a></li>
+      <li><a href="korban.html">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Statistik Resmi</span>
+    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Dashboard Statistik Tsunami Indonesia</h1>
+    <p style="color:#94a3b8;font-size:0.95rem">Data historis kejadian tsunami, korban, dan wilayah terdampak di Indonesia</p>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container">
+    <!-- KPI Cards -->
+    <div class="grid grid-kpi mb-4" id="kpi-container">
+      <div class="kpi-card red"><div class="kpi-label">Total Kejadian</div><div class="kpi-value" id="kpi-kejadian">—</div><div class="kpi-sub">Kejadian tercatat</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Korban Meninggal</div><div class="kpi-value" id="kpi-meninggal">—</div><div class="kpi-sub">Total historis</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Korban Hilang</div><div class="kpi-value" id="kpi-hilang">—</div><div class="kpi-sub">Total historis</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Korban Luka</div><div class="kpi-value" id="kpi-luka">—</div><div class="kpi-sub">Total historis</div></div>
+      <div class="kpi-card ocean"><div class="kpi-label">Pengungsi</div><div class="kpi-value" id="kpi-pengungsi">—</div><div class="kpi-sub">Total historis</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Provinsi Terdampak</div><div class="kpi-value" id="kpi-provinsi">—</div><div class="kpi-sub">Dari 38 provinsi</div></div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="form-group">
+        <label>Tahun</label>
+        <select id="filter-tahun" class="form-control">
+          <option value="">Semua Tahun</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Provinsi</label>
+        <select id="filter-provinsi" class="form-control">
+          <option value="">Semua Provinsi</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="applyFilter()">🔍 Terapkan Filter</button>
+        <button class="btn" style="border:1.5px solid var(--border)" onclick="resetFilter()">↩ Reset</button>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="grid grid-2 mb-3">
+      <div class="chart-wrapper">
+        <div class="chart-title">📈 Frekuensi Kejadian Tsunami per Tahun</div>
+        <div style="position:relative;height:260px"><canvas id="chart-per-tahun"></canvas></div>
+      </div>
+      <div class="chart-wrapper">
+        <div class="chart-title">🗺️ Persebaran Kejadian per Provinsi (Top 10)</div>
+        <div style="position:relative;height:260px"><canvas id="chart-per-provinsi"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="grid grid-2 mb-3">
+      <div class="chart-wrapper">
+        <div class="chart-title">👥 Statistik Korban Berdasarkan Kategori</div>
+        <div style="position:relative;height:260px"><canvas id="chart-korban"></canvas></div>
+      </div>
+      <div class="chart-wrapper">
+        <div class="chart-title">⚡ Magnitudo Tertinggi per Dekade</div>
+        <div style="position:relative;height:260px"><canvas id="chart-magnitudo"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Data Source Note -->
+    <div class="alert alert-info">
+      ℹ️ <span>Data statistik bersumber dari <strong>BMKG</strong> dan <strong>NGDC/NOAA</strong>. Data diperbarui secara berkala sesuai rilis resmi. <a href="https://www.bmkg.go.id" target="_blank" rel="noopener">Kunjungi BMKG ↗</a></span>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Data: BMKG, NGDC/NOAA • Bukan sumber peringatan resmi</span>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+let chartPerTahun, chartPerProvinsi, chartKorban, chartMagnitudo;
+let allPerTahun = [], allPerProvinsi = [];
+
+async function loadStats() {
+  try {
+    const [overview, perTahun, perProvinsi, korban] = await Promise.all([
+      api.get('/stats/overview'),
+      api.get('/stats/per-tahun'),
+      api.get('/stats/per-provinsi'),
+      api.get('/stats/korban')
+    ]);
+
+    if (overview.success) {
+      const d = overview.data;
+      document.getElementById('kpi-kejadian').textContent = fmt.number(d.total_kejadian);
+      document.getElementById('kpi-meninggal').textContent = fmt.number(d.total_meninggal);
+      document.getElementById('kpi-hilang').textContent = fmt.number(d.total_hilang);
+      document.getElementById('kpi-luka').textContent = fmt.number(d.total_luka);
+      document.getElementById('kpi-pengungsi').textContent = fmt.number(d.total_pengungsi);
+      document.getElementById('kpi-provinsi').textContent = d.total_provinsi_terdampak;
+    }
+
+    if (perTahun.success) {
+      allPerTahun = perTahun.data;
+      populateYearFilter(allPerTahun);
+      renderPerTahunChart(allPerTahun);
+    }
+
+    if (perProvinsi.success) {
+      allPerProvinsi = perProvinsi.data;
+      populateProvinceFilter(allPerProvinsi);
+      renderPerProvinsiChart(allPerProvinsi.slice(0,10));
+    }
+
+    if (korban.success) {
+      renderKorbanChart(korban.data);
+    }
+
+    renderMagnitudo(allPerTahun);
+
+  } catch(e) {
+    showNotification('Gagal memuat statistik. Pastikan server berjalan.', 'danger');
+  }
+}
+
+function populateYearFilter(data) {
+  const sel = document.getElementById('filter-tahun');
+  const years = [...new Set(data.map(d => d.tahun))].sort();
+  years.forEach(y => sel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`));
+}
+
+function populateProvinceFilter(data) {
+  const sel = document.getElementById('filter-provinsi');
+  data.forEach(d => sel.insertAdjacentHTML('beforeend', `<option value="${d.provinsi}">${d.provinsi}</option>`));
+}
+
+function applyFilter() {
+  const tahun = document.getElementById('filter-tahun').value;
+  const provinsi = document.getElementById('filter-provinsi').value;
+  let filteredTahun = allPerTahun;
+  if (tahun) filteredTahun = allPerTahun.filter(d => d.tahun == tahun);
+  let filteredProvinsi = allPerProvinsi;
+  if (provinsi) filteredProvinsi = allPerProvinsi.filter(d => d.provinsi === provinsi);
+  renderPerTahunChart(filteredTahun);
+  renderPerProvinsiChart(filteredProvinsi.slice(0,10));
+}
+
+function resetFilter() {
+  document.getElementById('filter-tahun').value = '';
+  document.getElementById('filter-provinsi').value = '';
+  renderPerTahunChart(allPerTahun);
+  renderPerProvinsiChart(allPerProvinsi.slice(0,10));
+}
+
+function renderPerTahunChart(data) {
+  if (chartPerTahun) chartPerTahun.destroy();
+  chartPerTahun = new Chart(document.getElementById('chart-per-tahun'), {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.tahun),
+      datasets: [{
+        label: 'Jumlah Kejadian',
+        data: data.map(d => d.jumlah_kejadian),
+        backgroundColor: 'rgba(21,101,192,0.8)',
+        borderColor: '#1565C0',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, grid: { color: '#f0f4f8' } }, x: { grid: { display: false } } }
+    }
+  });
+}
+
+function renderPerProvinsiChart(data) {
+  if (chartPerProvinsi) chartPerProvinsi.destroy();
+  const colors = ['#1565C0','#0288C7','#4FC3F7','#1976D2','#0277BD','#01579B','#0D47A1','#1E88E5','#42A5F5','#90CAF9'];
+  chartPerProvinsi = new Chart(document.getElementById('chart-per-provinsi'), {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.provinsi),
+      datasets: [{
+        label: 'Kejadian',
+        data: data.map(d => d.jumlah_kejadian),
+        backgroundColor: colors.slice(0, data.length),
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true, grid: { color: '#f0f4f8' } }, y: { grid: { display: false } } }
+    }
+  });
+}
+
+function renderKorbanChart(data) {
+  if (chartKorban) chartKorban.destroy();
+  chartKorban = new Chart(document.getElementById('chart-korban'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Meninggal', 'Hilang', 'Luka-luka'],
+      datasets: [{
+        data: [data.meninggal, data.hilang, data.luka],
+        backgroundColor: ['#D32F2F', '#F9A825', '#1565C0'],
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => ` ${ctx.label}: ${Number(ctx.parsed).toLocaleString('id-ID')}`
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderMagnitudo(data) {
+  const decades = {};
+  data.forEach(d => {
+    const decade = Math.floor(d.tahun / 10) * 10;
+    if (!decades[decade] || d.total_meninggal > decades[decade]) decades[decade] = d.total_meninggal;
+  });
+  const labels = Object.keys(decades).sort();
+  if (chartMagnitudo) chartMagnitudo.destroy();
+  chartMagnitudo = new Chart(document.getElementById('chart-magnitudo'), {
+    type: 'line',
+    data: {
+      labels: labels.map(l => l + 'an'),
+      datasets: [{
+        label: 'Korban Meninggal per Dekade',
+        data: labels.map(l => decades[l]),
+        borderColor: '#D32F2F',
+        backgroundColor: 'rgba(211,47,47,0.08)',
+        tension: 0.3, fill: true, pointRadius: 5, pointHoverRadius: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, grid: { color: '#f0f4f8' } }, x: { grid: { display: false } } }
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+</body>
+</html>

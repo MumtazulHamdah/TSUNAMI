@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta Rawan Tsunami — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+  <style>
+    #map { height: 600px; border-radius: 10px; }
+    .leaflet-popup-content { max-width: 280px; }
+    .popup-title { font-weight: 700; color: var(--deep-navy); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .popup-row { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.25rem; }
+    .popup-label { color: var(--text-muted); }
+    .popup-val { font-weight: 600; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">📊 Statistik</a></li>
+      <li><a href="peta.html" class="active">🗺️ Peta</a></li>
+      <li><a href="database.html">🗂️ Database</a></li>
+      <li><a href="monitoring.html">📡 Monitoring</a></li>
+      <li><a href="korban.html">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Peta Interaktif</span>
+    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Peta Wilayah Rawan Tsunami Indonesia</h1>
+    <p style="color:#94a3b8;font-size:0.95rem">Persebaran zona bahaya dan titik kejadian tsunami historis</p>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container">
+    <!-- Controls & Filters -->
+    <div class="filter-bar mb-3">
+      <div class="form-group">
+        <label>🔍 Cari Lokasi</label>
+        <input type="text" id="search-location" class="form-control" placeholder="Cari kota, provinsi..." oninput="filterMap()">
+      </div>
+      <div class="form-group">
+        <label>Filter Layer</label>
+        <select id="filter-layer" class="form-control" onchange="filterMap()">
+          <option value="all">Semua Layer</option>
+          <option value="hazard">Zona Bahaya Saja</option>
+          <option value="historical">Kejadian Historis Saja</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tingkat Bahaya</label>
+        <select id="filter-risk" class="form-control" onchange="filterMap()">
+          <option value="">Semua Tingkat</option>
+          <option value="tinggi">Tinggi</option>
+          <option value="sedang">Sedang</option>
+          <option value="rendah">Rendah</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="resetMapView()">🎯 Reset View</button>
+      </div>
+    </div>
+
+    <!-- Map + Legend Layout -->
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:1.5rem;align-items:start">
+      <div>
+        <div id="map"></div>
+        <div class="text-xs text-muted mt-1">
+          Sumber: BMKG, BNPB/InaRISK | Data demo — Import GeoJSON resmi melalui panel admin untuk data produksi
+        </div>
+      </div>
+      <div>
+        <!-- Legend -->
+        <div class="map-legend">
+          <h4>🗓 Legenda</h4>
+          <div class="divider" style="margin:0.5rem 0"></div>
+          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:0.5rem">Zona Bahaya Tsunami</div>
+          <div class="legend-item"><div class="legend-dot tinggi"></div><span>Bahaya Tinggi</span></div>
+          <div class="legend-item"><div class="legend-dot sedang"></div><span>Bahaya Sedang</span></div>
+          <div class="legend-item"><div class="legend-dot rendah"></div><span>Bahaya Rendah</span></div>
+          <div class="divider" style="margin:0.75rem 0"></div>
+          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:0.5rem">Kejadian Historis</div>
+          <div class="legend-item"><div class="legend-dot historis"></div><span>Titik Tsunami Historis</span></div>
+          <div class="divider" style="margin:0.75rem 0"></div>
+          <div id="map-stats" style="font-size:0.82rem">
+            <div class="flex-between"><span class="text-muted">Titik kejadian:</span><strong id="legend-count">—</strong></div>
+          </div>
+        </div>
+
+        <!-- Clicked Info -->
+        <div id="area-info" class="map-legend mt-2 d-none">
+          <h4>📍 Info Wilayah</h4>
+          <div id="area-info-content"></div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="alert alert-info mt-2" style="font-size:0.78rem">
+          <span>ℹ️</span>
+          <div><strong>Cara Menggunakan:</strong><br>
+          Klik titik pada peta untuk melihat detail kejadian atau zona bahaya.<br>
+          Geser dan zoom untuk menjelajahi wilayah Indonesia.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-warning mt-3">
+      ⚠️ <span><strong>Catatan Penting:</strong> Data zona bahaya pada peta ini adalah data demo. Untuk data resmi zona bahaya tsunami, gunakan <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB ↗</a>. Import data GeoJSON resmi melalui panel admin.</span>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Peta: Leaflet + OpenStreetMap • Data: BMKG, BNPB</span>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+let map, historicalLayer, hazardLayer;
+let allHistorical = [];
+
+function initMap() {
+  map = L.map('map', { center: [-2.5, 118], zoom: 5, zoomControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors | GELOMBANG AMAN',
+    maxZoom: 18
+  }).addTo(map);
+
+  historicalLayer = L.markerClusterGroup({ maxClusterRadius: 40 });
+  map.addLayer(historicalLayer);
+  hazardLayer = L.layerGroup();
+  map.addLayer(hazardLayer);
+
+  map.on('click', onMapClick);
+  loadMapData();
+}
+
+async function loadMapData() {
+  try {
+    const [historical, hazard] = await Promise.all([
+      api.get('/map/kejadian-historis'),
+      api.get('/map/zona-bahaya')
+    ]);
+
+    if (historical.success) {
+      allHistorical = historical.data.features || [];
+      renderHistoricalPoints(allHistorical);
+      document.getElementById('legend-count').textContent = allHistorical.length;
+    }
+
+    if (hazard.success && hazard.data.features) {
+      renderHazardZones(hazard.data.features);
+    }
+  } catch(e) {
+    // Load demo data if API not available
+    loadDemoData();
+  }
+}
+
+function loadDemoData() {
+  const demoPoints = [
+    { lat: 5.0, lng: 95.3, name: 'Tsunami Aceh 2004', tahun: 2004, mag: 9.1, meninggal: 167540 },
+    { lat: -9.25, lng: 107.41, name: 'Tsunami Pangandaran 2006', tahun: 2006, mag: 7.7, meninggal: 668 },
+    { lat: -4.44, lng: 101.37, name: 'Tsunami Bengkulu 2007', tahun: 2007, mag: 8.4, meninggal: 25 },
+    { lat: -3.49, lng: 99.95, name: 'Tsunami Mentawai 2010', tahun: 2010, mag: 7.7, meninggal: 435 },
+    { lat: -6.82, lng: 105.63, name: 'Tsunami Selat Sunda 2018', tahun: 2018, mag: null, meninggal: 437 },
+    { lat: -0.26, lng: 119.84, name: 'Tsunami Palu-Donggala 2018', tahun: 2018, mag: 7.5, meninggal: 4340 },
+    { lat: -8.48, lng: 121.93, name: 'Tsunami Flores 1992', tahun: 1992, mag: 7.8, meninggal: 2500 },
+    { lat: -0.89, lng: 136.95, name: 'Tsunami Biak 1996', tahun: 1996, mag: 8.1, meninggal: 166 },
+    { lat: -11.1, lng: 118.4, name: 'Tsunami Sumba 1977', tahun: 1977, mag: 8.3, meninggal: 316 },
+    { lat: -3.43, lng: 130.24, name: 'Tsunami Maluku 2019', tahun: 2019, mag: 6.5, meninggal: 38 }
+  ];
+
+  allHistorical = demoPoints;
+  document.getElementById('legend-count').textContent = demoPoints.length;
+
+  demoPoints.forEach(p => {
+    const size = Math.min(30, Math.max(14, (p.meninggal / 5000) * 20 + 10));
+    const color = p.meninggal > 1000 ? '#D32F2F' : p.meninggal > 100 ? '#F9A825' : '#1565C0';
+    const marker = L.circleMarker([p.lat, p.lng], {
+      radius: size / 2, color: '#102A43', weight: 1.5, fillColor: color, fillOpacity: 0.85
+    });
+    marker.bindPopup(createPopup(p));
+    historicalLayer.addLayer(marker);
+  });
+
+  // Demo hazard zones (bounding boxes for illustration)
+  const demoZones = [
+    { bounds: [[5.5, 95.0], [3.0, 97.5]], color: '#D32F2F', name: 'Pesisir Barat Aceh', risk: 'tinggi' },
+    { bounds: [[-6.0, 105.2], [-7.5, 108.0]], color: '#F9A825', name: 'Pantai Selatan Jawa Barat', risk: 'sedang' },
+    { bounds: [[1.0, 120.0], [-2.0, 122.0]], color: '#D32F2F', name: 'Pesisir Sulawesi Tengah', risk: 'tinggi' },
+    { bounds: [[-8.0, 115.5], [-9.5, 117.0]], color: '#388E3C', name: 'Selatan Bali', risk: 'rendah' },
+    { bounds: [[-3.0, 99.0], [-5.0, 101.0]], color: '#F9A825', name: 'Pesisir Sumatra Barat', risk: 'sedang' },
+  ];
+
+  demoZones.forEach(z => {
+    L.rectangle(z.bounds, { color: z.color, weight: 2, fillOpacity: 0.2, fillColor: z.color })
+      .bindPopup(`<div class="popup-title">${z.name}</div><div class="popup-row"><span class="popup-label">Tingkat Bahaya:</span><span class="popup-val">${fmt.riskLabel(z.risk)}</span></div>`)
+      .addTo(hazardLayer);
+  });
+}
+
+function renderHistoricalPoints(features) {
+  historicalLayer.clearLayers();
+  features.forEach(f => {
+    if (!f.geometry?.coordinates) return;
+    const [lng, lat] = f.geometry.coordinates;
+    const p = f.properties;
+    const size = Math.min(30, Math.max(10, (p.korban_meninggal / 5000) * 20 + 8));
+    const color = p.korban_meninggal > 1000 ? '#D32F2F' : p.korban_meninggal > 100 ? '#F9A825' : '#1565C0';
+    const marker = L.circleMarker([lat, lng], { radius: size/2, color:'#102A43', weight:1.5, fillColor: color, fillOpacity: 0.85 });
+    marker.bindPopup(createPopupFromFeature(p));
+    historicalLayer.addLayer(marker);
+  });
+}
+
+function renderHazardZones(features) {
+  hazardLayer.clearLayers();
+  const colors = { tinggi: '#D32F2F', sedang: '#F9A825', rendah: '#388E3C' };
+  features.forEach(f => {
+    if (!f.geometry) return;
+    L.geoJSON(f, {
+      style: { color: colors[f.properties.tingkat_bahaya] || '#1565C0', weight: 1.5, fillOpacity: 0.25 }
+    }).bindPopup(`<div class="popup-title">${f.properties.nama_wilayah}</div>
+      <div class="popup-row"><span class="popup-label">Provinsi:</span><span>${f.properties.provinsi}</span></div>
+      <div class="popup-row"><span class="popup-label">Bahaya:</span><span>${fmt.riskLabel(f.properties.tingkat_bahaya)}</span></div>`)
+     .addTo(hazardLayer);
+  });
+}
+
+function createPopup(p) {
+  return `<div class="popup-title">${p.name}</div>
+    <div class="popup-row"><span class="popup-label">Tahun:</span><span class="popup-val">${p.tahun}</span></div>
+    <div class="popup-row"><span class="popup-label">Magnitudo:</span><span class="popup-val">${p.mag ? 'M'+p.mag : '-'}</span></div>
+    <div class="popup-row"><span class="popup-label">Meninggal:</span><span class="popup-val">${Number(p.meninggal).toLocaleString('id-ID')}</span></div>`;
+}
+
+function createPopupFromFeature(p) {
+  return `<div class="popup-title">${p.nama_kejadian}</div>
+    <div class="popup-row"><span class="popup-label">Tanggal:</span><span>${fmt.date(p.tanggal)}</span></div>
+    <div class="popup-row"><span class="popup-label">Lokasi:</span><span>${p.lokasi}</span></div>
+    <div class="popup-row"><span class="popup-label">Magnitudo:</span><span>${fmt.mag(p.magnitudo)}</span></div>
+    <div class="popup-row"><span class="popup-label">Gelombang:</span><span>${fmt.wave(p.tinggi_gelombang)}</span></div>
+    <div class="popup-row"><span class="popup-label">Meninggal:</span><span>${fmt.number(p.korban_meninggal)}</span></div>`;
+}
+
+async function onMapClick(e) {
+  const { lat, lng } = e.latlng;
+  const infoEl = document.getElementById('area-info');
+  const contentEl = document.getElementById('area-info-content');
+  infoEl.classList.remove('d-none');
+  contentEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const res = await api.get('/map/info', { lat, lng });
+    if (res.success && res.data) {
+      const d = res.data;
+      contentEl.innerHTML = `
+        <div class="popup-row"><span class="popup-label">Wilayah:</span><span><b>${d.nama_wilayah}</b></span></div>
+        <div class="popup-row"><span class="popup-label">Provinsi:</span><span>${d.provinsi}</span></div>
+        <div class="popup-row"><span class="popup-label">Bahaya:</span><span class="badge ${fmt.riskClass(d.tingkat_bahaya)}">${fmt.riskLabel(d.tingkat_bahaya)}</span></div>
+        ${d.keterangan ? `<div class="text-sm text-muted mt-1">${d.keterangan}</div>` : ''}`;
+    } else {
+      contentEl.innerHTML = `<div class="text-sm text-muted">Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>Tidak ada data zona untuk lokasi ini.</div>`;
+    }
+  } catch(e) {
+    contentEl.innerHTML = `<div class="text-sm text-muted">Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}</div>`;
+  }
+}
+
+function filterMap() {
+  const layerType = document.getElementById('filter-layer').value;
+  const riskLevel = document.getElementById('filter-risk').value;
+
+  if (layerType === 'hazard') {
+    map.addLayer(hazardLayer); map.removeLayer(historicalLayer);
+  } else if (layerType === 'historical') {
+    map.removeLayer(hazardLayer); map.addLayer(historicalLayer);
+  } else {
+    map.addLayer(hazardLayer); map.addLayer(historicalLayer);
+  }
+}
+
+function resetMapView() {
+  map.setView([-2.5, 118], 5);
+}
+
+document.addEventListener('DOMContentLoaded', initMap);
+</script>
+</body>
+</html>

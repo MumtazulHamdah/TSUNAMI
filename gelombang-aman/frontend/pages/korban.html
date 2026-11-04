@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Korban & Orang Hilang — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">📊 Statistik</a></li>
+      <li><a href="peta.html">🗺️ Peta</a></li>
+      <li><a href="database.html">🗂️ Database</a></li>
+      <li><a href="monitoring.html">📡 Monitoring</a></li>
+      <li><a href="korban.html" class="active">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Informasi Korban</span>
+    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Korban & Pencarian Orang Hilang</h1>
+    <p style="color:#94a3b8;font-size:0.95rem">Statistik korban dan layanan pencarian orang hilang akibat bencana tsunami</p>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container">
+    <!-- Stats -->
+    <div class="grid grid-kpi mb-4" id="victim-stats">
+      <div class="kpi-card red"><div class="kpi-label">Meninggal</div><div class="kpi-value" id="vs-meninggal">—</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Hilang</div><div class="kpi-value" id="vs-hilang">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Luka-luka</div><div class="kpi-value" id="vs-luka">—</div></div>
+      <div class="kpi-card ocean"><div class="kpi-label">Pengungsi</div><div class="kpi-value" id="vs-pengungsi">—</div></div>
+      <div class="kpi-card" style="border-left-color:#e65100"><div class="kpi-label">Sedang Dicari</div><div class="kpi-value" id="vs-dicari">—</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Sudah Ditemukan</div><div class="kpi-value" id="vs-ditemukan">—</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="cari">🔍 Cari Orang Hilang</button>
+      <button class="tab-btn" data-tab="lapor">📝 Lapor Orang Hilang</button>
+    </div>
+
+    <!-- TAB: Cari Orang Hilang -->
+    <div class="tab-panel active" data-tab="cari">
+      <div class="filter-bar">
+        <div class="form-group" style="flex:2">
+          <label>Nama Korban</label>
+          <input type="text" id="cari-nama" class="form-control" placeholder="Cari nama..." oninput="debouncedSearch()">
+        </div>
+        <div class="form-group" style="flex:2">
+          <label>Lokasi Terakhir</label>
+          <input type="text" id="cari-lokasi" class="form-control" placeholder="Cari lokasi..." oninput="debouncedSearch()">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="cari-status" class="form-control" onchange="searchMissing()">
+            <option value="">Semua Status</option>
+            <option value="dalam_pencarian">Dalam Pencarian</option>
+            <option value="ditemukan">Ditemukan</option>
+            <option value="teridentifikasi">Teridentifikasi</option>
+            <option value="dipertemukan">Dipertemukan dengan Keluarga</option>
+            <option value="ditutup">Laporan Ditutup</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="missing-list">
+        <div class="loading"><div class="spinner"></div><span>Memuat data...</span></div>
+      </div>
+      <div id="missing-pagination"></div>
+    </div>
+
+    <!-- TAB: Lapor Orang Hilang -->
+    <div class="tab-panel" data-tab="lapor">
+      <div style="max-width:700px">
+        <div class="alert alert-info mb-3">
+          ℹ️ <span>Formulir ini untuk melaporkan orang hilang akibat bencana tsunami. Laporan akan diverifikasi admin sebelum dipublikasikan. Informasi pribadi Anda dilindungi.</span>
+        </div>
+        <form id="form-lapor" onsubmit="submitReport(event)">
+          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📋 Data Korban</h3>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label>Nama Korban <span class="required">*</span></label>
+              <input type="text" id="lap-nama" class="form-control" required maxlength="200" placeholder="Nama lengkap korban">
+            </div>
+            <div class="form-group">
+              <label>Usia</label>
+              <input type="number" id="lap-usia" class="form-control" min="0" max="150" placeholder="Usia dalam tahun">
+            </div>
+            <div class="form-group">
+              <label>Jenis Kelamin <span class="required">*</span></label>
+              <select id="lap-jk" class="form-control" required>
+                <option value="">Pilih jenis kelamin</option>
+                <option value="laki-laki">Laki-laki</option>
+                <option value="perempuan">Perempuan</option>
+                <option value="tidak_diketahui">Tidak Diketahui</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Foto Korban (opsional)</label>
+              <input type="file" id="lap-foto" class="form-control" accept="image/jpeg,image/png,image/webp">
+              <div class="text-xs text-muted mt-1">Format: JPG, PNG, WEBP. Maks 5MB.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Ciri-ciri Fisik</label>
+            <textarea id="lap-ciri" class="form-control" rows="3" placeholder="Deskripsikan ciri-ciri fisik korban (tinggi, warna kulit, pakaian terakhir, dll)" maxlength="1000"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Lokasi Terakhir Diketahui <span class="required">*</span></label>
+            <input type="text" id="lap-lokasi" class="form-control" required maxlength="500" placeholder="Lokasi terakhir korban terlihat">
+          </div>
+
+          <div class="divider"></div>
+          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">👤 Data Pelapor</h3>
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label>Nama Pelapor <span class="required">*</span></label>
+              <input type="text" id="lap-pelapor" class="form-control" required maxlength="200" placeholder="Nama lengkap pelapor">
+            </div>
+            <div class="form-group">
+              <label>Kontak Pelapor <span class="required">*</span></label>
+              <input type="text" id="lap-kontak" class="form-control" required maxlength="200" placeholder="No. HP / email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Hubungan dengan Korban</label>
+            <input type="text" id="lap-hubungan" class="form-control" maxlength="100" placeholder="mis. orang tua, saudara, tetangga">
+          </div>
+
+          <div class="alert alert-warning mb-3" style="font-size:0.82rem">
+            🔒 <span>Informasi pelapor bersifat rahasia dan hanya digunakan untuk keperluan verifikasi dan koordinasi pencarian. Tidak akan dipublikasikan.</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">📝 Kirim Laporan</button>
+        </form>
+        <div id="form-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Detail Orang Hilang -->
+<div class="modal-overlay" id="modal-person">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔍 Detail Orang Hilang</div>
+      <button class="modal-close" onclick="closeModal('modal-person')">×</button>
+    </div>
+    <div class="modal-body" id="modal-person-body"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-person')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Informasi korban dilindungi privasi</span>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script>
+let searchDebounce;
+function debouncedSearch() {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(searchMissing, 400);
+}
+
+async function loadStats() {
+  const res = await api.get('/victims/stats');
+  if (res.success) {
+    const d = res.data;
+    document.getElementById('vs-meninggal').textContent = fmt.number(d.total_meninggal);
+    document.getElementById('vs-hilang').textContent = fmt.number(d.total_hilang);
+    document.getElementById('vs-luka').textContent = fmt.number(d.total_luka);
+    document.getElementById('vs-pengungsi').textContent = fmt.number(d.total_pengungsi);
+    document.getElementById('vs-dicari').textContent = fmt.number(d.sedang_dicari);
+    document.getElementById('vs-ditemukan').textContent = fmt.number(d.sudah_ditemukan);
+  }
+}
+
+async function searchMissing(page = 1) {
+  const el = document.getElementById('missing-list');
+  showLoading(el);
+  const params = {
+    nama: document.getElementById('cari-nama').value,
+    lokasi: document.getElementById('cari-lokasi').value,
+    status: document.getElementById('cari-status').value,
+    page, limit: 12
+  };
+  try {
+    const res = await api.get('/victims/orang-hilang', params);
+    if (!res.success) throw new Error();
+    const { data, pagination } = res;
+    if (!data.length) { showEmpty(el, 'Tidak ada data ditemukan', 'Coba ubah kata kunci pencarian.'); document.getElementById('missing-pagination').innerHTML=''; return; }
+    el.innerHTML = `<div class="grid grid-3" style="gap:1rem">${data.map(p => `
+      <div class="person-card" onclick="showPersonDetail('${p.id}')" style="cursor:pointer">
+        <div class="person-photo">
+          ${p.foto_url ? `<img src="http://localhost:3000${p.foto_url}" alt="${p.nama_korban}" style="width:100%;height:180px;object-fit:cover">` : `<span style="font-size:3rem">👤</span>`}
+        </div>
+        <div class="person-info">
+          <div class="person-name">${p.nama_korban}</div>
+          <div class="person-meta">${p.usia ? p.usia + ' tahun' : ''} ${p.jenis_kelamin || ''}</div>
+          <div class="person-meta">📍 ${p.lokasi_terakhir}</div>
+          <div class="mt-1"><span class="badge ${fmt.statusClass(p.status)}">${fmt.statusLabel(p.status)}</span></div>
+        </div>
+      </div>`).join('')}</div>`;
+    renderPagination(document.getElementById('missing-pagination'), pagination, 'searchMissing');
+  } catch(e) {
+    showError(el, 'Gagal memuat data orang hilang.');
+  }
+}
+
+async function showPersonDetail(id) {
+  const body = document.getElementById('modal-person-body');
+  openModal('modal-person');
+  showLoading(body);
+  try {
+    const res = await api.get('/victims/orang-hilang/' + id);
+    if (!res.success) throw new Error();
+    const d = res.data;
+    body.innerHTML = `
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start">
+        <div style="flex-shrink:0">
+          ${d.foto_url ? `<img src="http://localhost:3000${d.foto_url}" alt="${d.nama_korban}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #dde8f0">` : `<div style="width:120px;height:120px;background:#f0f4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:3rem">👤</div>`}
+        </div>
+        <div style="flex:1">
+          <h3 style="font-size:1.2rem;color:var(--deep-navy);margin-bottom:0.5rem">${d.nama_korban}</h3>
+          <span class="badge ${fmt.statusClass(d.status)} mb-2">${fmt.statusLabel(d.status)}</span>
+          <div class="grid grid-2" style="gap:0.5rem;margin-top:0.75rem">
+            <div><div class="text-xs text-muted">Usia</div><div class="fw-600">${d.usia ? d.usia + ' tahun' : '-'}</div></div>
+            <div><div class="text-xs text-muted">Jenis Kelamin</div><div class="fw-600">${d.jenis_kelamin || '-'}</div></div>
+            <div style="grid-column:span 2"><div class="text-xs text-muted">Lokasi Terakhir</div><div class="fw-600">📍 ${d.lokasi_terakhir}</div></div>
+          </div>
+        </div>
+      </div>
+      ${d.ciri_fisik ? `<div class="divider"></div><div class="text-xs text-muted">Ciri Fisik</div><div style="font-size:0.9rem;margin-top:0.3rem">${d.ciri_fisik}</div>` : ''}
+      ${d.catatan_status ? `<div class="divider"></div><div class="alert alert-info text-sm">${d.catatan_status}</div>` : ''}
+      <div class="divider"></div>
+      <div class="text-xs text-muted">Dilaporkan: ${fmt.datetime(d.dibuat_pada)}</div>`;
+  } catch(e) {
+    showError(body, 'Gagal memuat detail.');
+  }
+}
+
+async function submitReport(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-submit');
+  const resultEl = document.getElementById('form-result');
+  btn.disabled = true; btn.textContent = 'Mengirim...';
+  const fd = new FormData();
+  fd.append('nama_korban', document.getElementById('lap-nama').value);
+  fd.append('usia', document.getElementById('lap-usia').value);
+  fd.append('jenis_kelamin', document.getElementById('lap-jk').value);
+  fd.append('ciri_fisik', document.getElementById('lap-ciri').value);
+  fd.append('lokasi_terakhir', document.getElementById('lap-lokasi').value);
+  fd.append('nama_pelapor', document.getElementById('lap-pelapor').value);
+  fd.append('kontak_pelapor', document.getElementById('lap-kontak').value);
+  fd.append('hubungan_pelapor', document.getElementById('lap-hubungan').value);
+  const foto = document.getElementById('lap-foto').files[0];
+  if (foto) fd.append('foto', foto);
+  try {
+    const res = await api.postForm('/victims/orang-hilang', fd);
+    if (res.success) {
+      document.getElementById('form-lapor').reset();
+      resultEl.innerHTML = `<div class="alert alert-success mt-3">✅ <strong>Laporan berhasil dikirim!</strong> Laporan Anda akan diverifikasi oleh admin sebelum dipublikasikan. ID laporan: <strong>${res.id}</strong></div>`;
+    } else {
+      resultEl.innerHTML = `<div class="alert alert-danger mt-3">❌ ${res.message}</div>`;
+    }
+  } catch(err) {
+    resultEl.innerHTML = `<div class="alert alert-danger mt-3">❌ Gagal mengirim laporan. Pastikan server berjalan.</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = '📝 Kirim Laporan';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadStats();
+  searchMissing();
+  initTabs('[data-tab]');
+  $$('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+    $$('.tab-btn').forEach(b => b.classList.remove('active'));
+    $$('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.tab-panel[data-tab="${btn.dataset.tab}"]`)?.classList.add('active');
+  }));
+});
+</script>
+</body>
+</html>

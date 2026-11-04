@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi Mitigasi Tsunami — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .sim-container { max-width: 720px; margin: 0 auto; }
+    .q-number { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .q-text { font-size: 1.1rem; font-weight: 700; color: var(--deep-navy); margin: 0.75rem 0 1.2rem; line-height: 1.5; }
+    .eval-item { padding: 0.9rem; border-radius: 8px; margin-bottom: 0.75rem; }
+    .eval-benar { background: #f0fdf4; border: 1.5px solid var(--safe-green); }
+    .eval-salah { background: #fde8e8; border: 1.5px solid var(--alert-red); }
+    .rec-article { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--pale-blue); border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; border: 1.5px solid #dde8f0; transition: border-color 0.2s; }
+    .rec-article:hover { border-color: var(--primary-blue); }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">📊 Statistik</a></li>
+      <li><a href="peta.html">🗺️ Peta</a></li>
+      <li><a href="database.html">🗂️ Database</a></li>
+      <li><a href="monitoring.html">📡 Monitoring</a></li>
+      <li><a href="korban.html">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html" class="active">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Mini-Game Edukatif</span>
+    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Simulasi Mitigasi Tsunami</h1>
+    <p style="color:#94a3b8;font-size:0.95rem">Uji pengetahuan kesiapsiagaan Anda melalui skenario interaktif</p>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container sim-container">
+
+    <!-- PHASE 1: Choose Scenario -->
+    <div id="phase-choose">
+      <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
+        <h2>🎯 Pilih Skenario Simulasi</h2>
+        <p>Setiap skenario mensimulasikan situasi nyata yang mungkin Anda hadapi dalam bencana tsunami</p>
+      </div>
+      <div id="scenario-list">
+        <div class="loading"><div class="spinner"></div><span>Memuat skenario...</span></div>
+      </div>
+    </div>
+
+    <!-- PHASE 2: Quiz -->
+    <div id="phase-quiz" class="d-none">
+      <!-- Header -->
+      <div style="background:var(--white);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem;border:1px solid #dde8f0">
+        <div class="flex-between">
+          <div id="scenario-title" style="font-weight:700;color:var(--deep-navy)"></div>
+          <div>
+            <span class="text-sm text-muted">Pertanyaan </span>
+            <span id="q-current" style="font-weight:700">1</span>/<span id="q-total"></span>
+          </div>
+        </div>
+        <div class="progress-bar-outer mt-2">
+          <div class="progress-bar-inner" id="q-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <div id="quiz-body"></div>
+    </div>
+
+    <!-- PHASE 3: Results -->
+    <div id="phase-result" class="d-none">
+      <div style="text-align:center;padding:2rem 0">
+        <div class="score-circle" id="score-circle">
+          <div class="score-num" id="score-pct-num">0</div>
+          <div class="score-pct">%</div>
+        </div>
+        <h2 id="score-label" style="font-size:1.4rem;font-weight:800;color:var(--deep-navy);margin-bottom:0.5rem"></h2>
+        <p id="score-msg" class="text-muted"></p>
+        <div class="flex justify-center gap-2 mt-2">
+          <button class="btn btn-primary" onclick="startOver()">🔄 Coba Lagi</button>
+          <a href="edukasi.html" class="btn" style="border:1.5px solid var(--primary-blue);color:var(--primary-blue)">📚 Belajar Lebih Lanjut</a>
+        </div>
+      </div>
+
+      <!-- Evaluation -->
+      <div style="margin-top:2rem">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📊 Evaluasi Jawaban</h3>
+        <div id="eval-list"></div>
+      </div>
+
+      <!-- Recommendations -->
+      <div id="reco-section" style="margin-top:2rem">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📖 Rekomendasi Materi Edukasi</h3>
+        <div id="reco-list"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Simulasi edukasi berbasis panduan BMKG & BNPB</span>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script>
+let scenarios = [];
+let currentScenario = null;
+let userAnswers = [];
+let currentQ = 0;
+let questions = [];
+let isAnswered = false;
+
+const diffLabel = { mudah: '🟢 Mudah', sedang: '🟡 Sedang', sulit: '🔴 Sulit' };
+
+async function loadScenarios() {
+  const el = document.getElementById('scenario-list');
+  try {
+    const res = await api.get('/simulation/skenario');
+    if (!res.success || !res.data.length) { showEmpty(el, 'Belum ada skenario.'); return; }
+    scenarios = res.data;
+    el.innerHTML = `<div class="grid grid-2" style="gap:1rem">
+      ${scenarios.map(s => `
+        <div class="scenario-card" onclick="startScenario('${s.id}')">
+          <div style="font-size:1.5rem margin-bottom:0.5rem">${s.kategori === 'evakuasi' ? '🏃' : s.kategori === 'sebelum_tsunami' ? '🌊' : s.kategori === 'pasca_tsunami' ? '🏠' : '⚠️'}</div>
+          <div style="font-weight:700;color:var(--deep-navy);margin:0.5rem 0">${s.judul}</div>
+          <div class="text-sm text-muted mb-2">${s.deskripsi || ''}</div>
+          <span class="badge badge-info">${diffLabel[s.tingkat_kesulitan] || s.tingkat_kesulitan}</span>
+        </div>`).join('')}
+    </div>`;
+  } catch(e) {
+    showError(el, 'Gagal memuat skenario.');
+  }
+}
+
+async function startScenario(id) {
+  try {
+    const res = await api.get('/simulation/skenario/' + id);
+    if (!res.success) throw new Error();
+    currentScenario = res.data;
+    questions = currentScenario.pertanyaan || [];
+    userAnswers = [];
+    currentQ = 0;
+    isAnswered = false;
+    if (!questions.length) { showNotification('Skenario belum memiliki pertanyaan.', 'warning'); return; }
+    document.getElementById('phase-choose').classList.add('d-none');
+    document.getElementById('phase-quiz').classList.remove('d-none');
+    document.getElementById('scenario-title').textContent = currentScenario.judul;
+    document.getElementById('q-total').textContent = questions.length;
+    renderQuestion();
+  } catch(e) {
+    showNotification('Gagal memuat skenario.', 'danger');
+  }
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  isAnswered = false;
+  const progress = Math.round((currentQ / questions.length) * 100);
+  document.getElementById('q-current').textContent = currentQ + 1;
+  document.getElementById('q-progress').style.width = progress + '%';
+  let pilihan = q.pilihan;
+  if (typeof pilihan === 'string') { try { pilihan = JSON.parse(pilihan); } catch(e) { pilihan = []; } }
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="question-card">
+      <div class="q-number">Pertanyaan ${currentQ + 1} dari ${questions.length}</div>
+      <div class="q-text">${q.pertanyaan}</div>
+      <div id="options">
+        ${pilihan.map((opt, i) => {
+          const key = ['A','B','C','D'][i];
+          return `<button class="option-btn" onclick="selectAnswer('${key}', this)" id="opt-${key}">${opt}</button>`;
+        }).join('')}
+      </div>
+      <div id="explanation" class="d-none mt-2"></div>
+      <div class="flex justify-center mt-3">
+        <button id="btn-next" class="btn btn-primary d-none" onclick="nextQuestion()">
+          ${currentQ < questions.length - 1 ? 'Pertanyaan Berikutnya →' : '🎯 Lihat Hasil'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function selectAnswer(key, btnEl) {
+  if (isAnswered) return;
+  isAnswered = true;
+  userAnswers.push(key);
+  const q = questions[currentQ];
+  const benar = key === q.jawaban_benar;
+  // Style buttons
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  btnEl.classList.add(benar ? 'correct' : 'wrong');
+  if (!benar) {
+    const correctBtn = document.getElementById('opt-' + q.jawaban_benar);
+    if (correctBtn) correctBtn.classList.add('correct');
+  }
+  // Show explanation
+  const expEl = document.getElementById('explanation');
+  expEl.classList.remove('d-none');
+  expEl.innerHTML = `<div class="alert ${benar ? 'alert-success' : 'alert-danger'}">
+    <span>${benar ? '✅' : '❌'}</span>
+    <div><strong>${benar ? 'Benar!' : 'Kurang tepat.'}</strong> ${q.penjelasan || ''}</div>
+  </div>`;
+  show(document.getElementById('btn-next'));
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) { submitResult(); return; }
+  renderQuestion();
+}
+
+async function submitResult() {
+  document.getElementById('phase-quiz').classList.add('d-none');
+  document.getElementById('phase-result').classList.remove('d-none');
+  try {
+    const res = await api.post('/simulation/hasil', { skenario_id: currentScenario.id, jawaban: userAnswers });
+    if (!res.success) throw new Error();
+    const d = res.data;
+    // Score
+    document.getElementById('score-pct-num').textContent = d.persentase;
+    document.getElementById('score-label').textContent = d.tingkat;
+    const scoreColor = d.persentase >= 80 ? '#388E3C' : d.persentase >= 60 ? '#F9A825' : '#D32F2F';
+    document.getElementById('score-circle').style.borderColor = scoreColor;
+    document.getElementById('score-pct-num').style.color = scoreColor;
+    document.getElementById('score-msg').textContent = `Anda menjawab benar ${d.evaluasi.filter(e=>e.benar).length} dari ${d.evaluasi.length} pertanyaan.`;
+    // Evaluation
+    const evalList = document.getElementById('eval-list');
+    evalList.innerHTML = d.evaluasi.map((ev, i) => `
+      <div class="eval-item ${ev.benar ? 'eval-benar' : 'eval-salah'}">
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <span style="font-size:1.2rem;flex-shrink:0">${ev.benar ? '✅' : '❌'}</span>
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.25rem">P${i+1}: ${ev.pertanyaan}</div>
+            <div class="text-sm text-muted">Jawaban Anda: <strong>${ev.jawaban_user}</strong> • Benar: <strong>${ev.jawaban_benar}</strong></div>
+            <div class="text-sm mt-1" style="color:#374151">${ev.penjelasan}</div>
+          </div>
+        </div>
+      </div>`).join('');
+    // Recommendations
+    if (d.rekomendasi_edukasi?.length) {
+      document.getElementById('reco-list').innerHTML = d.rekomendasi_edukasi.map(r => `
+        <div class="rec-article" onclick="window.location='edukasi.html'">
+          <span style="font-size:1.4rem">📖</span>
+          <div><div style="font-weight:600;font-size:0.9rem">${r.judul}</div><div class="text-xs text-muted">${r.kategori}</div></div>
+        </div>`).join('');
+    } else {
+      document.getElementById('reco-section').innerHTML = '';
+    }
+  } catch(e) {
+    document.getElementById('score-label').textContent = 'Simulasi Selesai';
+    document.getElementById('score-msg').textContent = 'Hasil tidak dapat dimuat. ' + (e.message || '');
+  }
+}
+
+function startOver() {
+  document.getElementById('phase-result').classList.add('d-none');
+  document.getElementById('phase-choose').classList.remove('d-none');
+}
+
+document.addEventListener('DOMContentLoaded', loadScenarios);
+</script>
+</body>
+</html>

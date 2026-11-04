@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="background:var(--deep-navy);min-height:100vh;display:flex;align-items:center;justify-content:center">
+  <div style="width:100%;max-width:420px;padding:1.5rem">
+    <div style="text-align:center;margin-bottom:2rem">
+      <svg width="52" height="52" viewBox="0 0 36 36" fill="none" style="margin:0 auto 1rem"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div style="color:var(--white);font-size:1.3rem;font-weight:800">GELOMBANG AMAN</div>
+      <div style="color:#94a3b8;font-size:0.85rem;margin-top:0.25rem">Panel Admin</div>
+    </div>
+    <div style="background:var(--white);border-radius:16px;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+      <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem;text-align:center">🔐 Login Admin</h2>
+      <div id="login-error" class="alert alert-danger d-none"></div>
+      <form id="login-form" onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" class="form-control" required placeholder="admin@gelombangaman.id" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" class="form-control" required placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100 btn-lg mt-2" id="btn-login">Masuk →</button>
+      </form>
+      <div class="text-center mt-3"><a href="../index.html" class="text-sm text-muted">← Kembali ke Beranda</a></div>
+    </div>
+    <div class="text-center mt-3" style="color:#94a3b8;font-size:0.75rem">
+      © 2024 GELOMBANG AMAN • Akses terbatas untuk admin terverifikasi
+    </div>
+  </div>
+<script src="../assets/js/api.js"></script>
+<script>
+// Redirect if already logged in
+if (isLoggedIn()) window.location.href = 'admin.html';
+
+async function doLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-login');
+  const errEl = document.getElementById('login-error');
+  hide(errEl);
+  btn.disabled = true; btn.textContent = 'Masuk...';
+  try {
+    const res = await api.post('/auth/login', {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    });
+    if (res.success) {
+      localStorage.setItem('ga_token', res.token);
+      localStorage.setItem('ga_user', JSON.stringify(res.user));
+      window.location.href = 'admin.html';
+    } else {
+      errEl.textContent = res.message || 'Email atau password salah.';
+      show(errEl);
+    }
+  } catch(err) {
+    errEl.textContent = 'Tidak dapat terhubung ke server. Pastikan server berjalan.';
+    show(errEl);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Masuk →';
+  }
+}
+</script>
+</body>
+</html>

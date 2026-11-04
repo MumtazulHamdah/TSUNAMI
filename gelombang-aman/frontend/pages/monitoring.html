@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring Tsunami — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">📊 Statistik</a></li>
+      <li><a href="peta.html">🗺️ Peta</a></li>
+      <li><a href="database.html">🗂️ Database</a></li>
+      <li><a href="monitoring.html" class="active">📡 Monitoring</a></li>
+      <li><a href="korban.html">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <div class="flex-between">
+      <div>
+        <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Real-time</span>
+        <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Monitoring Informasi Tsunami</h1>
+        <p style="color:#94a3b8;font-size:0.95rem">Informasi gempa bumi terkini dari BMKG sebagai pendukung pemantauan potensi tsunami</p>
+      </div>
+      <div style="text-align:right">
+        <div class="live-indicator mb-1"><div class="live-dot"></div> LIVE</div>
+        <div class="text-xs" style="color:#94a3b8" id="last-update">Memperbarui...</div>
+        <button class="btn btn-outline btn-sm mt-1" onclick="refreshAll()">🔄 Refresh</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container">
+
+    <!-- Status Peringatan Utama -->
+    <div id="warning-status" style="margin-bottom:2rem">
+      <div class="loading"><div class="spinner"></div><span>Memeriksa status peringatan...</span></div>
+    </div>
+
+    <!-- Gempa Terkini -->
+    <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📊 Gempa Terkini (Sumber: BMKG)</h2>
+    <div id="gempa-terkini" style="margin-bottom:2rem">
+      <div class="loading"><div class="spinner"></div><span>Mengambil data BMKG...</span></div>
+    </div>
+
+    <!-- Daftar Gempa -->
+    <div class="flex-between mb-2">
+      <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy)">📋 15 Gempa Terbaru</h2>
+      <a href="https://www.bmkg.go.id/gempabumi/gempabumi-terkini.bmkg" target="_blank" rel="noopener" class="btn btn-sm" style="border:1.5px solid var(--primary-blue);color:var(--primary-blue)">Lihat di BMKG ↗</a>
+    </div>
+    <div id="gempa-list">
+      <div class="loading"><div class="spinner"></div><span>Memuat daftar gempa...</span></div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="alert alert-warning mt-3">
+      ⚠️ <span><strong>PENTING:</strong> GELOMBANG AMAN hanya menampilkan data dari BMKG dan TIDAK menerbitkan peringatan tsunami mandiri. Untuk status peringatan tsunami resmi, <strong>selalu</strong> pantau <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" style="color:var(--alert-red);font-weight:700">BMKG.go.id ↗</a>, sirine peringatan lokal, dan arahan <strong>BPBD</strong> setempat.</span>
+    </div>
+
+    <!-- Sumber & Tautan Resmi -->
+    <div style="margin-top:2rem">
+      <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">🔗 Tautan Sumber Resmi</h3>
+      <div class="grid grid-3" style="gap:1rem">
+        <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
+          <div class="card-body" style="display:flex;align-items:center;gap:1rem">
+            <div style="font-size:2rem">🏛️</div>
+            <div><div class="card-title">BMKG</div><div class="text-sm text-muted">Pusat Gempa Bumi & Tsunami</div></div>
+          </div>
+        </a>
+        <a href="https://inatews.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
+          <div class="card-body" style="display:flex;align-items:center;gap:1rem">
+            <div style="font-size:2rem">🌊</div>
+            <div><div class="card-title">InaTEWS</div><div class="text-sm text-muted">Sistem Peringatan Dini Tsunami</div></div>
+          </div>
+        </a>
+        <a href="https://www.bnpb.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
+          <div class="card-body" style="display:flex;align-items:center;gap:1rem">
+            <div style="font-size:2rem">🏛️</div>
+            <div><div class="card-title">BNPB</div><div class="text-sm text-muted">Badan Nasional Penanggulangan Bencana</div></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Data: BMKG API Publik • <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" style="color:var(--sky-blue)">bmkg.go.id ↗</a></span>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script>
+async function loadWarningStatus() {
+  const el = document.getElementById('warning-status');
+  try {
+    const res = await api.get('/monitoring/peringatan');
+    if (res.success) {
+      const w = res.peringatan;
+      const isActive = w.aktif;
+      el.innerHTML = `
+        <div style="background:${isActive ? 'var(--alert-red)' : 'var(--safe-green)'};border-radius:12px;padding:1.5rem;color:var(--white)">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
+            <div style="font-size:2.5rem">${isActive ? '🚨' : '✅'}</div>
+            <div>
+              <div style="font-size:1.2rem;font-weight:800">${isActive ? 'PERINGATAN TSUNAMI AKTIF' : 'TIDAK ADA PERINGATAN TSUNAMI'}</div>
+              <div style="opacity:0.9;font-size:0.9rem">${w.pesan}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:2rem;font-size:0.82rem;opacity:0.85;flex-wrap:wrap">
+            <span>Status: <strong>${w.status}</strong></span>
+            <span>Keterangan: <strong>${w.keterangan || '-'}</strong></span>
+          </div>
+          <div style="margin-top:0.75rem;font-size:0.75rem;opacity:0.7">${w.catatan}</div>
+        </div>`;
+    } else {
+      el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat memeriksa status peringatan. Kunjungi <a href="https://www.bmkg.go.id" target="_blank">BMKG.go.id</a></div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat terhubung ke server. Pantau langsung <a href="https://www.bmkg.go.id" target="_blank">BMKG.go.id</a></div>`;
+  }
+}
+
+async function loadGempaTerkini() {
+  const el = document.getElementById('gempa-terkini');
+  try {
+    const res = await api.get('/monitoring/gempa-terkini');
+    if (!res.success) throw new Error();
+    const g = res.data;
+    const magClass = fmt.magClass(g.magnitudo);
+    const isPotential = g.tsunami_potensial;
+    el.innerHTML = `
+      <div class="grid grid-4" style="gap:1rem">
+        <div class="gempa-card" style="text-align:center">
+          <div class="gempa-meta mb-1">Magnitudo</div>
+          <div class="gempa-mag ${magClass}" style="font-size:3rem">${fmt.mag(g.magnitudo)}</div>
+          <div class="gempa-meta">${g.kedalaman}</div>
+        </div>
+        <div class="gempa-card" style="grid-column:span 2">
+          <div class="gempa-meta mb-1">📍 Lokasi & Waktu</div>
+          <div style="font-weight:700;color:var(--deep-navy);font-size:1rem;margin-bottom:0.25rem">${g.wilayah}</div>
+          <div class="gempa-meta">${g.tanggal} pukul ${g.waktu} WIB</div>
+          <div class="gempa-meta mt-1">Koordinat: ${g.lintang}, ${g.bujur}</div>
+          ${g.dirasakan ? `<div class="gempa-meta mt-1">Dirasakan: ${g.dirasakan}</div>` : ''}
+        </div>
+        <div class="gempa-card" style="background:${isPotential ? '#fde8e8' : '#f0fdf4'};border-color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
+          <div class="gempa-meta mb-1">Potensi Tsunami</div>
+          <div style="font-weight:800;font-size:1rem;color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
+            ${isPotential ? '⛔ Berpotensi Tsunami' : '✅ Tidak Berpotensi'}
+          </div>
+          <div class="gempa-meta mt-1 text-xs">${g.potensi}</div>
+          <div class="gempa-meta text-xs mt-1">Level: <strong>${g.level_peringatan}</strong></div>
+        </div>
+      </div>
+      ${g.shakemap ? `<div class="mt-2"><img src="https://data.bmkg.go.id/DataMKG/TEWS/${g.shakemap}" alt="Peta Shakemap" style="max-width:300px;border-radius:8px;border:1px solid #dde8f0" onerror="this.style.display='none'"></div>` : ''}
+      <div class="text-xs text-muted mt-2">Sumber: BMKG • Diperbarui: ${fmt.datetime(res.waktu_pembaruan)} • <a href="${res.url_sumber}" target="_blank" rel="noopener">bmkg.go.id ↗</a></div>`;
+  } catch(e) {
+    el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat mengambil data BMKG. <a href="https://www.bmkg.go.id" target="_blank">Kunjungi langsung bmkg.go.id ↗</a></div>`;
+  }
+}
+
+async function loadGempaList() {
+  const el = document.getElementById('gempa-list');
+  try {
+    const res = await api.get('/monitoring/gempa-list');
+    if (!res.success || !res.data.length) throw new Error();
+    el.innerHTML = `<div class="table-container">
+      <table>
+        <thead><tr><th>Tanggal & Waktu</th><th>Lokasi</th><th>Magnitudo</th><th>Kedalaman</th><th>Koordinat</th><th>Potensi</th></tr></thead>
+        <tbody>${res.data.map(g => `<tr>
+          <td class="text-sm">${g.tanggal} ${g.waktu}</td>
+          <td style="max-width:200px;font-size:0.85rem">${g.wilayah}</td>
+          <td><span class="badge ${g.magnitudo >= 7 ? 'badge-danger' : g.magnitudo >= 5 ? 'badge-warning' : 'badge-info'}">${fmt.mag(g.magnitudo)}</span></td>
+          <td class="text-sm">${g.kedalaman}</td>
+          <td class="text-sm text-muted">${g.lintang}, ${g.bujur}</td>
+          <td><span class="badge ${g.tsunami_potensial ? 'badge-danger' : 'badge-success'}">${g.tsunami_potensial ? '⛔ Berpotensi' : '✅ Tidak'}</span></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="text-xs text-muted mt-1">Sumber: BMKG • <a href="https://www.bmkg.go.id" target="_blank" rel="noopener">bmkg.go.id ↗</a></div>`;
+    document.getElementById('last-update').textContent = 'Diperbarui: ' + fmt.datetime(res.waktu_pembaruan);
+  } catch(e) {
+    el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat memuat daftar gempa BMKG saat ini.</div>`;
+  }
+}
+
+function refreshAll() {
+  loadWarningStatus();
+  loadGempaTerkini();
+  loadGempaList();
+  showNotification('Data diperbarui dari BMKG.', 'success', 2500);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadWarningStatus();
+  loadGempaTerkini();
+  loadGempaList();
+  // Auto refresh every 5 minutes
+  setInterval(refreshAll, 5 * 60 * 1000);
+});
+</script>
+</body>
+</html>

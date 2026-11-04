@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Historis Tsunami — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
+    </a>
+    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <ul class="navbar-nav">
+      <li><a href="../index.html">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">📊 Statistik</a></li>
+      <li><a href="peta.html">🗺️ Peta</a></li>
+      <li><a href="database.html" class="active">🗂️ Database</a></li>
+      <li><a href="monitoring.html">📡 Monitoring</a></li>
+      <li><a href="korban.html">🔍 Korban</a></li>
+      <li><a href="edukasi.html">📚 Edukasi</a></li>
+      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+  <div class="container">
+    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Data Historis</span>
+    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Database Kejadian Tsunami Indonesia</h1>
+    <p style="color:#94a3b8;font-size:0.95rem">Kumpulan data kejadian tsunami di Indonesia (Sumber: BMKG, NGDC/NOAA)</p>
+  </div>
+</div>
+
+<section class="section section-pale">
+  <div class="container">
+    <!-- Filter & Search -->
+    <div class="filter-bar">
+      <div class="form-group" style="flex:2;min-width:200px">
+        <label>🔍 Cari Kejadian</label>
+        <input type="text" id="search" class="form-control" placeholder="Nama kejadian, lokasi, provinsi..." oninput="debouncedLoad()">
+      </div>
+      <div class="form-group">
+        <label>Tahun</label>
+        <input type="number" id="filter-tahun" class="form-control" placeholder="mis. 2004" min="1800" max="2100" oninput="debouncedLoad()">
+      </div>
+      <div class="form-group">
+        <label>Provinsi</label>
+        <select id="filter-provinsi" class="form-control" onchange="loadData()">
+          <option value="">Semua Provinsi</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Urutkan</label>
+        <select id="sort" class="form-control" onchange="loadData()">
+          <option value="tanggal">Tanggal</option>
+          <option value="magnitudo">Magnitudo</option>
+          <option value="korban_meninggal">Korban Meninggal</option>
+          <option value="tinggi_gelombang">Tinggi Gelombang</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Urutan</label>
+        <select id="order" class="form-control" onchange="loadData()">
+          <option value="DESC">Terbaru</option>
+          <option value="ASC">Terlama</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="flex-between mb-2">
+      <div id="results-info" class="text-sm text-muted">Memuat data...</div>
+      <div class="text-xs text-muted">Sumber: BMKG, NGDC/NOAA</div>
+    </div>
+
+    <!-- Table -->
+    <div id="table-container" class="table-container">
+      <div class="loading"><div class="spinner"></div><span>Memuat data kejadian...</span></div>
+    </div>
+
+    <!-- Pagination -->
+    <div id="pagination"></div>
+
+    <div class="alert alert-info mt-3" style="font-size:0.82rem">
+      ℹ️ <span>Data historis bersumber dari <strong>BMKG</strong> dan <strong>NGDC/NOAA Global Historical Tsunami Database</strong>. Klik baris untuk melihat detail kejadian.</span>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Detail -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📋 Detail Kejadian Tsunami</div>
+      <button class="modal-close" onclick="closeModal('modal-detail')">×</button>
+    </div>
+    <div class="modal-body" id="modal-detail-body">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-detail')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+  <span>© 2024 GELOMBANG AMAN • Data: BMKG, NGDC/NOAA • Bukan sumber peringatan resmi</span>
+</footer>
+
+<script src="../assets/js/api.js"></script>
+<script>
+let currentPage = 1;
+let debounceTimer;
+
+function debouncedLoad() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => loadData(1), 400);
+}
+
+async function loadProvinces() {
+  const res = await api.get('/stats/per-provinsi');
+  if (res.success) {
+    const sel = document.getElementById('filter-provinsi');
+    res.data.forEach(d => sel.insertAdjacentHTML('beforeend', `<option value="${d.provinsi}">${d.provinsi}</option>`));
+  }
+}
+
+async function loadData(page = currentPage) {
+  currentPage = page;
+  const container = document.getElementById('table-container');
+  showLoading(container);
+  const params = {
+    page, limit: 20,
+    search: document.getElementById('search').value,
+    tahun: document.getElementById('filter-tahun').value,
+    provinsi: document.getElementById('filter-provinsi').value,
+    sort: document.getElementById('sort').value,
+    order: document.getElementById('order').value
+  };
+
+  try {
+    const res = await api.get('/tsunami', params);
+    if (!res.success) throw new Error(res.message);
+    const { data, pagination } = res;
+
+    document.getElementById('results-info').textContent = 
+      `Menampilkan ${data.length} dari ${fmt.number(pagination.total)} kejadian`;
+
+    if (!data.length) {
+      showEmpty(container, 'Tidak ada kejadian ditemukan', 'Coba ubah filter pencarian.');
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
+
+    container.innerHTML = `<table>
+      <thead><tr>
+        <th>#</th><th>Kejadian</th><th>Tanggal</th><th>Lokasi</th>
+        <th>Magnitudo</th><th>Tinggi Gelombang</th><th>Meninggal</th><th>Hilang</th><th>Pengungsi</th>
+      </tr></thead>
+      <tbody>${data.map((r, i) => `<tr style="cursor:pointer" onclick="showDetail('${r.id}')">
+        <td class="text-muted text-sm">${(page-1)*20 + i + 1}</td>
+        <td><strong>${r.nama_kejadian}</strong><div class="text-xs text-muted">${r.provinsi}</div></td>
+        <td class="text-sm">${fmt.date(r.tanggal)}</td>
+        <td class="text-sm">${r.lokasi}</td>
+        <td><span class="badge badge-info">${fmt.mag(r.magnitudo)}</span></td>
+        <td class="text-sm">${fmt.wave(r.tinggi_gelombang)}</td>
+        <td><span class="badge badge-danger">${fmt.number(r.korban_meninggal)}</span></td>
+        <td class="text-sm">${fmt.number(r.korban_hilang)}</td>
+        <td class="text-sm">${fmt.number(r.pengungsi)}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+
+    renderPagination(document.getElementById('pagination'), pagination, 'loadData');
+  } catch(e) {
+    showError(container, 'Gagal memuat data. ' + (e.message || 'Pastikan server berjalan.'));
+  }
+}
+
+async function showDetail(id) {
+  const body = document.getElementById('modal-detail-body');
+  openModal('modal-detail');
+  showLoading(body);
+  try {
+    const res = await api.get('/tsunami/' + id);
+    if (!res.success) throw new Error(res.message);
+    const d = res.data;
+    body.innerHTML = `
+      <h3 style="color:var(--deep-navy);margin-bottom:1rem">${d.nama_kejadian}</h3>
+      <div class="grid grid-2" style="gap:1rem;margin-bottom:1rem">
+        <div><div class="text-xs text-muted">Tanggal</div><div class="fw-600">${fmt.date(d.tanggal)}</div></div>
+        <div><div class="text-xs text-muted">Lokasi</div><div class="fw-600">${d.lokasi}</div></div>
+        <div><div class="text-xs text-muted">Provinsi</div><div class="fw-600">${d.provinsi}</div></div>
+        <div><div class="text-xs text-muted">Kabupaten/Kota</div><div class="fw-600">${d.kabupaten_kota || '-'}</div></div>
+        <div><div class="text-xs text-muted">Magnitudo</div><div class="fw-600"><span class="badge badge-info">${fmt.mag(d.magnitudo)}</span></div></div>
+        <div><div class="text-xs text-muted">Tinggi Gelombang</div><div class="fw-600">${fmt.wave(d.tinggi_gelombang)}</div></div>
+        <div><div class="text-xs text-muted">Penyebab</div><div class="fw-600">${d.penyebab || '-'}</div></div>
+        <div><div class="text-xs text-muted">Koordinat</div><div class="fw-600 text-sm">${d.latitude ? d.latitude+', '+d.longitude : '-'}</div></div>
+      </div>
+      <div class="divider"></div>
+      <h4 style="margin-bottom:0.75rem;font-size:0.9rem">👥 Data Korban</h4>
+      <div class="grid grid-4" style="gap:0.75rem;margin-bottom:1rem">
+        <div class="kpi-card red" style="padding:0.9rem"><div class="kpi-label">Meninggal</div><div class="kpi-value" style="font-size:1.4rem">${fmt.number(d.korban_meninggal)}</div></div>
+        <div class="kpi-card orange" style="padding:0.9rem"><div class="kpi-label">Hilang</div><div class="kpi-value" style="font-size:1.4rem">${fmt.number(d.korban_hilang)}</div></div>
+        <div class="kpi-card" style="padding:0.9rem"><div class="kpi-label">Luka-luka</div><div class="kpi-value" style="font-size:1.4rem">${fmt.number(d.korban_luka)}</div></div>
+        <div class="kpi-card ocean" style="padding:0.9rem"><div class="kpi-label">Pengungsi</div><div class="kpi-value" style="font-size:1.4rem">${fmt.number(d.pengungsi)}</div></div>
+      </div>
+      ${d.deskripsi ? `<div class="divider"></div><h4 style="margin-bottom:0.75rem;font-size:0.9rem">📄 Deskripsi</h4><p style="font-size:0.9rem;color:var(--text-muted);line-height:1.7">${d.deskripsi}</p>` : ''}
+      <div class="divider"></div>
+      <div class="text-xs text-muted">Sumber data: ${d.sumber_data}</div>`;
+  } catch(e) {
+    showError(body, 'Gagal memuat detail kejadian.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadProvinces();
+  loadData();
+});
+</script>
+</body>
+</html>

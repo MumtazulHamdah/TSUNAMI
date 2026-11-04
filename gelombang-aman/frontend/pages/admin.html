@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin — GELOMBANG AMAN</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="admin-layout" id="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <div style="display:flex;align-items:center;gap:0.6rem">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        <div><div style="font-weight:700;font-size:0.95rem">GELOMBANG AMAN</div><div style="font-size:0.7rem;color:#94a3b8">Panel Admin</div></div>
+      </div>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('dashboard')" class="active" id="nav-dashboard">📊 Dashboard</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('tsunami')" id="nav-tsunami">🌊 Data Tsunami</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('missing')" id="nav-missing">🔍 Orang Hilang</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('education')" id="nav-education">📚 Artikel Edukasi</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('simulation')" id="nav-simulation">🎮 Skenario Simulasi</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('activity')" id="nav-activity">📋 Log Aktivitas</a></div>
+      <div style="padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.1);margin-top:1rem">
+        <a href="../index.html" style="color:#94a3b8;font-size:0.85rem">← Kembali ke Situs</a>
+      </div>
+      <div style="padding:0 1.5rem">
+        <button onclick="doLogout()" class="btn btn-danger btn-sm w-100">🚪 Logout</button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <button onclick="document.getElementById('admin-layout').classList.toggle('sidebar-open')" style="background:none;border:none;cursor:pointer;display:none" id="mobile-toggle">☰</button>
+        <div style="font-weight:700;color:var(--deep-navy)" id="page-title">Dashboard Admin</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem">
+        <span class="text-sm text-muted" id="admin-name">Loading...</span>
+        <div class="live-indicator"><div class="live-dot"></div> Online</div>
+      </div>
+    </div>
+
+    <div class="admin-main">
+      <!-- SECTION: Dashboard Overview -->
+      <div id="section-dashboard">
+        <div class="grid grid-4 mb-4" id="admin-kpi">
+          <div class="kpi-card"><div class="kpi-label">Total Kejadian</div><div class="kpi-value" id="adm-kejadian">—</div></div>
+          <div class="kpi-card red"><div class="kpi-label">Orang Hilang Aktif</div><div class="kpi-value" id="adm-hilang">—</div></div>
+          <div class="kpi-card orange"><div class="kpi-label">Laporan Pending</div><div class="kpi-value" id="adm-pending">—</div></div>
+          <div class="kpi-card ocean"><div class="kpi-label">Aktivitas Terbaru</div><div class="kpi-value" id="adm-activity">—</div></div>
+        </div>
+        <div class="chart-wrapper">
+          <div class="chart-title">📋 Aktivitas Terbaru</div>
+          <div id="recent-activity-list"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
+      <!-- SECTION: Tsunami Data Management -->
+      <div id="section-tsunami" class="d-none">
+        <div class="flex-between mb-3">
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">🌊 Kelola Data Kejadian Tsunami</h2>
+          <button class="btn btn-primary" onclick="openModal('modal-add-tsunami')">➕ Tambah Data</button>
+        </div>
+        <div class="filter-bar mb-2">
+          <div class="form-group" style="flex:2"><label>Cari</label><input type="text" id="adm-search-tsunami" class="form-control" placeholder="Cari kejadian..." oninput="debounceTsunami()"></div>
+          <div class="form-group"><label>Provinsi</label><input type="text" id="adm-prov-tsunami" class="form-control" placeholder="Provinsi..." oninput="debounceTsunami()"></div>
+        </div>
+        <div id="adm-tsunami-table"><div class="loading"><div class="spinner"></div></div></div>
+        <div id="adm-tsunami-pagination"></div>
+      </div>
+
+      <!-- SECTION: Missing Persons -->
+      <div id="section-missing" class="d-none">
+        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem">🔍 Verifikasi & Kelola Orang Hilang</h2>
+        <div class="tabs mb-3">
+          <button class="tab-btn active" onclick="switchMissingTab('pending')">⏳ Menunggu Verifikasi</button>
+          <button class="tab-btn" onclick="switchMissingTab('all')">📋 Semua Laporan</button>
+        </div>
+        <div id="missing-tab-pending">
+          <div id="pending-list"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+        <div id="missing-tab-all" class="d-none">
+          <div id="all-missing-list"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+
+      <!-- SECTION: Education Articles -->
+      <div id="section-education" class="d-none">
+        <div class="flex-between mb-3">
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">📚 Kelola Artikel Edukasi</h2>
+          <button class="btn btn-primary" onclick="openModal('modal-add-article')">➕ Tambah Artikel</button>
+        </div>
+        <div id="adm-articles-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- SECTION: Simulation -->
+      <div id="section-simulation" class="d-none">
+        <div class="flex-between mb-3">
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">🎮 Kelola Skenario Simulasi</h2>
+        </div>
+        <div id="adm-scenarios-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- SECTION: Activity Log -->
+      <div id="section-activity" class="d-none">
+        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem">📋 Log Aktivitas Admin</h2>
+        <div id="activity-log-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add/Edit Tsunami -->
+<div class="modal-overlay" id="modal-add-tsunami">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-tsunami-title">➕ Tambah Data Tsunami</div>
+      <button class="modal-close" onclick="closeModal('modal-add-tsunami')">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-tsunami" onsubmit="saveTsunami(event)">
+        <input type="hidden" id="t-id">
+        <div class="grid grid-2">
+          <div class="form-group" style="grid-column:span 2">
+            <label>Nama Kejadian <span class="required">*</span></label>
+            <input type="text" id="t-nama" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Tanggal</label>
+            <input type="date" id="t-tanggal" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Tahun <span class="required">*</span></label>
+            <input type="number" id="t-tahun" class="form-control" required min="1800" max="2100">
+          </div>
+          <div class="form-group">
+            <label>Lokasi <span class="required">*</span></label>
+            <input type="text" id="t-lokasi" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Provinsi <span class="required">*</span></label>
+            <input type="text" id="t-provinsi" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Kabupaten/Kota</label>
+            <input type="text" id="t-kab" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Magnitudo</label>
+            <input type="number" id="t-mag" class="form-control" step="0.1" min="0" max="10">
+          </div>
+          <div class="form-group">
+            <label>Tinggi Gelombang (m)</label>
+            <input type="number" id="t-tinggi" class="form-control" step="0.1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Latitude</label>
+            <input type="number" id="t-lat" class="form-control" step="0.0001">
+          </div>
+          <div class="form-group">
+            <label>Longitude</label>
+            <input type="number" id="t-lng" class="form-control" step="0.0001">
+          </div>
+          <div class="form-group">
+            <label>Korban Meninggal</label>
+            <input type="number" id="t-meninggal" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Korban Hilang</label>
+            <input type="number" id="t-hilang" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Korban Luka</label>
+            <input type="number" id="t-luka" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Pengungsi</label>
+            <input type="number" id="t-pengungsi" class="form-control" min="0">
+          </div>
+          <div class="form-group">
+            <label>Penyebab</label>
+            <input type="text" id="t-penyebab" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Sumber Data <span class="required">*</span></label>
+            <input type="text" id="t-sumber" class="form-control" required placeholder="BMKG / NGDC/NOAA / BNPB">
+          </div>
+          <div class="form-group" style="grid-column:span 2">
+            <label>Deskripsi</label>
+            <textarea id="t-deskripsi" class="form-control" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding:0;border:none;margin-top:1rem">
+          <button type="button" class="btn" onclick="closeModal('modal-add-tsunami')">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-tsunami">💾 Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add Article -->
+<div class="modal-overlay" id="modal-add-article">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <div class="modal-title">➕ Tambah/Edit Artikel Edukasi</div>
+      <button class="modal-close" onclick="closeModal('modal-add-article')">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="form-article" onsubmit="saveArticle(event)">
+        <input type="hidden" id="a-id">
+        <div class="form-group">
+          <label>Judul <span class="required">*</span></label>
+          <input type="text" id="a-judul" class="form-control" required>
+        </div>
+        <div class="grid grid-2">
+          <div class="form-group">
+            <label>Slug <span class="required">*</span></label>
+            <input type="text" id="a-slug" class="form-control" required placeholder="contoh: apa-itu-tsunami">
+          </div>
+          <div class="form-group">
+            <label>Kategori <span class="required">*</span></label>
+            <select id="a-kategori" class="form-control" required>
+              <option value="">Pilih kategori</option>
+              <option value="pengertian">Pengertian</option>
+              <option value="proses">Proses</option>
+              <option value="penyebab">Penyebab</option>
+              <option value="tanda">Tanda-tanda</option>
+              <option value="dampak">Dampak</option>
+              <option value="mitigasi">Mitigasi</option>
+              <option value="checklist">Checklist</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ringkasan</label>
+          <textarea id="a-ringkasan" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Konten (HTML) <span class="required">*</span></label>
+          <textarea id="a-konten" class="form-control" rows="8" required placeholder="Gunakan tag HTML: <h2>, <h3>, <p>, <ul>, <li>"></textarea>
+        </div>
+        <div class="modal-footer" style="padding:0;border:none;margin-top:1rem">
+          <button type="button" class="btn" onclick="closeModal('modal-add-article')">Batal</button>
+          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Verify Missing Person -->
+<div class="modal-overlay" id="modal-verify">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔍 Verifikasi Laporan</div>
+      <button class="modal-close" onclick="closeModal('modal-verify')">×</button>
+    </div>
+    <div class="modal-body" id="modal-verify-body"></div>
+  </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script>
+// Auth check
+if (!isLoggedIn()) window.location.href = 'login.html';
+const user = JSON.parse(localStorage.getItem('ga_user') || '{}');
+document.getElementById('admin-name').textContent = user.nama || user.email || 'Admin';
+
+// ===== SECTIONS =====
+function showSection(name) {
+  ['dashboard','tsunami','missing','education','simulation','activity'].forEach(s => {
+    document.getElementById('section-' + s).classList.add('d-none');
+    document.getElementById('nav-' + s)?.classList.remove('active');
+  });
+  document.getElementById('section-' + name).classList.remove('d-none');
+  document.getElementById('nav-' + name)?.classList.add('active');
+  document.getElementById('page-title').textContent = {
+    dashboard:'Dashboard Admin', tsunami:'Data Tsunami', missing:'Orang Hilang',
+    education:'Artikel Edukasi', simulation:'Skenario Simulasi', activity:'Log Aktivitas'
+  }[name];
+  if (name === 'tsunami') loadAdminTsunamiData();
+  if (name === 'missing') { loadPendingReports(); loadAllMissing(); }
+  if (name === 'education') loadAdminArticles();
+  if (name === 'simulation') loadAdminScenarios();
+  if (name === 'activity') loadActivityLog();
+}
+
+// ===== DASHBOARD =====
+async function loadAdminDashboard() {
+  try {
+    const res = await api.get('/admin/dashboard');
+    if (!res.success) throw new Error();
+    const d = res.data;
+    document.getElementById('adm-kejadian').textContent = fmt.number(d.total_kejadian);
+    document.getElementById('adm-hilang').textContent = fmt.number(d.orang_hilang_aktif);
+    document.getElementById('adm-pending').textContent = fmt.number(d.laporan_pending);
+    document.getElementById('adm-activity').textContent = d.aktivitas_terbaru.length;
+    const al = document.getElementById('recent-activity-list');
+    if (d.aktivitas_terbaru.length) {
+      al.innerHTML = `<div class="table-container"><table>
+        <thead><tr><th>Aksi</th><th>Tabel</th><th>Deskripsi</th><th>Waktu</th></tr></thead>
+        <tbody>${d.aktivitas_terbaru.map(a => `<tr>
+          <td><span class="badge badge-info">${a.aksi}</span></td>
+          <td class="text-sm">${a.tabel}</td>
+          <td class="text-sm">${a.deskripsi || '-'}</td>
+          <td class="text-sm text-muted">${fmt.datetime(a.dibuat_pada)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    } else {
+      al.innerHTML = '<div class="text-muted text-sm" style="padding:1rem">Belum ada aktivitas.</div>';
+    }
+  } catch(e) {
+    showError(document.getElementById('recent-activity-list'), 'Gagal memuat dashboard.');
+  }
+}
+
+// ===== TSUNAMI DATA =====
+let tsunamiPage = 1, tsunamiDebounce;
+function debounceTsunami() { clearTimeout(tsunamiDebounce); tsunamiDebounce = setTimeout(() => loadAdminTsunamiData(1), 400); }
+async function loadAdminTsunamiData(page = tsunamiPage) {
+  tsunamiPage = page;
+  const el = document.getElementById('adm-tsunami-table');
+  showLoading(el);
+  try {
+    const res = await api.get('/tsunami', {
+      page, limit: 15,
+      search: document.getElementById('adm-search-tsunami')?.value,
+      provinsi: document.getElementById('adm-prov-tsunami')?.value
+    });
+    if (!res.success) throw new Error();
+    const { data, pagination } = res;
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Kejadian</th><th>Tahun</th><th>Provinsi</th><th>Magnitudo</th><th>Meninggal</th><th>Sumber</th><th>Aksi</th></tr></thead>
+      <tbody>${data.map(r => `<tr>
+        <td><strong>${r.nama_kejadian}</strong></td>
+        <td>${r.tahun}</td>
+        <td>${r.provinsi}</td>
+        <td>${fmt.mag(r.magnitudo)}</td>
+        <td>${fmt.number(r.korban_meninggal)}</td>
+        <td class="text-xs text-muted">${r.sumber_data}</td>
+        <td>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editTsunami('${r.id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTsunami('${r.id}','${r.nama_kejadian.replace("'","\\'")}')">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+    renderPagination(document.getElementById('adm-tsunami-pagination'), pagination, 'loadAdminTsunamiData');
+  } catch(e) {
+    showError(el, 'Gagal memuat data tsunami.');
+  }
+}
+
+function openAddTsunami() {
+  document.getElementById('form-tsunami').reset();
+  document.getElementById('t-id').value = '';
+  document.getElementById('modal-tsunami-title').textContent = '➕ Tambah Data Tsunami';
+  openModal('modal-add-tsunami');
+}
+
+async function editTsunami(id) {
+  const res = await api.get('/tsunami/' + id);
+  if (!res.success) return;
+  const d = res.data;
+  document.getElementById('t-id').value = d.id;
+  document.getElementById('t-nama').value = d.nama_kejadian;
+  document.getElementById('t-tanggal').value = d.tanggal?.split('T')[0] || '';
+  document.getElementById('t-tahun').value = d.tahun;
+  document.getElementById('t-lokasi').value = d.lokasi;
+  document.getElementById('t-provinsi').value = d.provinsi;
+  document.getElementById('t-kab').value = d.kabupaten_kota || '';
+  document.getElementById('t-mag').value = d.magnitudo || '';
+  document.getElementById('t-tinggi').value = d.tinggi_gelombang || '';
+  document.getElementById('t-lat').value = d.latitude || '';
+  document.getElementById('t-lng').value = d.longitude || '';
+  document.getElementById('t-meninggal').value = d.korban_meninggal || '';
+  document.getElementById('t-hilang').value = d.korban_hilang || '';
+  document.getElementById('t-luka').value = d.korban_luka || '';
+  document.getElementById('t-pengungsi').value = d.pengungsi || '';
+  document.getElementById('t-penyebab').value = d.penyebab || '';
+  document.getElementById('t-sumber').value = d.sumber_data;
+  document.getElementById('t-deskripsi').value = d.deskripsi || '';
+  document.getElementById('modal-tsunami-title').textContent = '✏️ Edit Data Tsunami';
+  openModal('modal-add-tsunami');
+}
+
+async function saveTsunami(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-save-tsunami');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  const id = document.getElementById('t-id').value;
+  const body = {
+    nama_kejadian: document.getElementById('t-nama').value,
+    tanggal: document.getElementById('t-tanggal').value || null,
+    tahun: parseInt(document.getElementById('t-tahun').value),
+    lokasi: document.getElementById('t-lokasi').value,
+    provinsi: document.getElementById('t-provinsi').value,
+    kabupaten_kota: document.getElementById('t-kab').value,
+    magnitudo: document.getElementById('t-mag').value || null,
+    tinggi_gelombang: document.getElementById('t-tinggi').value || null,
+    latitude: document.getElementById('t-lat').value || null,
+    longitude: document.getElementById('t-lng').value || null,
+    korban_meninggal: document.getElementById('t-meninggal').value || 0,
+    korban_hilang: document.getElementById('t-hilang').value || 0,
+    korban_luka: document.getElementById('t-luka').value || 0,
+    pengungsi: document.getElementById('t-pengungsi').value || 0,
+    penyebab: document.getElementById('t-penyebab').value,
+    sumber_data: document.getElementById('t-sumber').value,
+    deskripsi: document.getElementById('t-deskripsi').value
+  };
+  const res = id ? await api.put('/tsunami/' + id, body) : await api.post('/tsunami', body);
+  btn.disabled = false; btn.textContent = '💾 Simpan';
+  if (res.success) {
+    closeModal('modal-add-tsunami');
+    showNotification(id ? 'Data berhasil diperbarui.' : 'Data berhasil ditambahkan.', 'success');
+    loadAdminTsunamiData();
+  } else {
+    showNotification(res.message || 'Gagal menyimpan data.', 'danger');
+  }
+}
+
+async function deleteTsunami(id, nama) {
+  if (!confirm(`Hapus kejadian "${nama}"? Tindakan ini tidak dapat dibatalkan.`)) return;
+  const res = await api.delete('/tsunami/' + id);
+  if (res.success) { showNotification('Data berhasil dihapus.', 'success'); loadAdminTsunamiData(); }
+  else showNotification(res.message, 'danger');
+}
+
+// ===== MISSING PERSONS =====
+function switchMissingTab(tab) {
+  document.getElementById('missing-tab-pending').classList.toggle('d-none', tab !== 'pending');
+  document.getElementById('missing-tab-all').classList.toggle('d-none', tab !== 'all');
+  $$('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+async function loadPendingReports() {
+  const el = document.getElementById('pending-list');
+  try {
+    const res = await api.get('/admin/laporan-pending');
+    if (!res.success) throw new Error();
+    if (!res.data.length) { showEmpty(el, 'Tidak ada laporan menunggu verifikasi.'); return; }
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Nama Korban</th><th>Usia/JK</th><th>Lokasi Terakhir</th><th>Pelapor</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+      <tbody>${res.data.map(r => `<tr>
+        <td><strong>${r.nama_korban}</strong></td>
+        <td class="text-sm">${r.usia || '-'} / ${r.jenis_kelamin || '-'}</td>
+        <td class="text-sm">${r.lokasi_terakhir}</td>
+        <td class="text-sm">${r.nama_pelapor}<div class="text-xs text-muted">${r.kontak_pelapor}</div></td>
+        <td class="text-sm text-muted">${fmt.datetime(r.dibuat_pada)}</td>
+        <td>
+          <button class="btn btn-sm btn-success" onclick="verifyReport('${r.id}', true)">✅ Verifikasi</button>
+          <button class="btn btn-sm btn-danger" onclick="verifyReport('${r.id}', false)">❌ Tolak</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  } catch(e) {
+    showError(el, 'Gagal memuat laporan pending.');
+  }
+}
+
+async function loadAllMissing() {
+  const el = document.getElementById('all-missing-list');
+  showLoading(el);
+  try {
+    const res = await api.get('/victims/orang-hilang', { limit: 50 });
+    if (!res.success || !res.data.length) { showEmpty(el, 'Tidak ada data.'); return; }
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Nama</th><th>Lokasi</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+      <tbody>${res.data.map(r => `<tr>
+        <td><strong>${r.nama_korban}</strong></td>
+        <td class="text-sm">${r.lokasi_terakhir}</td>
+        <td><span class="badge ${fmt.statusClass(r.status)}">${fmt.statusLabel(r.status)}</span></td>
+        <td class="text-sm text-muted">${fmt.datetime(r.dibuat_pada)}</td>
+        <td>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="updateMissingStatus('${r.id}')">✏️ Status</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteMissing('${r.id}')">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  } catch(e) {
+    showError(el, 'Gagal memuat data.');
+  }
+}
+
+async function verifyReport(id, accept) {
+  const body = accept ? { diverifikasi: true } : { diverifikasi: false };
+  const res = await api.patch('/admin/laporan/' + id + '/verifikasi', body);
+  if (res.success) { showNotification(res.message, 'success'); loadPendingReports(); }
+  else showNotification(res.message, 'danger');
+}
+
+async function updateMissingStatus(id) {
+  const status = prompt('Status baru (dalam_pencarian/ditemukan/teridentifikasi/dipertemukan/ditutup):');
+  if (!status) return;
+  const res = await api.patch('/victims/orang-hilang/' + id + '/status', { status });
+  if (res.success) { showNotification('Status diperbarui.', 'success'); loadAllMissing(); }
+  else showNotification(res.message, 'danger');
+}
+
+async function deleteMissing(id) {
+  if (!confirm('Hapus laporan ini?')) return;
+  const res = await api.delete('/victims/orang-hilang/' + id);
+  if (res.success) { showNotification('Laporan dihapus.', 'success'); loadAllMissing(); }
+}
+
+// ===== ARTICLES =====
+async function loadAdminArticles() {
+  const el = document.getElementById('adm-articles-list');
+  showLoading(el);
+  try {
+    const res = await api.get('/education/artikel');
+    if (!res.success || !res.data.length) { showEmpty(el, 'Belum ada artikel.'); return; }
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Judul</th><th>Kategori</th><th>Slug</th><th>Status</th><th>Diperbarui</th><th>Aksi</th></tr></thead>
+      <tbody>${res.data.map(a => `<tr>
+        <td><strong>${a.judul}</strong></td>
+        <td><span class="edu-category cat-${a.kategori}">${a.kategori}</span></td>
+        <td class="text-xs text-muted">${a.slug}</td>
+        <td><span class="badge badge-success">Aktif</span></td>
+        <td class="text-sm text-muted">${fmt.date(a.dibuat_pada)}</td>
+        <td>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editArticle('${a.id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  } catch(e) {
+    showError(el, 'Gagal memuat artikel.');
+  }
+}
+
+async function editArticle(id) {
+  const res = await api.get('/education/artikel/' + id);
+  if (!res.success) return;
+  const a = res.data;
+  document.getElementById('a-id').value = a.id;
+  document.getElementById('a-judul').value = a.judul;
+  document.getElementById('a-slug').value = a.slug;
+  document.getElementById('a-kategori').value = a.kategori;
+  document.getElementById('a-ringkasan').value = a.ringkasan || '';
+  document.getElementById('a-konten').value = a.konten;
+  openModal('modal-add-article');
+}
+
+async function saveArticle(e) {
+  e.preventDefault();
+  const id = document.getElementById('a-id').value;
+  const body = {
+    judul: document.getElementById('a-judul').value,
+    slug: document.getElementById('a-slug').value,
+    kategori: document.getElementById('a-kategori').value,
+    ringkasan: document.getElementById('a-ringkasan').value,
+    konten: document.getElementById('a-konten').value,
+    aktif: true
+  };
+  const res = id ? await api.put('/education/artikel/' + id, body) : await api.post('/education/artikel', body);
+  if (res.success) {
+    closeModal('modal-add-article');
+    showNotification('Artikel berhasil disimpan.', 'success');
+    loadAdminArticles();
+  } else showNotification(res.message, 'danger');
+}
+
+async function deleteArticle(id) {
+  if (!confirm('Nonaktifkan artikel ini?')) return;
+  const res = await api.delete('/education/artikel/' + id);
+  if (res.success) { showNotification('Artikel dinonaktifkan.', 'success'); loadAdminArticles(); }
+}
+
+// ===== SCENARIOS =====
+async function loadAdminScenarios() {
+  const el = document.getElementById('adm-scenarios-list');
+  showLoading(el);
+  try {
+    const res = await api.get('/simulation/skenario');
+    if (!res.success || !res.data.length) { showEmpty(el, 'Belum ada skenario.'); return; }
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Judul</th><th>Kategori</th><th>Kesulitan</th><th>Urutan</th><th>Aksi</th></tr></thead>
+      <tbody>${res.data.map(s => `<tr>
+        <td><strong>${s.judul}</strong><div class="text-xs text-muted">${s.deskripsi || ''}</div></td>
+        <td class="text-sm">${s.kategori}</td>
+        <td><span class="badge badge-info">${s.tingkat_kesulitan}</span></td>
+        <td>${s.urutan}</td>
+        <td><button class="btn btn-sm btn-danger" onclick="deleteScenario('${s.id}')">🗑️ Nonaktifkan</button></td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  } catch(e) { showError(el, 'Gagal memuat skenario.'); }
+}
+
+async function deleteScenario(id) {
+  if (!confirm('Nonaktifkan skenario ini?')) return;
+  const res = await api.delete('/simulation/skenario/' + id);
+  if (res.success) { showNotification('Skenario dinonaktifkan.', 'success'); loadAdminScenarios(); }
+}
+
+// ===== ACTIVITY LOG =====
+async function loadActivityLog() {
+  const el = document.getElementById('activity-log-list');
+  showLoading(el);
+  try {
+    const res = await api.get('/admin/aktivitas');
+    if (!res.success || !res.data.length) { showEmpty(el, 'Belum ada log aktivitas.'); return; }
+    el.innerHTML = `<div class="table-container"><table>
+      <thead><tr><th>Admin</th><th>Aksi</th><th>Tabel</th><th>Deskripsi</th><th>Waktu</th></tr></thead>
+      <tbody>${res.data.map(a => `<tr>
+        <td class="text-sm">${a.nama_admin || '-'}</td>
+        <td><span class="badge badge-info">${a.aksi}</span></td>
+        <td class="text-sm">${a.tabel}</td>
+        <td class="text-sm">${a.deskripsi || '-'}</td>
+        <td class="text-sm text-muted">${fmt.datetime(a.dibuat_pada)}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+  } catch(e) { showError(el, 'Gagal memuat log aktivitas.'); }
+}
+
+// ===== LOGOUT =====
+async function doLogout() {
+  if (!confirm('Yakin ingin logout?')) return;
+  await api.post('/auth/logout');
+  localStorage.removeItem('ga_token');
+  localStorage.removeItem('ga_user');
+  window.location.href = 'login.html';
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  loadAdminDashboard();
+});
+</script>
+</body>
+</html>

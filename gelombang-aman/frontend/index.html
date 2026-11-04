@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GELOMBANG AMAN - Platform Informasi Tsunami Indonesia. Kenali Risiko, Siaga Hadapi Tsunami.">
+  <title>GELOMBANG AMAN — Kenali Risiko, Siaga Hadapi Tsunami</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+</head>
+<body>
+
+<!-- ===== PERINGATAN TSUNAMI AKTIF ===== -->
+<div id="warning-banner" class="warning-banner hidden">
+  🚨 PERINGATAN TSUNAMI AKTIF — Pantau BMKG: <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">bmkg.go.id</a>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" role="navigation" aria-label="Navigasi utama">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="18" cy="18" r="18" fill="#1565C0"/>
+        <path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M4 27 Q7 21 10 27 Q13 33 16 27 Q19 21 22 27 Q25 33 28 27 Q31 21 34 27" stroke="#E1F5FE" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        GELOMBANG AMAN
+        <span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span>
+      </div>
+    </a>
+    <button class="navbar-toggle" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-nav" role="list">
+      <li><a href="index.html">🏠 Beranda</a></li>
+      <li><a href="pages/dashboard.html">📊 Statistik</a></li>
+      <li><a href="pages/peta.html">🗺️ Peta</a></li>
+      <li><a href="pages/database.html">🗂️ Database</a></li>
+      <li><a href="pages/monitoring.html">📡 Monitoring</a></li>
+      <li><a href="pages/korban.html">🔍 Korban</a></li>
+      <li><a href="pages/edukasi.html">📚 Edukasi</a></li>
+      <li><a href="pages/simulasi.html">🎮 Simulasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-bg-waves" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.08)"/>
+      <path d="M0,80 C360,40 720,100 1080,80 C1260,60 1360,90 1440,80 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.04)"/>
+    </svg>
+  </div>
+  <div class="hero-content container">
+    <div class="grid-2" style="gap:3rem;align-items:center">
+      <div>
+        <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Platform Resmi Informasi Tsunami Indonesia</span>
+        <h1 id="hero-title">Kenali Risiko,<br><span>Siaga Hadapi</span><br>Tsunami</h1>
+        <p>GELOMBANG AMAN menyediakan informasi terintegrasi tentang tsunami di Indonesia — dari data historis, peta rawan, monitoring peringatan dini, hingga edukasi dan simulasi kesiapsiagaan.</p>
+        <div class="hero-btns">
+          <a href="pages/peta.html" class="btn btn-primary btn-lg">🗺️ Lihat Peta Rawan</a>
+          <a href="pages/simulasi.html" class="btn btn-outline btn-lg">🎮 Coba Simulasi</a>
+        </div>
+        <div class="flex gap-2 mt-3" style="color:#94a3b8;font-size:0.8rem">
+          <span>✓ Data BMKG Resmi</span>
+          <span>✓ Peta Interaktif</span>
+          <span>✓ Update Real-time</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" aria-label="Statistik ringkasan">
+        <div class="kpi-card red" id="hero-total-kejadian" aria-live="polite">
+          <div class="kpi-label">Total Kejadian</div>
+          <div class="kpi-value" id="stat-kejadian"><div class="skeleton" style="height:2rem;width:80px"></div></div>
+          <div class="kpi-sub">Tercatat sejak 1800-an</div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-label">Korban Meninggal</div>
+          <div class="kpi-value" id="stat-meninggal"><div class="skeleton" style="height:2rem;width:80px"></div></div>
+          <div class="kpi-sub">Total historis</div>
+        </div>
+        <div class="kpi-card ocean">
+          <div class="kpi-label">Provinsi Terdampak</div>
+          <div class="kpi-value" id="stat-provinsi"><div class="skeleton" style="height:2rem;width:80px"></div></div>
+          <div class="kpi-sub">Dari 38 provinsi</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Pengungsi</div>
+          <div class="kpi-value" id="stat-pengungsi"><div class="skeleton" style="height:2rem;width:80px"></div></div>
+          <div class="kpi-sub">Total historis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MONITORING CEPAT ===== -->
+<section class="section section-pale" aria-labelledby="monitoring-title">
+  <div class="container">
+    <div class="flex-between mb-3">
+      <div>
+        <h2 id="monitoring-title" style="font-size:1.3rem;font-weight:700;color:var(--deep-navy)">📡 Status Monitoring Terkini</h2>
+        <p class="text-muted text-sm">Informasi gempa bumi terkini dari BMKG sebagai pendukung pemantauan potensi tsunami</p>
+      </div>
+      <div class="live-indicator">
+        <div class="live-dot"></div> LIVE
+      </div>
+    </div>
+    <div id="monitoring-card">
+      <div class="loading"><div class="spinner"></div><span>Memuat data BMKG...</span></div>
+    </div>
+    <div class="alert alert-info mt-2" style="font-size:0.82rem">
+      ℹ️ <span>Data gempa bumi ini hanya sebagai informasi pendukung. Untuk status peringatan tsunami resmi, selalu pantau <strong><a href="https://www.bmkg.go.id" target="_blank" rel="noopener">BMKG.go.id</a></strong> dan sirine peringatan lokal.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FITUR UTAMA ===== -->
+<section class="section" aria-labelledby="features-title">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Fitur Platform</span>
+      <h2 id="features-title">Semua yang Anda Butuhkan tentang Tsunami</h2>
+      <p>Informasi terintegrasi dan terpercaya dari sumber resmi pemerintah Indonesia</p>
+    </div>
+    <div class="grid grid-3">
+      <a href="pages/dashboard.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">📊</div>
+          <div class="card-title">Dashboard Statistik</div>
+          <div class="card-text">Visualisasi data kejadian tsunami, korban, dan wilayah terdampak dengan grafik interaktif.</div>
+        </div>
+      </a>
+      <a href="pages/peta.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">🗺️</div>
+          <div class="card-title">Peta Rawan Tsunami</div>
+          <div class="card-text">Peta interaktif zona bahaya tsunami dan kejadian historis di seluruh wilayah Indonesia.</div>
+        </div>
+      </a>
+      <a href="pages/database.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">🗂️</div>
+          <div class="card-title">Database Historis</div>
+          <div class="card-text">Kumpulan data lengkap kejadian tsunami di Indonesia dengan detail magnitudo, korban, dan dampak.</div>
+        </div>
+      </a>
+      <a href="pages/monitoring.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">📡</div>
+          <div class="card-title">Monitoring BMKG</div>
+          <div class="card-text">Pantau informasi gempa bumi terkini dari BMKG dan status potensi tsunami secara real-time.</div>
+        </div>
+      </a>
+      <a href="pages/korban.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">🔍</div>
+          <div class="card-title">Pencarian Korban</div>
+          <div class="card-text">Cari dan laporkan orang hilang akibat tsunami. Pantau status pencarian secara resmi.</div>
+        </div>
+      </a>
+      <a href="pages/edukasi.html" class="card" style="text-decoration:none">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">📚</div>
+          <div class="card-title">Pusat Edukasi</div>
+          <div class="card-text">Pelajari tsunami — pengertian, proses, tanda-tanda, dampak, dan panduan mitigasi lengkap.</div>
+        </div>
+      </a>
+      <a href="pages/simulasi.html" class="card" style="text-decoration:none;grid-column:span 1">
+        <div class="card-body">
+          <div style="font-size:2.2rem;margin-bottom:0.75rem">🎮</div>
+          <div class="card-title">Simulasi Mitigasi</div>
+          <div class="card-text">Mini-game edukatif untuk menguji dan meningkatkan kesiapsiagaan Anda menghadapi tsunami.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EDUKASI SINGKAT ===== -->
+<section class="section section-light" aria-labelledby="edu-title">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Edukasi Kilat</span>
+      <h2 id="edu-title">Kenali Tanda-tanda Tsunami</h2>
+      <p>Pengetahuan dasar yang dapat menyelamatkan nyawa Anda dan keluarga</p>
+    </div>
+    <div class="grid grid-4">
+      <div style="text-align:center;padding:1.5rem;background:var(--white);border-radius:12px;border:1px solid #dde8f0">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">🌊</div>
+        <div style="font-weight:700;color:var(--deep-navy);margin-bottom:0.5rem">Gempa Kuat</div>
+        <div class="text-sm text-muted">Gempa bumi sangat kuat dan lama di pesisir adalah sinyal pertama bahaya tsunami</div>
+      </div>
+      <div style="text-align:center;padding:1.5rem;background:var(--white);border-radius:12px;border:1px solid #dde8f0">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">⬇️</div>
+        <div style="font-weight:700;color:var(--deep-navy);margin-bottom:0.5rem">Air Laut Surut</div>
+        <div class="text-sm text-muted">Air laut surut tiba-tiba dan dramatis adalah tanda bahaya yang sangat jelas</div>
+      </div>
+      <div style="text-align:center;padding:1.5rem;background:var(--white);border-radius:12px;border:1px solid #dde8f0">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">📣</div>
+        <div style="font-weight:700;color:var(--deep-navy);margin-bottom:0.5rem">Suara Gemuruh</div>
+        <div class="text-sm text-muted">Dengar suara gemuruh seperti kereta dari arah laut — segera evakuasi</div>
+      </div>
+      <div style="text-align:center;padding:1.5rem;background:var(--white);border-radius:12px;border:1px solid #dde8f0">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">🏃</div>
+        <div style="font-weight:700;color:var(--deep-navy);margin-bottom:0.5rem">EVAKUASI!</div>
+        <div class="text-sm text-muted">Jika ragu, langsung evakuasi ke tempat tinggi. Jangan tunggu konfirmasi</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2rem">
+      <a href="pages/edukasi.html" class="btn btn-primary">Pelajari Selengkapnya →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KEJADIAN TERBARU ===== -->
+<section class="section" aria-labelledby="recent-title">
+  <div class="container">
+    <div class="flex-between mb-3">
+      <div>
+        <h2 id="recent-title" style="font-size:1.4rem;font-weight:700;color:var(--deep-navy)">📋 Kejadian Tsunami Terbaru</h2>
+        <p class="text-muted text-sm">Data historis kejadian tsunami di Indonesia (Sumber: BMKG, NGDC/NOAA)</p>
+      </div>
+      <a href="pages/database.html" class="btn btn-outline" style="border-color:var(--primary-blue);color:var(--primary-blue)">Lihat Semua</a>
+    </div>
+    <div id="recent-events" class="table-container">
+      <div class="loading"><div class="spinner"></div><span>Memuat data...</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUMBER DATA ===== -->
+<section class="section section-pale">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Sumber Data</span>
+      <h2>Data Resmi yang Terpercaya</h2>
+      <p>Seluruh data pada platform ini bersumber dari lembaga resmi pemerintah Indonesia</p>
+    </div>
+    <div class="grid grid-3">
+      <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center">
+        <div class="card-body">
+          <div style="font-size:2rem;margin-bottom:0.5rem;color:var(--primary-blue)">🏛️</div>
+          <div class="card-title">BMKG</div>
+          <div class="card-text">Badan Meteorologi, Klimatologi, dan Geofisika. Sumber data gempa, peringatan dini tsunami, dan katalog historis.</div>
+          <div class="text-sm text-primary mt-2">bmkg.go.id ↗</div>
+        </div>
+      </a>
+      <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center">
+        <div class="card-body">
+          <div style="font-size:2rem;margin-bottom:0.5rem;color:var(--primary-blue)">🏛️</div>
+          <div class="card-title">BNPB / InaRISK</div>
+          <div class="card-text">Badan Nasional Penanggulangan Bencana. Sumber data peta bahaya dan risiko tsunami nasional.</div>
+          <div class="text-sm text-primary mt-2">bnpb.go.id ↗</div>
+        </div>
+      </a>
+      <a href="https://www.ncei.noaa.gov/hazard-information/tsunami" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center">
+        <div class="card-body">
+          <div style="font-size:2rem;margin-bottom:0.5rem;color:var(--primary-blue)">🌐</div>
+          <div class="card-title">NGDC/NOAA</div>
+          <div class="card-text">National Geophysical Data Center/NOAA. Database tsunami global sebagai referensi data historis internasional.</div>
+          <div class="text-sm text-primary mt-2">ngdc.noaa.gov ↗</div>
+        </div>
+      </a>
+    </div>
+    <div class="footer-data-note mt-3">
+      ⚠️ <strong>Catatan Data:</strong> Data pada platform ini bersumber dari lembaga resmi. GELOMBANG AMAN tidak membuat prediksi tsunami, tidak menerbitkan peringatan mandiri, dan tidak mengarang data kejadian. Selalu pantau informasi resmi BMKG untuk status peringatan tsunami.
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">🌊 GELOMBANG AMAN</div>
+      <div class="footer-desc">Platform digital informasi tsunami Indonesia. Kenali Risiko, Siaga Hadapi Tsunami.<br>
+      Dikembangkan untuk meningkatkan kesiapsiagaan masyarakat pesisir Indonesia.</div>
+      <div class="footer-data-note mt-2">
+        Data bersumber dari BMKG, BNPB/InaRISK, dan NGDC/NOAA. Pembaruan terakhir: <span id="footer-update"></span>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Fitur</div>
+      <ul class="footer-links">
+        <li><a href="pages/dashboard.html">Dashboard Statistik</a></li>
+        <li><a href="pages/peta.html">Peta Rawan Tsunami</a></li>
+        <li><a href="pages/database.html">Database Historis</a></li>
+        <li><a href="pages/monitoring.html">Monitoring BMKG</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Informasi</div>
+      <ul class="footer-links">
+        <li><a href="pages/korban.html">Pencarian Korban</a></li>
+        <li><a href="pages/edukasi.html">Pusat Edukasi</a></li>
+        <li><a href="pages/simulasi.html">Simulasi Mitigasi</a></li>
+        <li><a href="pages/login.html">Admin Login</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Sumber Resmi</div>
+      <ul class="footer-links">
+        <li><a href="https://www.bmkg.go.id" target="_blank" rel="noopener">BMKG ↗</a></li>
+        <li><a href="https://www.bnpb.go.id" target="_blank" rel="noopener">BNPB ↗</a></li>
+        <li><a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK ↗</a></li>
+        <li><a href="https://inaWARE.bnpb.go.id" target="_blank" rel="noopener">InaWARE ↗</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 GELOMBANG AMAN. Hak Cipta Dilindungi.</span>
+    <span>⚠️ BUKAN sumber peringatan resmi. Pantau selalu <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" style="color:var(--sky-blue)">BMKG.go.id</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+document.getElementById('footer-update').textContent = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
+
+async function loadHomepageStats() {
+  try {
+    const res = await api.get('/stats/overview');
+    if (res.success) {
+      const d = res.data;
+      document.getElementById('stat-kejadian').textContent = fmt.number(d.total_kejadian);
+      document.getElementById('stat-meninggal').textContent = fmt.number(d.total_meninggal);
+      document.getElementById('stat-provinsi').textContent = d.total_provinsi_terdampak;
+      document.getElementById('stat-pengungsi').textContent = fmt.number(d.total_pengungsi);
+    }
+  } catch(e) {
+    ['stat-kejadian','stat-meninggal','stat-provinsi','stat-pengungsi'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = '—';
+    });
+  }
+}
+
+async function loadMonitoringCard() {
+  const el = document.getElementById('monitoring-card');
+  try {
+    const res = await api.get('/monitoring/gempa-terkini');
+    if (res.success) {
+      const g = res.data;
+      const magClass = fmt.magClass(g.magnitudo);
+      const isPotential = g.tsunami_potensial;
+      if (isPotential && g.magnitudo >= 7) {
+        document.getElementById('warning-banner').classList.remove('hidden');
+      }
+      el.innerHTML = `
+        <div class="grid grid-4" style="gap:1rem">
+          <div class="gempa-card">
+            <div class="gempa-meta mb-1">Magnitudo Terkini</div>
+            <div class="gempa-mag ${magClass}">${fmt.mag(g.magnitudo)}</div>
+            <div class="gempa-meta">${g.kedalaman} km kedalaman</div>
+          </div>
+          <div class="gempa-card" style="grid-column:span 2">
+            <div class="gempa-meta mb-1">📍 Lokasi</div>
+            <div style="font-weight:600;color:var(--deep-navy);font-size:0.95rem">${g.wilayah}</div>
+            <div class="gempa-meta">${g.tanggal} • ${g.waktu}</div>
+            <div class="gempa-meta mt-1">Koordinat: ${g.lintang}, ${g.bujur}</div>
+          </div>
+          <div class="gempa-card" style="background:${isPotential ? '#fde8e8' : '#f0fdf4'}">
+            <div class="gempa-meta mb-1">Status Potensi</div>
+            <div style="font-weight:700;color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
+              ${isPotential ? '⛔ Berpotensi Tsunami' : '✅ Tidak Berpotensi Tsunami'}
+            </div>
+            <div class="gempa-meta text-xs mt-1">${g.potensi}</div>
+          </div>
+        </div>
+        <div class="text-xs text-muted mt-2">Sumber: BMKG • Diperbarui: ${fmt.datetime(res.waktu_pembaruan)} • <a href="https://www.bmkg.go.id" target="_blank" rel="noopener">bmkg.go.id ↗</a></div>`;
+    } else {
+      el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat mengambil data BMKG saat ini. Cek koneksi atau kunjungi <a href="https://www.bmkg.go.id" target="_blank" rel="noopener">bmkg.go.id</a></div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="alert alert-warning">⚠️ Tidak dapat terhubung ke server. Kunjungi <a href="https://www.bmkg.go.id" target="_blank" rel="noopener">bmkg.go.id</a> untuk informasi terkini.</div>`;
+  }
+}
+
+async function loadRecentEvents() {
+  const el = document.getElementById('recent-events');
+  try {
+    const res = await api.get('/tsunami', { limit: 6, sort: 'tanggal', order: 'DESC' });
+    if (res.success && res.data.length) {
+      el.innerHTML = `<table>
+        <thead><tr>
+          <th>Kejadian</th><th>Tanggal</th><th>Lokasi</th>
+          <th>Magnitudo</th><th>Gelombang</th><th>Meninggal</th>
+        </tr></thead>
+        <tbody>${res.data.map(r => `<tr>
+          <td><strong>${r.nama_kejadian}</strong></td>
+          <td>${fmt.date(r.tanggal)}</td>
+          <td>${r.lokasi}</td>
+          <td>${fmt.mag(r.magnitudo)}</td>
+          <td>${fmt.wave(r.tinggi_gelombang)}</td>
+          <td><span class="badge badge-danger">${fmt.number(r.korban_meninggal)}</span></td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    } else {
+      el.innerHTML = '<div class="alert alert-info">Belum ada data kejadian tersedia.</div>';
+    }
+  } catch(e) {
+    el.innerHTML = '<div class="alert alert-warning">Tidak dapat memuat data. Pastikan server berjalan.</div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadHomepageStats();
+  loadMonitoringCard();
+  loadRecentEvents();
+});
+</script>
+</body>
+</html>
