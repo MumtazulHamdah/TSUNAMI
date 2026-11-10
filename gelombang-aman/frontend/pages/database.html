@@ -162,7 +162,7 @@ async function loadData(page = currentPage) {
         <th>#</th><th>Kejadian</th><th>Tanggal</th><th>Lokasi</th>
         <th>Magnitudo</th><th>Tinggi Gelombang</th><th>Meninggal</th><th>Hilang</th><th>Pengungsi</th>
       </tr></thead>
-      <tbody>${data.map((r, i) => `<tr style="cursor:pointer" onclick="showDetail('${r.id}')">
+      <tbody>${data.map((r, i) => `<tr style="cursor:pointer" role="button" tabindex="0" aria-label="Lihat detail ${r.nama_kejadian}" onclick="showDetail('${r.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDetail('${r.id}')}">
         <td class="text-muted text-sm">${(page-1)*20 + i + 1}</td>
         <td><strong>${r.nama_kejadian}</strong><div class="text-xs text-muted">${r.provinsi}</div></td>
         <td class="text-sm">${fmt.date(r.tanggal)}</td>

@@ -132,7 +132,7 @@ async function loadScenarios() {
     scenarios = res.data;
     el.innerHTML = `<div class="grid grid-2" style="gap:1rem">
       ${scenarios.map(s => `
-        <div class="scenario-card" onclick="startScenario('${s.id}')">
+        <div class="scenario-card" role="button" tabindex="0" aria-label="Mulai skenario: ${s.judul}" onclick="startScenario('${s.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();startScenario('${s.id}')}">
           <div style="font-size:1.5rem margin-bottom:0.5rem">${s.kategori === 'evakuasi' ? '🏃' : s.kategori === 'sebelum_tsunami' ? '🌊' : s.kategori === 'pasca_tsunami' ? '🏠' : '⚠️'}</div>
           <div style="font-weight:700;color:var(--deep-navy);margin:0.5rem 0">${s.judul}</div>
           <div class="text-sm text-muted mb-2">${s.deskripsi || ''}</div>
@@ -250,7 +250,7 @@ async function submitResult() {
     // Recommendations
     if (d.rekomendasi_edukasi?.length) {
       document.getElementById('reco-list').innerHTML = d.rekomendasi_edukasi.map(r => `
-        <div class="rec-article" onclick="window.location='edukasi.html'">
+        <div class="rec-article" role="button" tabindex="0" aria-label="Buka pusat edukasi untuk materi ${r.judul}" onclick="window.location='edukasi.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location='edukasi.html'}">
           <span style="font-size:1.4rem">📖</span>
           <div><div style="font-weight:600;font-size:0.9rem">${r.judul}</div><div class="text-xs text-muted">${r.kategori}</div></div>
         </div>`).join('');

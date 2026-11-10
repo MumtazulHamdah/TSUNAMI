@@ -115,7 +115,7 @@ function renderArticles(articles) {
   const grid = document.getElementById('articles-grid');
   if (!articles.length) { showEmpty(grid, 'Tidak ada artikel di kategori ini.'); return; }
   grid.innerHTML = articles.map(a => `
-    <div class="card" onclick="readArticle('${a.id}')" style="cursor:pointer">
+    <div class="card" role="button" tabindex="0" aria-label="Baca artikel: ${a.judul}" onclick="readArticle('${a.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();readArticle('${a.id}')}" style="cursor:pointer">
       <div class="card-body">
         <div class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
         <div class="card-title">${a.judul}</div>

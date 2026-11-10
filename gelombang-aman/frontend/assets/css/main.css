@@ -27,6 +27,10 @@ body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; c
 img { max-width: 100%; display: block; }
 a { color: var(--primary-blue); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--ocean-blue); }
+[role="button"]:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--warning-orange);
+  outline-offset: 3px;
+}
 
 /* ===== NAVBAR ===== */
 .navbar {

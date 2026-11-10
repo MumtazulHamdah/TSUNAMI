@@ -207,7 +207,7 @@ async function searchMissing(page = 1) {
     const { data, pagination } = res;
     if (!data.length) { showEmpty(el, 'Tidak ada data ditemukan', 'Coba ubah kata kunci pencarian.'); document.getElementById('missing-pagination').innerHTML=''; return; }
     el.innerHTML = `<div class="grid grid-3" style="gap:1rem">${data.map(p => `
-      <div class="person-card" onclick="showPersonDetail('${p.id}')" style="cursor:pointer">
+      <div class="person-card" role="button" tabindex="0" aria-label="Lihat detail laporan ${p.nama_korban}" onclick="showPersonDetail('${p.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showPersonDetail('${p.id}')}" style="cursor:pointer">
         <div class="person-photo">
           ${p.foto_url ? `<img src="http://localhost:3000${p.foto_url}" alt="${p.nama_korban}" style="width:100%;height:180px;object-fit:cover">` : `<span style="font-size:3rem">👤</span>`}
         </div>
