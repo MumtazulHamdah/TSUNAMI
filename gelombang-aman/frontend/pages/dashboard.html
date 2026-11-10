@@ -67,6 +67,7 @@
         <button class="btn" style="border:1.5px solid var(--border)" onclick="resetFilter()">↩ Reset</button>
       </div>
     </div>
+    <p class="text-sm text-muted mb-3">Filter tahun hanya memengaruhi grafik frekuensi kejadian, sedangkan filter provinsi hanya memengaruhi grafik persebaran provinsi. KPI, statistik korban, dan magnitudo per dekade mencakup seluruh data.</p>
 
     <!-- Charts Row 1 -->
     <div class="grid grid-2 mb-3">
@@ -87,7 +88,7 @@
         <div style="position:relative;height:260px"><canvas id="chart-korban"></canvas></div>
       </div>
       <div class="chart-wrapper">
-        <div class="chart-title">⚡ Magnitudo Tertinggi per Dekade</div>
+        <div class="chart-title">Magnitudo maksimum per dekade</div>
         <div style="position:relative;height:260px"><canvas id="chart-magnitudo"></canvas></div>
       </div>
     </div>
@@ -111,11 +112,12 @@ let allPerTahun = [], allPerProvinsi = [];
 
 async function loadStats() {
   try {
-    const [overview, perTahun, perProvinsi, korban] = await Promise.all([
+    const [overview, perTahun, perProvinsi, korban, events] = await Promise.all([
       api.get('/stats/overview'),
       api.get('/stats/per-tahun'),
       api.get('/stats/per-provinsi'),
-      api.get('/stats/korban')
+      api.get('/stats/korban'),
+      api.get('/tsunami', { limit: 100, sort: 'tanggal', order: 'ASC' })
     ]);
 
     if (overview.success) {
@@ -144,7 +146,7 @@ async function loadStats() {
       renderKorbanChart(korban.data);
     }
 
-    renderMagnitudo(allPerTahun);
+    if (events.success) renderMagnitudo(events.data);
 
   } catch(e) {
     showNotification('Gagal memuat statistik. Pastikan server berjalan.', 'danger');
@@ -256,17 +258,18 @@ function renderKorbanChart(data) {
 function renderMagnitudo(data) {
   const decades = {};
   data.forEach(d => {
+    if (d.magnitudo == null || !Number.isFinite(Number(d.magnitudo))) return;
     const decade = Math.floor(d.tahun / 10) * 10;
-    if (!decades[decade] || d.total_meninggal > decades[decade]) decades[decade] = d.total_meninggal;
+    if (decades[decade] == null || Number(d.magnitudo) > decades[decade]) decades[decade] = Number(d.magnitudo);
   });
-  const labels = Object.keys(decades).sort();
+  const labels = Object.keys(decades).sort((a, b) => Number(a) - Number(b));
   if (chartMagnitudo) chartMagnitudo.destroy();
   chartMagnitudo = new Chart(document.getElementById('chart-magnitudo'), {
     type: 'line',
     data: {
       labels: labels.map(l => l + 'an'),
       datasets: [{
-        label: 'Korban Meninggal per Dekade',
+        label: 'Magnitudo maksimum',
         data: labels.map(l => decades[l]),
         borderColor: '#D32F2F',
         backgroundColor: 'rgba(211,47,47,0.08)',
@@ -276,7 +279,10 @@ function renderMagnitudo(data) {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, grid: { color: '#f0f4f8' } }, x: { grid: { display: false } } }
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: 'Magnitudo' }, grid: { color: '#f0f4f8' } },
+        x: { grid: { display: false } }
+      }
     }
   });
 }
