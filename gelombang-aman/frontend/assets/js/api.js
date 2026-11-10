@@ -15,6 +15,7 @@ const api = {
   },
 
   unavailableAdminAction(method, path) {
+    // Server JSON aktif belum menyediakan endpoint autentikasi dan pengelolaan admin.
     const route = path.split('?')[0];
     const adminAction = route.startsWith('/admin/') || /^\/auth\/(login|logout)$/.test(route) ||
       (method === 'POST' && route === '/tsunami') ||
