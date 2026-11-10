@@ -10,7 +10,7 @@
 <body>
 <div class="admin-layout" id="admin-layout">
   <!-- Sidebar -->
-  <aside class="admin-sidebar">
+  <aside class="admin-sidebar" id="admin-sidebar">
     <div class="admin-sidebar-brand">
       <div style="display:flex;align-items:center;gap:0.6rem">
         <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
@@ -37,7 +37,7 @@
   <div style="flex:1;display:flex;flex-direction:column">
     <div class="admin-topbar">
       <div style="display:flex;align-items:center;gap:1rem">
-        <button onclick="document.getElementById('admin-layout').classList.toggle('sidebar-open')" style="background:none;border:none;cursor:pointer;display:none" id="mobile-toggle">☰</button>
+        <button class="admin-mobile-toggle" onclick="toggleAdminSidebar()" aria-label="Buka navigasi admin" aria-controls="admin-sidebar" aria-expanded="false" id="mobile-toggle">☰</button>
         <div style="font-weight:700;color:var(--deep-navy)" id="page-title">Dashboard Admin</div>
       </div>
       <div style="display:flex;align-items:center;gap:1rem">
@@ -275,6 +275,21 @@
 if (!isLoggedIn()) window.location.href = 'login.html';
 const user = JSON.parse(localStorage.getItem('ga_user') || '{}');
 document.getElementById('admin-name').textContent = user.nama || user.email || 'Admin';
+
+function toggleAdminSidebar() {
+  const layout = document.getElementById('admin-layout');
+  const button = document.getElementById('mobile-toggle');
+  const isOpen = layout.classList.toggle('sidebar-open');
+  button.setAttribute('aria-expanded', String(isOpen));
+  button.setAttribute('aria-label', isOpen ? 'Tutup navigasi admin' : 'Buka navigasi admin');
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    document.getElementById('admin-layout').classList.remove('sidebar-open');
+    document.getElementById('mobile-toggle').setAttribute('aria-expanded', 'false');
+  }
+});
 
 // ===== SECTIONS =====
 function showSection(name) {

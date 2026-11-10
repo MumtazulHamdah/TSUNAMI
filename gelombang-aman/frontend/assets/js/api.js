@@ -191,7 +191,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.navbar-toggle');
   const nav = document.querySelector('.navbar-nav');
   if (toggle && nav) {
-    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+    const setMenuOpen = open => {
+      nav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+    };
+    toggle.addEventListener('click', () => setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenuOpen(false)));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    });
   }
   // Set active nav link
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
