@@ -33,7 +33,7 @@
     <div class="flex-between">
       <div>
         <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Data BMKG</span>
-        <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Monitoring Informasi Tsunami</h1>
+        <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Monitoring Data Gempa BMKG</h1>
         <p style="color:#94a3b8;font-size:0.95rem">Informasi gempa bumi terkini dari BMKG sebagai pendukung pemantauan potensi tsunami</p>
       </div>
       <div style="text-align:right">
@@ -57,14 +57,14 @@
     </div>
 
     <!-- Gempa Terkini -->
-    <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📊 Gempa Terkini (Sumber: BMKG)</h2>
+    <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">Gempa terkini dari BMKG</h2>
     <div id="gempa-terkini" style="margin-bottom:2rem">
       <div class="loading"><div class="spinner"></div><span>Mengambil data BMKG...</span></div>
     </div>
 
     <!-- Daftar Gempa -->
     <div class="flex-between mb-2">
-      <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy)">📋 15 Gempa Terbaru</h2>
+      <h2 style="font-size:1.2rem;font-weight:700;color:var(--deep-navy)">Daftar gempa terkini dari BMKG</h2>
       <a href="https://www.bmkg.go.id/gempabumi/gempabumi-terkini.bmkg" target="_blank" rel="noopener" class="btn btn-sm" style="border:1.5px solid var(--primary-blue);color:var(--primary-blue)">Lihat di BMKG ↗</a>
     </div>
     <div id="gempa-list">
@@ -116,12 +116,12 @@ async function loadWarningStatus() {
           <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
             <div style="font-size:2.5rem">${isActive ? '🚨' : '✅'}</div>
             <div>
-              <div style="font-size:1.2rem;font-weight:800">${isActive ? 'PERINGATAN TSUNAMI AKTIF' : 'TIDAK ADA PERINGATAN TSUNAMI'}</div>
-              <div style="opacity:0.9;font-size:0.9rem">${w.pesan}</div>
+              <div style="font-size:1.2rem;font-weight:800">${isActive ? 'Data gempa mencantumkan potensi tsunami' : 'Potensi tsunami tidak tercantum pada data gempa ini'}</div>
+              <div style="opacity:0.9;font-size:0.9rem">Ini indikator berdasarkan data BMKG yang diterima, bukan peringatan dari GELOMBANG AMAN.</div>
             </div>
           </div>
           <div style="display:flex;gap:2rem;font-size:0.82rem;opacity:0.85;flex-wrap:wrap">
-            <span>Status: <strong>${w.status}</strong></span>
+            <span>Indikator aplikasi: <strong>${w.status}</strong></span>
             <span>Keterangan: <strong>${w.keterangan || '-'}</strong></span>
           </div>
           <div style="margin-top:0.75rem;font-size:0.75rem;opacity:0.7">${w.catatan}</div>
@@ -159,7 +159,7 @@ async function loadGempaTerkini() {
         <div class="gempa-card" style="background:${isPotential ? '#fde8e8' : '#f0fdf4'};border-color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
           <div class="gempa-meta mb-1">Potensi Tsunami</div>
           <div style="font-weight:800;font-size:1rem;color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
-            ${isPotential ? '⛔ Berpotensi Tsunami' : '✅ Tidak Berpotensi'}
+            ${isPotential ? 'Data BMKG mencantumkan potensi tsunami' : 'Potensi tidak tercantum pada data ini'}
           </div>
           <div class="gempa-meta mt-1 text-xs">${g.potensi}</div>
           <div class="gempa-meta text-xs mt-1">Level: <strong>${g.level_peringatan}</strong></div>
@@ -201,7 +201,7 @@ function refreshAll() {
   loadWarningStatus();
   loadGempaTerkini();
   loadGempaList();
-  showNotification('Aplikasi meminta data terbaru dari BMKG.', 'success', 2500);
+  showNotification('Permintaan pemuatan data BMKG dikirim.', 'info', 2500);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
