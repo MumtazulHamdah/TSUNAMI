@@ -61,17 +61,17 @@
   <div class="hero-content container">
     <div class="grid-2" style="gap:3rem;align-items:center">
       <div>
-        <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Platform Resmi Informasi Tsunami Indonesia</span>
+        <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Informasi dan Edukasi Tsunami</span>
         <h1 id="hero-title">Kenali Risiko,<br><span>Siaga Hadapi</span><br>Tsunami</h1>
-        <p>GELOMBANG AMAN menyediakan informasi terintegrasi tentang tsunami di Indonesia — dari data historis, peta rawan, monitoring peringatan dini, hingga edukasi dan simulasi kesiapsiagaan.</p>
+        <p>GELOMBANG AMAN menyajikan data historis yang tersimpan di proyek, informasi gempa yang diambil dari BMKG saat diminta, serta materi edukasi dan simulasi kesiapsiagaan.</p>
         <div class="hero-btns">
           <a href="pages/peta.html" class="btn btn-primary btn-lg">🗺️ Lihat Peta Rawan</a>
           <a href="pages/simulasi.html" class="btn btn-outline btn-lg">🎮 Coba Simulasi</a>
         </div>
         <div class="flex gap-2 mt-3" style="color:#94a3b8;font-size:0.8rem">
-          <span>✓ Data BMKG Resmi</span>
-          <span>✓ Peta Interaktif</span>
-          <span>✓ Update Real-time</span>
+          <span>Data gempa: BMKG</span>
+          <span>Data historis: berkas proyek</span>
+          <span>Materi edukasi dan simulasi</span>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" aria-label="Statistik ringkasan">
@@ -109,7 +109,7 @@
         <p class="text-muted text-sm">Informasi gempa bumi terkini dari BMKG sebagai pendukung pemantauan potensi tsunami</p>
       </div>
       <div class="live-indicator">
-        <div class="live-dot"></div> LIVE
+      <div class="live-dot"></div> Data BMKG
       </div>
     </div>
     <div id="monitoring-card">
@@ -127,7 +127,7 @@
     <div class="section-header">
       <span class="section-badge">Fitur Platform</span>
       <h2 id="features-title">Semua yang Anda Butuhkan tentang Tsunami</h2>
-      <p>Informasi terintegrasi dan terpercaya dari sumber resmi pemerintah Indonesia</p>
+      <p>Data gempa diambil dari BMKG. Data historis tersedia sebagai catatan di proyek dan tidak diperbarui otomatis.</p>
     </div>
     <div class="grid grid-3">
       <a href="pages/dashboard.html" class="card" style="text-decoration:none">
@@ -155,14 +155,14 @@
         <div class="card-body">
           <div style="font-size:2.2rem;margin-bottom:0.75rem">📡</div>
           <div class="card-title">Monitoring BMKG</div>
-          <div class="card-text">Pantau informasi gempa bumi terkini dari BMKG dan status potensi tsunami secara real-time.</div>
+          <div class="card-text">Lihat data gempa yang diambil dari BMKG saat halaman dimuat atau diperbarui. Gunakan kanal BMKG untuk status resmi.</div>
         </div>
       </a>
       <a href="pages/korban.html" class="card" style="text-decoration:none">
         <div class="card-body">
           <div style="font-size:2.2rem;margin-bottom:0.75rem">🔍</div>
           <div class="card-title">Pencarian Korban</div>
-          <div class="card-text">Cari dan laporkan orang hilang akibat tsunami. Pantau status pencarian secara resmi.</div>
+          <div class="card-text">Cari laporan yang sudah diverifikasi dan kirim laporan orang hilang untuk ditinjau sebelum ditampilkan.</div>
         </div>
       </a>
       <a href="pages/edukasi.html" class="card" style="text-decoration:none">
@@ -240,8 +240,8 @@
   <div class="container">
     <div class="section-header">
       <span class="section-badge">Sumber Data</span>
-      <h2>Data Resmi yang Terpercaya</h2>
-      <p>Seluruh data pada platform ini bersumber dari lembaga resmi pemerintah Indonesia</p>
+      <h2>Sumber Data</h2>
+      <p>Data gempa diproses melalui layanan BMKG. Data kejadian historis dibaca dari berkas JSON proyek dan setiap catatan mencantumkan sumbernya.</p>
     </div>
     <div class="grid grid-3">
       <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center">
@@ -270,7 +270,7 @@
       </a>
     </div>
     <div class="footer-data-note mt-3">
-      ⚠️ <strong>Catatan Data:</strong> Data pada platform ini bersumber dari lembaga resmi. GELOMBANG AMAN tidak membuat prediksi tsunami, tidak menerbitkan peringatan mandiri, dan tidak mengarang data kejadian. Selalu pantau informasi resmi BMKG untuk status peringatan tsunami.
+      ⚠️ <strong>Batasan:</strong> Data historis tidak diperbarui otomatis. Informasi gempa diambil saat permintaan dibuat dan dapat gagal dimuat. GELOMBANG AMAN tidak memprediksi tsunami atau menerbitkan peringatan. Untuk keputusan keselamatan, ikuti informasi BMKG dan arahan petugas setempat.
     </div>
   </div>
 </section>
@@ -283,7 +283,7 @@
       <div class="footer-desc">Platform digital informasi tsunami Indonesia. Kenali Risiko, Siaga Hadapi Tsunami.<br>
       Dikembangkan untuk meningkatkan kesiapsiagaan masyarakat pesisir Indonesia.</div>
       <div class="footer-data-note mt-2">
-        Data bersumber dari BMKG, BNPB/InaRISK, dan NGDC/NOAA. Pembaruan terakhir: <span id="footer-update"></span>
+        Data historis tersimpan di berkas proyek; waktu pada halaman bukan waktu pembaruan dataset.
       </div>
     </div>
     <div>
@@ -323,8 +323,6 @@
 <script src="assets/js/api.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-document.getElementById('footer-update').textContent = new Date().toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'});
-
 async function loadHomepageStats() {
   try {
     const res = await api.get('/stats/overview');
