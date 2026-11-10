@@ -14,6 +14,19 @@ const api = {
     return h;
   },
 
+  unavailableAdminAction(method, path) {
+    const route = path.split('?')[0];
+    const adminAction = route.startsWith('/admin/') || /^\/auth\/(login|logout)$/.test(route) ||
+      (method === 'POST' && route === '/tsunami') ||
+      (['PUT', 'DELETE'].includes(method) && /^\/tsunami\/[^/]+$/.test(route)) ||
+      (['POST', 'PUT', 'DELETE'].includes(method) && /^\/education\/artikel(?:\/[^/]+)?$/.test(route)) ||
+      (['POST', 'PUT', 'DELETE'].includes(method) && /^\/simulation\/skenario(?:\/[^/]+)?$/.test(route)) ||
+      (['PATCH', 'DELETE'].includes(method) && /^\/victims\/orang-hilang\/[^/]+(?:\/status)?$/.test(route));
+    return adminAction
+      ? { success: false, message: 'Fungsi admin belum aktif pada backend JSON yang digunakan.' }
+      : null;
+  },
+
   async get(path, params = {}) {
     const url = new URL(API_BASE + path, window.location.origin);
     Object.keys(params).forEach(k => { if (params[k] !== undefined && params[k] !== '') url.searchParams.set(k, params[k]); });
@@ -22,6 +35,8 @@ const api = {
   },
 
   async post(path, body) {
+    const unavailable = this.unavailableAdminAction('POST', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'POST', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
@@ -34,16 +49,22 @@ const api = {
   },
 
   async put(path, body) {
+    const unavailable = this.unavailableAdminAction('PUT', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'PUT', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
 
   async patch(path, body) {
+    const unavailable = this.unavailableAdminAction('PATCH', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'PATCH', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
 
   async delete(path) {
+    const unavailable = this.unavailableAdminAction('DELETE', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'DELETE', headers: this.headers() });
     return r.json();
   }

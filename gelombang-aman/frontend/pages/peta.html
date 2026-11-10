@@ -77,12 +77,16 @@
       </div>
     </div>
 
+    <div id="hazard-status" class="alert alert-warning" role="status" aria-live="polite">
+      Memeriksa ketersediaan data zona bahaya...
+    </div>
+
     <!-- Map + Legend Layout -->
     <div style="display:grid;grid-template-columns:1fr 260px;gap:1.5rem;align-items:start">
       <div>
         <div id="map"></div>
         <div class="text-xs text-muted mt-1">
-          Sumber: BMKG, BNPB/InaRISK | Data demo — Import GeoJSON resmi melalui panel admin untuk data produksi
+          Titik historis berasal dari data proyek. Zona bahaya hanya ditampilkan jika tersedia dari layanan data.
         </div>
       </div>
       <div>
@@ -113,14 +117,14 @@
         <div class="alert alert-info mt-2" style="font-size:0.78rem">
           <span>ℹ️</span>
           <div><strong>Cara Menggunakan:</strong><br>
-          Klik titik pada peta untuk melihat detail kejadian atau zona bahaya.<br>
+          Klik titik kejadian untuk melihat ringkasan. Informasi zona bergantung pada ketersediaan data.<br>
           Geser dan zoom untuk menjelajahi wilayah Indonesia.</div>
         </div>
       </div>
     </div>
 
     <div class="alert alert-warning mt-3">
-      ⚠️ <span><strong>Catatan Penting:</strong> Data zona bahaya pada peta ini adalah data demo. Untuk data resmi zona bahaya tsunami, gunakan <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB ↗</a>. Import data GeoJSON resmi melalui panel admin.</span>
+      ⚠️ <span><strong>Catatan Penting:</strong> Zona bahaya belum tersedia dari backend proyek. Area kosong pada peta tidak berarti aman. Periksa informasi wilayah melalui <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB ↗</a>.</span>
     </div>
   </div>
 </section>
@@ -135,6 +139,7 @@
 <script>
 let map, historicalLayer, hazardLayer;
 let allHistorical = [];
+let allHazardZones = [];
 
 function initMap() {
   map = L.map('map', { center: [-2.5, 118], zoom: 5, zoomControl: true });
@@ -166,11 +171,19 @@ async function loadMapData() {
     }
 
     if (hazard.success && hazard.data.features) {
-      renderHazardZones(hazard.data.features);
+      allHazardZones = hazard.data.features;
+      const status = document.getElementById('hazard-status');
+      status.textContent = allHazardZones.length
+        ? 'Zona bahaya dimuat dari backend proyek. Tetap periksa informasi dan arahan resmi untuk keputusan keselamatan.'
+        : 'Data zona bahaya belum tersedia. Area kosong pada peta tidak berarti aman. Periksa InaRISK BNPB.';
+      renderHazardZones(allHazardZones);
+    } else {
+      document.getElementById('hazard-status').textContent = 'Data zona bahaya tidak dapat dimuat. Area kosong pada peta tidak berarti aman. Periksa InaRISK BNPB.';
     }
   } catch(e) {
     // Load demo data if API not available
     loadDemoData();
+    document.getElementById('hazard-status').textContent = 'Server tidak tersedia. Titik dan zona yang tampil adalah data demonstrasi, bukan peta keselamatan. Periksa InaRISK BNPB.';
   }
 }
 
@@ -188,18 +201,18 @@ function loadDemoData() {
     { lat: -3.43, lng: 130.24, name: 'Tsunami Maluku 2019', tahun: 2019, mag: 6.5, meninggal: 38 }
   ];
 
-  allHistorical = demoPoints;
+  allHistorical = demoPoints.map(p => ({
+    type: 'Feature',
+    properties: {
+      nama_kejadian: p.name,
+      tahun: p.tahun,
+      magnitudo: p.mag,
+      korban_meninggal: p.meninggal
+    },
+    geometry: { type: 'Point', coordinates: [p.lng, p.lat] }
+  }));
   document.getElementById('legend-count').textContent = demoPoints.length;
-
-  demoPoints.forEach(p => {
-    const size = Math.min(30, Math.max(14, (p.meninggal / 5000) * 20 + 10));
-    const color = p.meninggal > 1000 ? '#D32F2F' : p.meninggal > 100 ? '#F9A825' : '#1565C0';
-    const marker = L.circleMarker([p.lat, p.lng], {
-      radius: size / 2, color: '#102A43', weight: 1.5, fillColor: color, fillOpacity: 0.85
-    });
-    marker.bindPopup(createPopup(p));
-    historicalLayer.addLayer(marker);
-  });
+  renderHistoricalPoints(allHistorical);
 
   // Demo hazard zones (bounding boxes for illustration)
   const demoZones = [
@@ -210,11 +223,8 @@ function loadDemoData() {
     { bounds: [[-3.0, 99.0], [-5.0, 101.0]], color: '#F9A825', name: 'Pesisir Sumatra Barat', risk: 'sedang' },
   ];
 
-  demoZones.forEach(z => {
-    L.rectangle(z.bounds, { color: z.color, weight: 2, fillOpacity: 0.2, fillColor: z.color })
-      .bindPopup(`<div class="popup-title">${z.name}</div><div class="popup-row"><span class="popup-label">Tingkat Bahaya:</span><span class="popup-val">${fmt.riskLabel(z.risk)}</span></div>`)
-      .addTo(hazardLayer);
-  });
+  allHazardZones = demoZones;
+  renderHazardZones(allHazardZones);
 }
 
 function renderHistoricalPoints(features) {
@@ -223,8 +233,9 @@ function renderHistoricalPoints(features) {
     if (!f.geometry?.coordinates) return;
     const [lng, lat] = f.geometry.coordinates;
     const p = f.properties;
-    const size = Math.min(30, Math.max(10, (p.korban_meninggal / 5000) * 20 + 8));
-    const color = p.korban_meninggal > 1000 ? '#D32F2F' : p.korban_meninggal > 100 ? '#F9A825' : '#1565C0';
+    const deaths = Number(p.korban_meninggal || 0);
+    const size = Math.min(30, Math.max(10, (deaths / 5000) * 20 + 8));
+    const color = deaths > 1000 ? '#D32F2F' : deaths > 100 ? '#F9A825' : '#1565C0';
     const marker = L.circleMarker([lat, lng], { radius: size/2, color:'#102A43', weight:1.5, fillColor: color, fillOpacity: 0.85 });
     marker.bindPopup(createPopupFromFeature(p));
     historicalLayer.addLayer(marker);
@@ -235,6 +246,12 @@ function renderHazardZones(features) {
   hazardLayer.clearLayers();
   const colors = { tinggi: '#D32F2F', sedang: '#F9A825', rendah: '#388E3C' };
   features.forEach(f => {
+    if (f.bounds) {
+      L.rectangle(f.bounds, { color: f.color, weight: 2, fillOpacity: 0.2, fillColor: f.color })
+        .bindPopup(`<div class="popup-title">${f.name}</div><div class="popup-row"><span class="popup-label">Tingkat Bahaya:</span><span class="popup-val">${fmt.riskLabel(f.risk)}</span></div>`)
+        .addTo(hazardLayer);
+      return;
+    }
     if (!f.geometry) return;
     L.geoJSON(f, {
       style: { color: colors[f.properties.tingkat_bahaya] || '#1565C0', weight: 1.5, fillOpacity: 0.25 }
@@ -266,27 +283,33 @@ async function onMapClick(e) {
   const infoEl = document.getElementById('area-info');
   const contentEl = document.getElementById('area-info-content');
   infoEl.classList.remove('d-none');
-  contentEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  try {
-    const res = await api.get('/map/info', { lat, lng });
-    if (res.success && res.data) {
-      const d = res.data;
-      contentEl.innerHTML = `
-        <div class="popup-row"><span class="popup-label">Wilayah:</span><span><b>${d.nama_wilayah}</b></span></div>
-        <div class="popup-row"><span class="popup-label">Provinsi:</span><span>${d.provinsi}</span></div>
-        <div class="popup-row"><span class="popup-label">Bahaya:</span><span class="badge ${fmt.riskClass(d.tingkat_bahaya)}">${fmt.riskLabel(d.tingkat_bahaya)}</span></div>
-        ${d.keterangan ? `<div class="text-sm text-muted mt-1">${d.keterangan}</div>` : ''}`;
-    } else {
-      contentEl.innerHTML = `<div class="text-sm text-muted">Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>Tidak ada data zona untuk lokasi ini.</div>`;
-    }
-  } catch(e) {
-    contentEl.innerHTML = `<div class="text-sm text-muted">Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}</div>`;
-  }
+  contentEl.innerHTML = `<div class="text-sm text-muted">Koordinat: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>Informasi tingkat bahaya untuk titik ini belum tersedia. Periksa <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB</a>.</div>`;
 }
 
 function filterMap() {
   const layerType = document.getElementById('filter-layer').value;
   const riskLevel = document.getElementById('filter-risk').value;
+  const query = document.getElementById('search-location').value.trim().toLocaleLowerCase('id-ID');
+  const historical = allHistorical.filter(f => {
+    const p = f.properties || {};
+    return !query || [p.nama_kejadian, p.lokasi, p.provinsi].some(value => String(value || '').toLocaleLowerCase('id-ID').includes(query));
+  });
+  const hazards = allHazardZones.filter(zone => {
+    const p = zone.properties || zone;
+    const name = p.nama_wilayah || zone.name || '';
+    const province = p.provinsi || '';
+    const risk = p.tingkat_bahaya || zone.risk || '';
+    return (!query || `${name} ${province}`.toLocaleLowerCase('id-ID').includes(query)) && (!riskLevel || risk === riskLevel);
+  });
+
+  renderHistoricalPoints(historical);
+  renderHazardZones(hazards);
+  document.getElementById('legend-count').textContent = historical.length;
+  if (allHazardZones.length && !hazards.length) {
+    document.getElementById('hazard-status').textContent = 'Tidak ada zona yang cocok dengan filter. Ini tidak berarti wilayah aman.';
+  } else if (allHazardZones.length) {
+    document.getElementById('hazard-status').textContent = 'Zona bahaya ditampilkan sesuai filter. Untuk keputusan keselamatan, periksa InaRISK BNPB dan arahan petugas.';
+  }
 
   if (layerType === 'hazard') {
     map.addLayer(hazardLayer); map.removeLayer(historicalLayer);
