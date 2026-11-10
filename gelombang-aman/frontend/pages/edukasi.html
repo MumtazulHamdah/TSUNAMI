@@ -39,6 +39,10 @@
 <section class="section section-pale">
   <div class="container">
 
+    <div class="alert alert-info">
+      <span>ℹ️</span><span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
+    </div>
+
     <!-- Category Filter -->
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
       <button class="btn btn-primary btn-sm" onclick="filterCategory('')">📚 Semua</button>
@@ -76,7 +80,7 @@
 </div>
 
 <footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
-  <span>© 2024 GELOMBANG AMAN • Materi edukasi berdasarkan panduan BMKG & BNPB</span>
+  <span>© 2024 GELOMBANG AMAN • Materi tersimpan di berkas JSON proyek</span>
 </footer>
 
 <script src="../assets/js/api.js"></script>
@@ -134,7 +138,7 @@ async function readArticle(id) {
     body.innerHTML = `
       <div class="flex align-center gap-2 mb-3">
         <span class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori}</span>
-        <span class="text-xs text-muted">Diperbarui: ${fmt.date(a.diperbarui_pada)}</span>
+        <span class="text-xs text-muted">Materi edukasi proyek</span>
       </div>
       <div class="article-content">${a.konten}</div>`;
   } catch(e) {

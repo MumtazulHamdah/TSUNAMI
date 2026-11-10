@@ -72,6 +72,7 @@
     <div id="hazard-status" class="alert alert-warning" role="status" aria-live="polite">
       Memeriksa ketersediaan data zona bahaya...
     </div>
+    <div id="demo-mode-label" class="badge badge-warning d-none mb-2" role="status">Mode Demonstrasi: data contoh, bukan peta keselamatan</div>
 
     <!-- Map + Legend Layout -->
     <div class="map-layout">
@@ -116,13 +117,13 @@
     </div>
 
     <div class="alert alert-warning mt-3">
-      ⚠️ <span><strong>Catatan Penting:</strong> Zona bahaya belum tersedia dari backend proyek. Area kosong pada peta tidak berarti aman. Periksa informasi wilayah melalui <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB ↗</a>.</span>
+      ⚠️ <span><strong>Catatan Data:</strong> Titik historis dibaca dari dataset proyek; tanggal pembaruan dataset tidak dicatat. Zona bahaya belum tersedia dari backend proyek. Area kosong pada peta tidak berarti aman. Periksa informasi wilayah melalui <a href="https://inarisk.bnpb.go.id" target="_blank" rel="noopener">InaRISK BNPB ↗</a>.</span>
     </div>
   </div>
 </section>
 
 <footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
-  <span>© 2024 GELOMBANG AMAN • Peta: Leaflet + OpenStreetMap • Data: BMKG, BNPB</span>
+  <span>© 2024 GELOMBANG AMAN • Peta dasar: OpenStreetMap • Titik historis: dataset proyek</span>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -180,6 +181,7 @@ async function loadMapData() {
 }
 
 function loadDemoData() {
+  show(document.getElementById('demo-mode-label'));
   const demoPoints = [
     { lat: 5.0, lng: 95.3, name: 'Tsunami Aceh 2004', tahun: 2004, mag: 9.1, meninggal: 167540 },
     { lat: -9.25, lng: 107.41, name: 'Tsunami Pangandaran 2006', tahun: 2006, mag: 7.7, meninggal: 668 },

@@ -259,6 +259,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .alert-warning { background: #fffbeb; border-left-color: var(--warning-orange); color: #78350f; }
 .alert-success { background: #f0fdf4; border-left-color: var(--safe-green); color: #14532d; }
 .alert-info { background: var(--light-blue); border-left-color: var(--primary-blue); color: #1e3a5f; }
+.data-method-note { margin-top: 1rem; padding: 1rem; border: 1px solid #dde8f0; border-radius: 8px; background: var(--white); color: var(--text-dark); font-size: 0.88rem; }
+.data-method-note summary { color: var(--deep-navy); cursor: pointer; font-weight: 700; }
+.data-method-note p { margin-top: 0.75rem; }
 
 /* ===== LOADING / SKELETON ===== */
 .loading { display: flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 3rem; color: var(--text-muted); }
