@@ -147,6 +147,9 @@ a.card:hover { transform: translateY(-2px); }
 .section-header { text-align: center; margin-bottom: 3rem; }
 .section-header h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--deep-navy); }
 .section-header p { color: var(--text-muted); margin-top: 0.75rem; font-size: 1rem; }
+.page-heading { background: var(--deep-navy); padding: 2rem 1.5rem; }
+.page-heading h1 { color: var(--white); font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin-top: 0.5rem; }
+.page-heading p { color: #c3d0db; font-size: 0.95rem; margin-top: 0.35rem; }
 .section-badge {
   display: inline-block; background: var(--light-blue); color: var(--primary-blue);
   padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 700;
@@ -444,6 +447,7 @@ footer {
   .grid-3 { grid-template-columns: 1fr; }
   .grid-4, .grid-kpi { grid-template-columns: 1fr 1fr; }
   .section { padding: 2.5rem 1rem; }
+  .page-heading { padding: 1.5rem 1rem; }
   .hero-btns { flex-direction: column; }
   .hero-btns .btn { justify-content: center; }
   .card-body, .chart-wrapper { padding: 1rem; }
