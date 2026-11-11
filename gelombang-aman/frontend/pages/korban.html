@@ -16,14 +16,14 @@
     </a>
     <button class="navbar-toggle" aria-label="Buka menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="navbar-nav">
-      <li><a href="../index.html">🏠 Beranda</a></li>
-      <li><a href="dashboard.html">📊 Statistik</a></li>
-      <li><a href="peta.html">🗺️ Peta</a></li>
-      <li><a href="database.html">🗂️ Database</a></li>
-      <li><a href="monitoring.html">📡 Monitoring</a></li>
-      <li><a href="korban.html" class="active">🔍 Korban</a></li>
-      <li><a href="edukasi.html">📚 Edukasi</a></li>
-      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+      <li><a href="../index.html"> Beranda</a></li>
+      <li><a href="dashboard.html"> Statistik</a></li>
+      <li><a href="peta.html"> Peta</a></li>
+      <li><a href="database.html"> Database</a></li>
+      <li><a href="monitoring.html"> Monitoring</a></li>
+      <li><a href="korban.html" class="active"> Korban</a></li>
+      <li><a href="edukasi.html"> Edukasi</a></li>
+      <li><a href="simulasi.html"> Simulasi</a></li>
     </ul>
   </div>
 </nav>
@@ -48,12 +48,12 @@
       <div class="kpi-card green"><div class="kpi-label">Sudah Ditemukan</div><div class="kpi-value" id="vs-ditemukan">—</div></div>
     </div>
     <div class="alert alert-info">
-      <span>ℹ️</span><span>Angka korban berasal dari dataset historis proyek; tanggal pembaruannya tidak dicatat. Daftar orang hilang berasal dari laporan yang sudah diverifikasi. Waktu laporan ditampilkan per catatan, sedangkan informasi kontak pelapor tidak ditampilkan kepada publik.</span>
+      <span>ℹ</span><span>Angka korban berasal dari dataset historis proyek; tanggal pembaruannya tidak dicatat. Daftar orang hilang berasal dari laporan yang sudah diverifikasi. Waktu laporan ditampilkan per catatan, sedangkan informasi kontak pelapor tidak ditampilkan kepada publik.</span>
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" data-tab="cari">🔍 Cari Orang Hilang</button>
-      <button class="tab-btn" data-tab="lapor">📝 Lapor Orang Hilang</button>
+      <button class="tab-btn active" data-tab="cari"> Cari Orang Hilang</button>
+      <button class="tab-btn" data-tab="lapor"> Lapor Orang Hilang</button>
     </div>
 
     <!-- TAB: Cari Orang Hilang -->
@@ -90,10 +90,10 @@
     <div class="tab-panel" data-tab="lapor">
       <div style="max-width:700px">
         <div class="alert alert-info mb-3">
-          ℹ️ <span>Formulir ini untuk melaporkan orang hilang akibat bencana tsunami. Laporan akan diverifikasi admin sebelum dipublikasikan. Informasi pribadi Anda dilindungi.</span>
+          ℹ <span>Formulir ini untuk melaporkan orang hilang akibat bencana tsunami. Laporan akan diverifikasi admin sebelum dipublikasikan. Informasi pribadi Anda dilindungi.</span>
         </div>
         <form id="form-lapor" onsubmit="submitReport(event)">
-          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📋 Data Korban</h3>
+          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem"> Data Korban</h3>
           <div class="grid grid-2">
             <div class="form-group">
               <label>Nama Korban <span class="required">*</span></label>
@@ -128,7 +128,7 @@
           </div>
 
           <div class="divider"></div>
-          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">👤 Data Pelapor</h3>
+          <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem"> Data Pelapor</h3>
           <div class="grid grid-2">
             <div class="form-group">
               <label>Nama Pelapor <span class="required">*</span></label>
@@ -145,10 +145,10 @@
           </div>
 
           <div class="alert alert-warning mb-3" style="font-size:0.82rem">
-            🔒 <span>Informasi pelapor bersifat rahasia dan hanya digunakan untuk keperluan verifikasi dan koordinasi pencarian. Tidak akan dipublikasikan.</span>
+             <span>Informasi pelapor bersifat rahasia dan hanya digunakan untuk keperluan verifikasi dan koordinasi pencarian. Tidak akan dipublikasikan.</span>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-lg" id="btn-submit">📝 Kirim Laporan</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="btn-submit"> Kirim Laporan</button>
         </form>
         <div id="form-result"></div>
       </div>
@@ -160,7 +160,7 @@
 <div class="modal-overlay" id="modal-person">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🔍 Detail Orang Hilang</div>
+      <div class="modal-title"> Detail Orang Hilang</div>
       <button class="modal-close" onclick="closeModal('modal-person')">×</button>
     </div>
     <div class="modal-body" id="modal-person-body"></div>
@@ -212,12 +212,12 @@ async function searchMissing(page = 1) {
     el.innerHTML = `<div class="grid grid-3" style="gap:1rem">${data.map(p => `
       <div class="person-card" role="button" tabindex="0" aria-label="Lihat detail laporan ${p.nama_korban}" onclick="showPersonDetail('${p.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showPersonDetail('${p.id}')}" style="cursor:pointer">
         <div class="person-photo">
-          ${p.foto_url ? `<img src="http://localhost:3000${p.foto_url}" alt="${p.nama_korban}" style="width:100%;height:180px;object-fit:cover">` : `<span style="font-size:3rem">👤</span>`}
+          ${p.foto_url ? `<img src="http://localhost:3000${p.foto_url}" alt="${p.nama_korban}" style="width:100%;height:180px;object-fit:cover">` : `<span style="font-size:3rem"></span>`}
         </div>
         <div class="person-info">
           <div class="person-name">${p.nama_korban}</div>
           <div class="person-meta">${p.usia ? p.usia + ' tahun' : ''} ${p.jenis_kelamin || ''}</div>
-          <div class="person-meta">📍 ${p.lokasi_terakhir}</div>
+          <div class="person-meta"> ${p.lokasi_terakhir}</div>
           <div class="mt-1"><span class="badge ${fmt.statusClass(p.status)}">${fmt.statusLabel(p.status)}</span></div>
         </div>
       </div>`).join('')}</div>`;
@@ -238,7 +238,7 @@ async function showPersonDetail(id) {
     body.innerHTML = `
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start">
         <div style="flex-shrink:0">
-          ${d.foto_url ? `<img src="http://localhost:3000${d.foto_url}" alt="${d.nama_korban}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #dde8f0">` : `<div style="width:120px;height:120px;background:#f0f4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:3rem">👤</div>`}
+          ${d.foto_url ? `<img src="http://localhost:3000${d.foto_url}" alt="${d.nama_korban}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #dde8f0">` : `<div style="width:120px;height:120px;background:#f0f4f8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:3rem"></div>`}
         </div>
         <div style="flex:1">
           <h3 style="font-size:1.2rem;color:var(--deep-navy);margin-bottom:0.5rem">${d.nama_korban}</h3>
@@ -246,7 +246,7 @@ async function showPersonDetail(id) {
           <div class="grid grid-2" style="gap:0.5rem;margin-top:0.75rem">
             <div><div class="text-xs text-muted">Usia</div><div class="fw-600">${d.usia ? d.usia + ' tahun' : '-'}</div></div>
             <div><div class="text-xs text-muted">Jenis Kelamin</div><div class="fw-600">${d.jenis_kelamin || '-'}</div></div>
-            <div style="grid-column:span 2"><div class="text-xs text-muted">Lokasi Terakhir</div><div class="fw-600">📍 ${d.lokasi_terakhir}</div></div>
+            <div style="grid-column:span 2"><div class="text-xs text-muted">Lokasi Terakhir</div><div class="fw-600"> ${d.lokasi_terakhir}</div></div>
           </div>
         </div>
       </div>
@@ -279,14 +279,14 @@ async function submitReport(e) {
     const res = await api.postForm('/victims/orang-hilang', fd);
     if (res.success) {
       document.getElementById('form-lapor').reset();
-      resultEl.innerHTML = `<div class="alert alert-success mt-3">✅ <strong>Laporan berhasil dikirim!</strong> Laporan Anda akan diverifikasi oleh admin sebelum dipublikasikan. ID laporan: <strong>${res.id}</strong></div>`;
+      resultEl.innerHTML = `<div class="alert alert-success mt-3"> <strong>Laporan berhasil dikirim!</strong> Laporan Anda akan diverifikasi oleh admin sebelum dipublikasikan. ID laporan: <strong>${res.id}</strong></div>`;
     } else {
-      resultEl.innerHTML = `<div class="alert alert-danger mt-3">❌ ${res.message}</div>`;
+      resultEl.innerHTML = `<div class="alert alert-danger mt-3"> ${res.message}</div>`;
     }
   } catch(err) {
-    resultEl.innerHTML = `<div class="alert alert-danger mt-3">❌ Gagal mengirim laporan. Pastikan server berjalan.</div>`;
+    resultEl.innerHTML = `<div class="alert alert-danger mt-3"> Gagal mengirim laporan. Pastikan server berjalan.</div>`;
   } finally {
-    btn.disabled = false; btn.textContent = '📝 Kirim Laporan';
+    btn.disabled = false; btn.textContent = ' Kirim Laporan';
   }
 }
 

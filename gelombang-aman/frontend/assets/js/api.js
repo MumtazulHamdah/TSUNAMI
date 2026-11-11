@@ -82,18 +82,18 @@ const fmt = {
   province: (s) => s || '-',
   statusLabel(s) {
     const map = {
-      'dalam_pencarian': '🔍 Dalam Pencarian',
-      'ditemukan': '✅ Ditemukan',
-      'teridentifikasi': '🔬 Teridentifikasi',
-      'dipertemukan': '🤝 Dipertemukan',
-      'ditutup': '🔒 Ditutup'
+      'dalam_pencarian': ' Dalam Pencarian',
+      'ditemukan': ' Ditemukan',
+      'teridentifikasi': ' Teridentifikasi',
+      'dipertemukan': ' Dipertemukan',
+      'ditutup': ' Ditutup'
     };
     return map[s] || s;
   },
   statusClass(s) {
     return `status-${s?.replace('_', '-')}`;
   },
-  riskLabel: (r) => ({ tinggi: '⛔ Tinggi', sedang: '⚠️ Sedang', rendah: '✅ Rendah' }[r] || r),
+  riskLabel: (r) => ({ tinggi: ' Tinggi', sedang: ' Sedang', rendah: ' Rendah' }[r] || r),
   riskClass: (r) => `risk-${r}`,
   magClass: (m) => m >= 7 ? 'high' : m >= 5 ? 'med' : 'low'
 };
@@ -115,7 +115,7 @@ function showLoading(container, msg = 'Memuat data...') {
 function showEmpty(container, title = 'Tidak ada data', desc = '') {
   setHtml(container, `
     <div class="empty-state">
-      <div class="empty-icon">🌊</div>
+      <div class="empty-icon"></div>
       <h3>${title}</h3>
       ${desc ? `<p>${desc}</p>` : ''}
     </div>`);
@@ -124,7 +124,7 @@ function showEmpty(container, title = 'Tidak ada data', desc = '') {
 function showError(container, msg = 'Gagal memuat data. Coba lagi.') {
   setHtml(container, `
     <div class="alert alert-danger">
-      <span>⚠️</span>
+      <span></span>
       <div>${msg}</div>
     </div>`);
 }
@@ -134,7 +134,7 @@ function showNotification(message, type = 'info', duration = 4000) {
   const existing = document.querySelector('.ga-notification');
   if (existing) existing.remove();
   const el = document.createElement('div');
-  const icons = { info: 'ℹ️', success: '✅', warning: '⚠️', danger: '❌' };
+  const icons = { info: 'ℹ', success: '', warning: '', danger: '' };
   el.className = `alert alert-${type} ga-notification`;
   el.style.cssText = 'position:fixed;top:80px;right:1.5rem;z-index:9999;max-width:380px;box-shadow:0 4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.3s ease;';
   el.innerHTML = `<span>${icons[type] || '•'}</span><div>${message}</div>`;

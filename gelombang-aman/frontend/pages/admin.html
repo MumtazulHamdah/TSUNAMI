@@ -18,17 +18,17 @@
       </div>
     </div>
     <nav class="admin-sidebar-nav">
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('dashboard')" class="active" id="nav-dashboard">📊 Dashboard</a></div>
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('tsunami')" id="nav-tsunami">🌊 Data Tsunami</a></div>
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('missing')" id="nav-missing">🔍 Orang Hilang</a></div>
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('education')" id="nav-education">📚 Artikel Edukasi</a></div>
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('simulation')" id="nav-simulation">🎮 Skenario Simulasi</a></div>
-      <div class="sidebar-nav-item"><a href="#" onclick="showSection('activity')" id="nav-activity">📋 Log Aktivitas</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('dashboard')" class="active" id="nav-dashboard"> Dashboard</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('tsunami')" id="nav-tsunami"> Data Tsunami</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('missing')" id="nav-missing"> Orang Hilang</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('education')" id="nav-education"> Artikel Edukasi</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('simulation')" id="nav-simulation"> Skenario Simulasi</a></div>
+      <div class="sidebar-nav-item"><a href="#" onclick="showSection('activity')" id="nav-activity"> Log Aktivitas</a></div>
       <div style="padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.1);margin-top:1rem">
         <a href="../index.html" style="color:#94a3b8;font-size:0.85rem">← Kembali ke Situs</a>
       </div>
       <div style="padding:0 1.5rem">
-        <button onclick="doLogout()" class="btn btn-danger btn-sm w-100">🚪 Logout</button>
+        <button onclick="doLogout()" class="btn btn-danger btn-sm w-100"> Logout</button>
       </div>
     </nav>
   </aside>
@@ -37,7 +37,7 @@
   <div style="flex:1;display:flex;flex-direction:column">
     <div class="admin-topbar">
       <div style="display:flex;align-items:center;gap:1rem">
-        <button class="admin-mobile-toggle" onclick="toggleAdminSidebar()" aria-label="Buka navigasi admin" aria-controls="admin-sidebar" aria-expanded="false" id="mobile-toggle">☰</button>
+        <button class="admin-mobile-toggle" onclick="toggleAdminSidebar()" aria-label="Buka navigasi admin" aria-controls="admin-sidebar" aria-expanded="false" id="mobile-toggle"></button>
         <div style="font-weight:700;color:var(--deep-navy)" id="page-title">Dashboard Admin</div>
       </div>
       <div style="display:flex;align-items:center;gap:1rem">
@@ -48,7 +48,7 @@
 
     <div class="admin-main">
       <div class="alert alert-warning" role="status">
-        <span>ℹ️</span><span>Panel admin belum aktif pada backend JSON ini. Login, verifikasi, pencatatan aktivitas, dan operasi tambah/edit/hapus belum tersedia; kontrol terkait tidak akan mengubah data.</span>
+        <span>ℹ</span><span>Panel admin belum aktif pada backend JSON ini. Login, verifikasi, pencatatan aktivitas, dan operasi tambah/edit/hapus belum tersedia; kontrol terkait tidak akan mengubah data.</span>
       </div>
       <!-- SECTION: Dashboard Overview -->
       <div id="section-dashboard">
@@ -59,7 +59,7 @@
           <div class="kpi-card ocean"><div class="kpi-label">Aktivitas Terbaru</div><div class="kpi-value" id="adm-activity">—</div></div>
         </div>
         <div class="chart-wrapper">
-          <div class="chart-title">📋 Aktivitas Terbaru</div>
+          <div class="chart-title"> Aktivitas Terbaru</div>
           <div id="recent-activity-list"><div class="loading"><div class="spinner"></div></div></div>
         </div>
       </div>
@@ -67,8 +67,8 @@
       <!-- SECTION: Tsunami Data Management -->
       <div id="section-tsunami" class="d-none">
         <div class="flex-between mb-3">
-          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">🌊 Kelola Data Kejadian Tsunami</h2>
-          <button class="btn btn-primary" onclick="openModal('modal-add-tsunami')">➕ Tambah Data</button>
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)"> Kelola Data Kejadian Tsunami</h2>
+          <button class="btn btn-primary" onclick="openModal('modal-add-tsunami')"> Tambah Data</button>
         </div>
         <div class="filter-bar mb-2">
           <div class="form-group" style="flex:2"><label>Cari</label><input type="text" id="adm-search-tsunami" class="form-control" placeholder="Cari kejadian..." oninput="debounceTsunami()"></div>
@@ -80,10 +80,10 @@
 
       <!-- SECTION: Missing Persons -->
       <div id="section-missing" class="d-none">
-        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem">🔍 Verifikasi & Kelola Orang Hilang</h2>
+        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem"> Verifikasi & Kelola Orang Hilang</h2>
         <div class="tabs mb-3">
-          <button class="tab-btn active" onclick="switchMissingTab('pending')">⏳ Menunggu Verifikasi</button>
-          <button class="tab-btn" onclick="switchMissingTab('all')">📋 Semua Laporan</button>
+          <button class="tab-btn active" onclick="switchMissingTab('pending')"> Menunggu Verifikasi</button>
+          <button class="tab-btn" onclick="switchMissingTab('all')"> Semua Laporan</button>
         </div>
         <div id="missing-tab-pending">
           <div id="pending-list"><div class="loading"><div class="spinner"></div></div></div>
@@ -96,8 +96,8 @@
       <!-- SECTION: Education Articles -->
       <div id="section-education" class="d-none">
         <div class="flex-between mb-3">
-          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">📚 Kelola Artikel Edukasi</h2>
-          <button class="btn btn-primary" onclick="openModal('modal-add-article')">➕ Tambah Artikel</button>
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)"> Kelola Artikel Edukasi</h2>
+          <button class="btn btn-primary" onclick="openModal('modal-add-article')"> Tambah Artikel</button>
         </div>
         <div id="adm-articles-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
@@ -105,14 +105,14 @@
       <!-- SECTION: Simulation -->
       <div id="section-simulation" class="d-none">
         <div class="flex-between mb-3">
-          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)">🎮 Kelola Skenario Simulasi</h2>
+          <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy)"> Kelola Skenario Simulasi</h2>
         </div>
         <div id="adm-scenarios-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
 
       <!-- SECTION: Activity Log -->
       <div id="section-activity" class="d-none">
-        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem">📋 Log Aktivitas Admin</h2>
+        <h2 style="font-size:1.1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1.5rem"> Log Aktivitas Admin</h2>
         <div id="activity-log-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
     </div>
@@ -123,7 +123,7 @@
 <div class="modal-overlay" id="modal-add-tsunami">
   <div class="modal" style="max-width:720px">
     <div class="modal-header">
-      <div class="modal-title" id="modal-tsunami-title">➕ Tambah Data Tsunami</div>
+      <div class="modal-title" id="modal-tsunami-title"> Tambah Data Tsunami</div>
       <button class="modal-close" onclick="closeModal('modal-add-tsunami')">×</button>
     </div>
     <div class="modal-body">
@@ -201,7 +201,7 @@
         </div>
         <div class="modal-footer" style="padding:0;border:none;margin-top:1rem">
           <button type="button" class="btn" onclick="closeModal('modal-add-tsunami')">Batal</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-tsunami">💾 Simpan</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-tsunami"> Simpan</button>
         </div>
       </form>
     </div>
@@ -212,7 +212,7 @@
 <div class="modal-overlay" id="modal-add-article">
   <div class="modal" style="max-width:720px">
     <div class="modal-header">
-      <div class="modal-title">➕ Tambah/Edit Artikel Edukasi</div>
+      <div class="modal-title"> Tambah/Edit Artikel Edukasi</div>
       <button class="modal-close" onclick="closeModal('modal-add-article')">×</button>
     </div>
     <div class="modal-body">
@@ -251,7 +251,7 @@
         </div>
         <div class="modal-footer" style="padding:0;border:none;margin-top:1rem">
           <button type="button" class="btn" onclick="closeModal('modal-add-article')">Batal</button>
-          <button type="submit" class="btn btn-primary">💾 Simpan</button>
+          <button type="submit" class="btn btn-primary"> Simpan</button>
         </div>
       </form>
     </div>
@@ -262,7 +262,7 @@
 <div class="modal-overlay" id="modal-verify">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">🔍 Verifikasi Laporan</div>
+      <div class="modal-title"> Verifikasi Laporan</div>
       <button class="modal-close" onclick="closeModal('modal-verify')">×</button>
     </div>
     <div class="modal-body" id="modal-verify-body"></div>
@@ -364,8 +364,8 @@ async function loadAdminTsunamiData(page = tsunamiPage) {
         <td>${fmt.number(r.korban_meninggal)}</td>
         <td class="text-xs text-muted">${r.sumber_data}</td>
         <td>
-          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editTsunami('${r.id}')">✏️</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteTsunami('${r.id}','${r.nama_kejadian.replace("'","\\'")}')">🗑️</button>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editTsunami('${r.id}')"></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTsunami('${r.id}','${r.nama_kejadian.replace("'","\\'")}')"></button>
         </td>
       </tr>`).join('')}</tbody>
     </table></div>`;
@@ -378,7 +378,7 @@ async function loadAdminTsunamiData(page = tsunamiPage) {
 function openAddTsunami() {
   document.getElementById('form-tsunami').reset();
   document.getElementById('t-id').value = '';
-  document.getElementById('modal-tsunami-title').textContent = '➕ Tambah Data Tsunami';
+  document.getElementById('modal-tsunami-title').textContent = ' Tambah Data Tsunami';
   openModal('modal-add-tsunami');
 }
 
@@ -404,7 +404,7 @@ async function editTsunami(id) {
   document.getElementById('t-penyebab').value = d.penyebab || '';
   document.getElementById('t-sumber').value = d.sumber_data;
   document.getElementById('t-deskripsi').value = d.deskripsi || '';
-  document.getElementById('modal-tsunami-title').textContent = '✏️ Edit Data Tsunami';
+  document.getElementById('modal-tsunami-title').textContent = ' Edit Data Tsunami';
   openModal('modal-add-tsunami');
 }
 
@@ -433,7 +433,7 @@ async function saveTsunami(e) {
     deskripsi: document.getElementById('t-deskripsi').value
   };
   const res = id ? await api.put('/tsunami/' + id, body) : await api.post('/tsunami', body);
-  btn.disabled = false; btn.textContent = '💾 Simpan';
+  btn.disabled = false; btn.textContent = ' Simpan';
   if (res.success) {
     closeModal('modal-add-tsunami');
     showNotification(id ? 'Data berhasil diperbarui.' : 'Data berhasil ditambahkan.', 'success');
@@ -473,8 +473,8 @@ async function loadPendingReports() {
         <td class="text-sm">${r.nama_pelapor}<div class="text-xs text-muted">${r.kontak_pelapor}</div></td>
         <td class="text-sm text-muted">${fmt.datetime(r.dibuat_pada)}</td>
         <td>
-          <button class="btn btn-sm btn-success" onclick="verifyReport('${r.id}', true)">✅ Verifikasi</button>
-          <button class="btn btn-sm btn-danger" onclick="verifyReport('${r.id}', false)">❌ Tolak</button>
+          <button class="btn btn-sm btn-success" onclick="verifyReport('${r.id}', true)"> Verifikasi</button>
+          <button class="btn btn-sm btn-danger" onclick="verifyReport('${r.id}', false)"> Tolak</button>
         </td>
       </tr>`).join('')}</tbody>
     </table></div>`;
@@ -497,8 +497,8 @@ async function loadAllMissing() {
         <td><span class="badge ${fmt.statusClass(r.status)}">${fmt.statusLabel(r.status)}</span></td>
         <td class="text-sm text-muted">${fmt.datetime(r.dibuat_pada)}</td>
         <td>
-          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="updateMissingStatus('${r.id}')">✏️ Status</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteMissing('${r.id}')">🗑️</button>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="updateMissingStatus('${r.id}')"> Status</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteMissing('${r.id}')"></button>
         </td>
       </tr>`).join('')}</tbody>
     </table></div>`;
@@ -544,8 +544,8 @@ async function loadAdminArticles() {
         <td><span class="badge badge-success">Aktif</span></td>
         <td class="text-sm text-muted">${fmt.date(a.dibuat_pada)}</td>
         <td>
-          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editArticle('${a.id}')">✏️</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')">🗑️</button>
+          <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="editArticle('${a.id}')"></button>
+          <button class="btn btn-sm btn-danger" onclick="deleteArticle('${a.id}')"></button>
         </td>
       </tr>`).join('')}</tbody>
     </table></div>`;
@@ -606,7 +606,7 @@ async function loadAdminScenarios() {
         <td class="text-sm">${s.kategori}</td>
         <td><span class="badge badge-info">${s.tingkat_kesulitan}</span></td>
         <td>${s.urutan}</td>
-        <td><button class="btn btn-sm btn-danger" onclick="deleteScenario('${s.id}')">🗑️ Nonaktifkan</button></td>
+        <td><button class="btn btn-sm btn-danger" onclick="deleteScenario('${s.id}')"> Nonaktifkan</button></td>
       </tr>`).join('')}</tbody>
     </table></div>`;
   } catch(e) { showError(el, 'Gagal memuat skenario.'); }

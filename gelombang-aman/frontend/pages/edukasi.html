@@ -16,14 +16,14 @@
     </a>
     <button class="navbar-toggle" aria-label="Buka menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="navbar-nav">
-      <li><a href="../index.html">🏠 Beranda</a></li>
-      <li><a href="dashboard.html">📊 Statistik</a></li>
-      <li><a href="peta.html">🗺️ Peta</a></li>
-      <li><a href="database.html">🗂️ Database</a></li>
-      <li><a href="monitoring.html">📡 Monitoring</a></li>
-      <li><a href="korban.html">🔍 Korban</a></li>
-      <li><a href="edukasi.html" class="active">📚 Edukasi</a></li>
-      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+      <li><a href="../index.html"> Beranda</a></li>
+      <li><a href="dashboard.html"> Statistik</a></li>
+      <li><a href="peta.html"> Peta</a></li>
+      <li><a href="database.html"> Database</a></li>
+      <li><a href="monitoring.html"> Monitoring</a></li>
+      <li><a href="korban.html"> Korban</a></li>
+      <li><a href="edukasi.html" class="active"> Edukasi</a></li>
+      <li><a href="simulasi.html"> Simulasi</a></li>
     </ul>
   </div>
 </nav>
@@ -40,19 +40,19 @@
   <div class="container">
 
     <div class="alert alert-info">
-      <span>ℹ️</span><span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
+      <span>ℹ</span><span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
     </div>
 
     <!-- Category Filter -->
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
-      <button class="btn btn-primary btn-sm" onclick="filterCategory('')">📚 Semua</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('pengertian')">🌊 Pengertian</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('proses')">⚙️ Proses</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('penyebab')">🔍 Penyebab</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('tanda')">⚠️ Tanda-tanda</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('dampak')">💥 Dampak</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('mitigasi')">🛡️ Mitigasi</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('checklist')">✅ Checklist</button>
+      <button class="btn btn-primary btn-sm" onclick="filterCategory('')"> Semua</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('pengertian')"> Pengertian</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('proses')"> Proses</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('penyebab')"> Penyebab</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('tanda')"> Tanda-tanda</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('dampak')"> Dampak</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('mitigasi')"> Mitigasi</button>
+      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('checklist')"> Checklist</button>
     </div>
 
     <!-- Articles Grid -->
@@ -74,7 +74,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('modal-article')">Tutup</button>
-      <a href="simulasi.html" class="btn btn-primary">🎮 Coba Simulasi →</a>
+      <a href="simulasi.html" class="btn btn-primary"> Coba Simulasi →</a>
     </div>
   </div>
 </div>
@@ -88,7 +88,7 @@
 let allArticles = [];
 
 const catEmoji = {
-  pengertian: '🌊', proses: '⚙️', penyebab: '🔍', tanda: '⚠️', dampak: '💥', mitigasi: '🛡️', checklist: '✅'
+  pengertian: '', proses: '', penyebab: '', tanda: '', dampak: '', mitigasi: '', checklist: ''
 };
 
 async function loadArticles() {
@@ -112,7 +112,7 @@ function renderArticles(articles) {
   grid.innerHTML = articles.map(a => `
     <div class="card" role="button" tabindex="0" aria-label="Baca artikel: ${a.judul}" onclick="readArticle('${a.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();readArticle('${a.id}')}" style="cursor:pointer">
       <div class="card-body">
-        <div class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
+        <div class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || ''} ${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
         <div class="card-title">${a.judul}</div>
         <div class="card-text">${a.ringkasan || ''}</div>
         <div class="text-sm text-primary mt-2 fw-600">Baca Selengkapnya →</div>
@@ -137,7 +137,7 @@ async function readArticle(id) {
     title.textContent = a.judul;
     body.innerHTML = `
       <div class="flex align-center gap-2 mb-3">
-        <span class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori}</span>
+        <span class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || ''} ${a.kategori}</span>
         <span class="text-xs text-muted">Materi edukasi proyek</span>
       </div>
       <div class="article-content">${a.konten}</div>`;
