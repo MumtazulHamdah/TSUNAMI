@@ -426,10 +426,12 @@ footer {
 @media (max-width: 1024px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .navbar-nav { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--deep-navy); flex-direction: column; padding: 1rem; gap: 0.25rem; border-top: 1px solid rgba(255,255,255,0.1); }
   .navbar-nav.open { display: flex; }
   .navbar-toggle { display: block; }
+}
+@media (max-width: 768px) {
   .footer-grid { grid-template-columns: 1fr; }
   .hero { padding: 3rem 1.5rem; }
   .admin-sidebar { display: none; }
