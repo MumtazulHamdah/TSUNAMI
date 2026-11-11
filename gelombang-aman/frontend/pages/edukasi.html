@@ -30,7 +30,7 @@
 
 <div style="background:var(--deep-navy);padding:2rem 1.5rem">
   <div class="container">
-    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Pusat Edukasi</span>
+    <span class="section-badge">Pusat Edukasi</span>
     <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Pusat Edukasi Tsunami</h1>
     <p style="color:#94a3b8;font-size:0.95rem">Pelajari tsunami — dari pengertian, proses pembentukan, tanda-tanda, hingga mitigasi dan kesiapsiagaan</p>
   </div>
@@ -40,7 +40,7 @@
   <div class="container">
 
     <div class="alert alert-info">
-      <span>ℹ</span><span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
+      <span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
     </div>
 
     <!-- Category Filter -->
@@ -87,10 +87,6 @@
 <script>
 let allArticles = [];
 
-const catEmoji = {
-  pengertian: '', proses: '', penyebab: '', tanda: '', dampak: '', mitigasi: '', checklist: ''
-};
-
 async function loadArticles() {
   const grid = document.getElementById('articles-grid');
   try {
@@ -112,7 +108,7 @@ function renderArticles(articles) {
   grid.innerHTML = articles.map(a => `
     <div class="card" role="button" tabindex="0" aria-label="Baca artikel: ${a.judul}" onclick="readArticle('${a.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();readArticle('${a.id}')}" style="cursor:pointer">
       <div class="card-body">
-        <div class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || ''} ${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
+        <div class="edu-category cat-${a.kategori}">${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
         <div class="card-title">${a.judul}</div>
         <div class="card-text">${a.ringkasan || ''}</div>
         <div class="text-sm text-primary mt-2 fw-600">Baca Selengkapnya →</div>
@@ -137,7 +133,7 @@ async function readArticle(id) {
     title.textContent = a.judul;
     body.innerHTML = `
       <div class="flex align-center gap-2 mb-3">
-        <span class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || ''} ${a.kategori}</span>
+        <span class="edu-category cat-${a.kategori}">${a.kategori}</span>
         <span class="text-xs text-muted">Materi edukasi proyek</span>
       </div>
       <div class="article-content">${a.konten}</div>`;

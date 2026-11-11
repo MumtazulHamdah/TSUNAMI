@@ -82,18 +82,18 @@ const fmt = {
   province: (s) => s || '-',
   statusLabel(s) {
     const map = {
-      'dalam_pencarian': ' Dalam Pencarian',
-      'ditemukan': ' Ditemukan',
-      'teridentifikasi': ' Teridentifikasi',
-      'dipertemukan': ' Dipertemukan',
-      'ditutup': ' Ditutup'
+      'dalam_pencarian': 'Dalam Pencarian',
+      'ditemukan': 'Ditemukan',
+      'teridentifikasi': 'Teridentifikasi',
+      'dipertemukan': 'Dipertemukan',
+      'ditutup': 'Ditutup'
     };
     return map[s] || s;
   },
   statusClass(s) {
     return `status-${s?.replace('_', '-')}`;
   },
-  riskLabel: (r) => ({ tinggi: ' Tinggi', sedang: ' Sedang', rendah: ' Rendah' }[r] || r),
+  riskLabel: (r) => ({ tinggi: 'Tinggi', sedang: 'Sedang', rendah: 'Rendah' }[r] || r),
   riskClass: (r) => `risk-${r}`,
   magClass: (m) => m >= 7 ? 'high' : m >= 5 ? 'med' : 'low'
 };
@@ -124,7 +124,6 @@ function showEmpty(container, title = 'Tidak ada data', desc = '') {
 function showError(container, msg = 'Gagal memuat data. Coba lagi.') {
   setHtml(container, `
     <div class="alert alert-danger">
-      <span></span>
       <div>${msg}</div>
     </div>`);
 }
@@ -134,10 +133,8 @@ function showNotification(message, type = 'info', duration = 4000) {
   const existing = document.querySelector('.ga-notification');
   if (existing) existing.remove();
   const el = document.createElement('div');
-  const icons = { info: 'ℹ', success: '', warning: '', danger: '' };
   el.className = `alert alert-${type} ga-notification`;
-  el.style.cssText = 'position:fixed;top:80px;right:1.5rem;z-index:9999;max-width:380px;box-shadow:0 4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.3s ease;';
-  el.innerHTML = `<span>${icons[type] || '•'}</span><div>${message}</div>`;
+  el.innerHTML = `<div>${message}</div>`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), duration);
 }
@@ -226,7 +223,7 @@ function isLoggedIn() { return !!localStorage.getItem('ga_token'); }
 
 // ===== CHART DEFAULTS =====
 if (typeof Chart !== 'undefined') {
-  Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
+  Chart.defaults.font.family = "'Public Sans', 'Segoe UI', Arial, sans-serif";
   Chart.defaults.color = '#546e7a';
   Chart.defaults.plugins.legend.position = 'bottom';
 }
