@@ -38,7 +38,7 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="navbar-nav" role="list">
-      <li><a href="index.html"> Beranda</a></li>
+      <li><a href="index.html" class="active"> Beranda</a></li>
       <li><a href="pages/dashboard.html"> Statistik</a></li>
       <li><a href="pages/peta.html"> Peta</a></li>
       <li><a href="pages/database.html"> Database</a></li>
@@ -59,7 +59,7 @@
     </svg>
   </div>
   <div class="hero-content container">
-    <div class="grid-2" style="gap:3rem;align-items:center">
+    <div class="grid-2">
       <div>
         <span class="section-badge">Informasi dan Edukasi Tsunami</span>
         <h1 id="hero-title">Kenali Risiko,<br><span>Siaga Hadapi</span><br>Tsunami</h1>
@@ -68,13 +68,13 @@
           <a href="pages/peta.html" class="btn btn-primary btn-lg"> Lihat Peta Kejadian</a>
           <a href="pages/simulasi.html" class="btn btn-outline btn-lg"> Coba Simulasi</a>
         </div>
-        <div class="flex gap-2 mt-3" style="color:#94a3b8;font-size:0.8rem">
+        <div class="data-sources">
           <span>Data gempa: BMKG</span>
           <span>Data historis: berkas proyek</span>
           <span>Materi edukasi dan simulasi</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" aria-label="Statistik ringkasan">
+      <div class="homepage-stats" aria-label="Statistik ringkasan">
         <div class="kpi-card red" id="hero-total-kejadian" aria-live="polite">
           <div class="kpi-label">Total Kejadian</div>
           <div class="kpi-value" id="stat-kejadian"><div class="skeleton" style="height:2rem;width:80px"></div></div>
