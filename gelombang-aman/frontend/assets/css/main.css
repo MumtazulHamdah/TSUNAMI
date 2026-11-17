@@ -101,6 +101,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .btn-primary { background: var(--primary-blue); color: var(--white); border-color: var(--primary-blue); }
 .btn-primary:hover { background: var(--ocean-blue); border-color: var(--ocean-blue); color: var(--white); }
+.category-filter { background: var(--white); color: var(--deep-navy); border-color: var(--border); }
+.category-filter.active { background: var(--primary-blue); color: var(--white); border-color: var(--primary-blue); font-weight: 700; text-decoration: underline; }
 .btn-outline { background: transparent; color: var(--white); border-color: var(--sky-blue); }
 .btn-outline:hover { background: var(--sky-blue); color: var(--deep-navy); }
 .btn-danger { background: var(--alert-red); color: var(--white); border-color: var(--alert-red); }

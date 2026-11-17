@@ -45,14 +45,14 @@
 
     <!-- Category Filter -->
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
-      <button class="btn btn-primary btn-sm" onclick="filterCategory('')"> Semua</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('pengertian')"> Pengertian</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('proses')"> Proses</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('penyebab')"> Penyebab</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('tanda')"> Tanda-tanda</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('dampak')"> Dampak</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('mitigasi')"> Mitigasi</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('checklist')"> Checklist</button>
+      <button class="btn btn-sm category-filter active" data-category-filter="" aria-pressed="true" onclick="filterCategory('')"> Semua</button>
+      <button class="btn btn-sm category-filter" data-category-filter="pengertian" aria-pressed="false" onclick="filterCategory('pengertian')"> Pengertian</button>
+      <button class="btn btn-sm category-filter" data-category-filter="proses" aria-pressed="false" onclick="filterCategory('proses')"> Proses</button>
+      <button class="btn btn-sm category-filter" data-category-filter="penyebab" aria-pressed="false" onclick="filterCategory('penyebab')"> Penyebab</button>
+      <button class="btn btn-sm category-filter" data-category-filter="tanda" aria-pressed="false" onclick="filterCategory('tanda')"> Tanda-tanda</button>
+      <button class="btn btn-sm category-filter" data-category-filter="dampak" aria-pressed="false" onclick="filterCategory('dampak')"> Dampak</button>
+      <button class="btn btn-sm category-filter" data-category-filter="mitigasi" aria-pressed="false" onclick="filterCategory('mitigasi')"> Mitigasi</button>
+      <button class="btn btn-sm category-filter" data-category-filter="checklist" aria-pressed="false" onclick="filterCategory('checklist')"> Checklist</button>
     </div>
 
     <!-- Articles Grid -->
@@ -119,6 +119,11 @@ function renderArticles(articles) {
 function filterCategory(cat) {
   const filtered = cat ? allArticles.filter(a => a.kategori === cat) : allArticles;
   renderArticles(filtered);
+  document.querySelectorAll('.category-filter').forEach(button => {
+    const isActive = button.dataset.categoryFilter === cat;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
 }
 
 async function readArticle(id) {
