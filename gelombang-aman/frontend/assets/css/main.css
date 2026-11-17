@@ -965,3 +965,4 @@ body[style*="background:var(--deep-navy)"] > div > div:nth-child(2) {
   #admin-kpi .kpi-card:nth-child(n + 3) { border-top: 1px solid var(--border); }
   .page-heading { padding-top: 1.4rem; padding-bottom: 1.4rem; }
 }
+.sim-container { max-width: 1140px; }
