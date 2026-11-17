@@ -197,8 +197,8 @@ function renderPerTahunChart(data) {
       datasets: [{
         label: 'Jumlah Kejadian',
         data: data.map(d => d.jumlah_kejadian),
-        backgroundColor: 'rgba(21,101,192,0.8)',
-        borderColor: '#1565C0',
+        backgroundColor: 'rgba(29,90,133,0.8)',
+        borderColor: '#1D5A85',
         borderWidth: 1,
         borderRadius: 4
       }]
@@ -206,14 +206,14 @@ function renderPerTahunChart(data) {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, grid: { color: '#f0f4f8' } }, x: { grid: { display: false } } }
+      scales: { y: { beginAtZero: true, grid: { color: '#CDD5DB' } }, x: { grid: { display: false } } }
     }
   });
 }
 
 function renderPerProvinsiChart(data) {
   if (chartPerProvinsi) chartPerProvinsi.destroy();
-  const colors = ['#1565C0','#0288C7','#4FC3F7','#1976D2','#0277BD','#01579B','#0D47A1','#1E88E5','#42A5F5','#90CAF9'];
+  const colors = ['#17324D','#1D5A85','#327A9B','#4E8DAA','#6B9EB5','#82AEC2','#93C5D8','#A8C9D8','#BDD6E0','#D0E1E7'];
   chartPerProvinsi = new Chart(document.getElementById('chart-per-provinsi'), {
     type: 'bar',
     data: {
@@ -229,7 +229,7 @@ function renderPerProvinsiChart(data) {
       indexAxis: 'y',
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: { x: { beginAtZero: true, grid: { color: '#f0f4f8' } }, y: { grid: { display: false } } }
+      scales: { x: { beginAtZero: true, grid: { color: '#CDD5DB' } }, y: { grid: { display: false } } }
     }
   });
 }
@@ -242,7 +242,7 @@ function renderKorbanChart(data) {
       labels: ['Meninggal', 'Hilang', 'Luka-luka'],
       datasets: [{
         data: [data.meninggal, data.hilang, data.luka],
-        backgroundColor: ['#D32F2F', '#F9A825', '#1565C0'],
+        backgroundColor: ['#17324D', '#327A9B', '#93C5D8'],
         hoverOffset: 8
       }]
     },
@@ -277,8 +277,8 @@ function renderMagnitudo(data) {
       datasets: [{
         label: 'Magnitudo maksimum',
         data: labels.map(l => decades[l]),
-        borderColor: '#D32F2F',
-        backgroundColor: 'rgba(211,47,47,0.08)',
+        borderColor: '#1D5A85',
+        backgroundColor: 'rgba(29,90,133,0.08)',
         tension: 0.3, fill: true, pointRadius: 5, pointHoverRadius: 8
       }]
     },
@@ -286,7 +286,7 @@ function renderMagnitudo(data) {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        y: { beginAtZero: true, title: { display: true, text: 'Magnitudo' }, grid: { color: '#f0f4f8' } },
+        y: { beginAtZero: true, title: { display: true, text: 'Magnitudo' }, grid: { color: '#CDD5DB' } },
         x: { grid: { display: false } }
       }
     }

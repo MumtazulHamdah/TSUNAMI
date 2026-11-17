@@ -228,8 +228,8 @@ function renderHistoricalPoints(features) {
     const p = f.properties;
     const deaths = Number(p.korban_meninggal || 0);
     const size = Math.min(30, Math.max(10, (deaths / 5000) * 20 + 8));
-    const color = deaths > 1000 ? '#D32F2F' : deaths > 100 ? '#F9A825' : '#1565C0';
-    const marker = L.circleMarker([lat, lng], { radius: size/2, color:'#102A43', weight:1.5, fillColor: color, fillOpacity: 0.85 });
+    const color = deaths > 1000 ? '#1D5A85' : deaths > 100 ? '#327A9B' : '#93C5D8';
+    const marker = L.circleMarker([lat, lng], { radius: size/2, color:'#17324D', weight:1.5, fillColor: color, fillOpacity: 0.85 });
     marker.bindPopup(createPopupFromFeature(p));
     historicalLayer.addLayer(marker);
   });
@@ -247,7 +247,7 @@ function renderHazardZones(features) {
     }
     if (!f.geometry) return;
     L.geoJSON(f, {
-      style: { color: colors[f.properties.tingkat_bahaya] || '#1565C0', weight: 1.5, fillOpacity: 0.25 }
+      style: { color: colors[f.properties.tingkat_bahaya] || '#1D5A85', weight: 1.5, fillOpacity: 0.25 }
     }).bindPopup(`<div class="popup-title">${f.properties.nama_wilayah}</div>
       <div class="popup-row"><span class="popup-label">Provinsi:</span><span>${f.properties.provinsi}</span></div>
       <div class="popup-row"><span class="popup-label">Bahaya:</span><span>${fmt.riskLabel(f.properties.tingkat_bahaya)}</span></div>`)
