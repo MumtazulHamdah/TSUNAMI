@@ -617,3 +617,119 @@ footer {
 @media (max-width: 600px) {
   .hero h1 { font-size: clamp(1.75rem, 8vw, 2rem); }
 }
+
+/* ===== HOMEPAGE PHASE H ===== */
+.hero ~ .section { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+.hero ~ .section.section-pale { background: #f6f7f8; }
+.hero ~ .section.section-light { background: var(--white); }
+.hero ~ .section .section-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.hero ~ .section .section-header h2 {
+  color: var(--deep-navy);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  font-weight: 600;
+}
+.hero ~ .section .section-header p { margin-top: 0.35rem; font-size: 0.95rem; }
+.hero ~ .section .section-badge {
+  display: block;
+  padding: 0;
+  margin-bottom: 0.35rem;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+#monitoring-title, #recent-title { font-weight: 600 !important; }
+.live-indicator {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: none;
+}
+.live-dot { display: none; }
+.hero ~ .section #monitoring-card .grid {
+  gap: 0 !important;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+.hero ~ .section #monitoring-card .gempa-card {
+  padding: 1rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hero ~ .section #monitoring-card .gempa-card + .gempa-card { border-left: 1px solid var(--border); }
+.hero ~ .section .alert-info {
+  background: #f6f7f8;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--primary-blue);
+  color: var(--text-dark);
+}
+.hero ~ .section .card {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.hero ~ .section .card:hover, .hero ~ .section a.card:hover {
+  border-color: var(--border);
+  box-shadow: none;
+  transform: none;
+}
+.hero ~ .section .card-body { padding: 1rem 0.25rem; }
+.hero ~ .section .card-title { font-weight: 600; }
+.hero ~ .section .card-text { font-size: 0.95rem; line-height: 1.6; }
+.hero ~ .section.section-pale .grid-3 > a.card { text-align: left !important; }
+.hero ~ .section[aria-labelledby="edu-title"] .grid-4 > div {
+  padding: 1rem 0.25rem !important;
+  border: 0 !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+.hero ~ .section[aria-labelledby="edu-title"] .grid-4 > div > div[style*="font-weight"] {
+  color: var(--deep-navy) !important;
+  font-weight: 600 !important;
+}
+.hero ~ .section table { background: var(--white); }
+.hero ~ .section thead { background: #f1f3f5; color: var(--text-dark); }
+.hero ~ .section th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.hero ~ .section td { border-bottom-color: var(--border); }
+.hero ~ .section .table-container { border-radius: 2px; }
+footer {
+  padding: 2.25rem 1.5rem 1rem;
+}
+.footer-grid, .footer-bottom { max-width: 1140px; }
+.footer-heading {
+  color: #d3dde5;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.footer-data-note {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  border-radius: 0;
+  background: transparent;
+}
+@media (max-width: 768px) {
+  .hero ~ .section #monitoring-card .gempa-card + .gempa-card { border-left: 0; border-top: 1px solid var(--border); }
+}
+@media (max-width: 480px) {
+  footer { padding-right: 1rem; padding-left: 1rem; }
+}
