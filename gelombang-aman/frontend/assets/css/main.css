@@ -575,6 +575,7 @@ footer {
   margin-left: 0.6rem;
   padding-left: 0.6rem;
 }
+.hero { padding-top: 1.75rem; padding-bottom: 1.75rem; }
 
 @media (max-width: 900px) {
   .navbar-inner { padding: 0 1.5rem; }
@@ -594,5 +595,25 @@ footer {
 }
 @media (max-width: 480px) {
   .navbar-inner { padding: 0 1rem; }
-  .hero { padding: 2rem 1rem; }
+  .hero { padding: 1.25rem 1rem; }
+}
+.hero .grid-2 { gap: 0; }
+.hero h1 {
+  max-width: 540px;
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+}
+.hero h1 br { display: none; }
+.hero h1 span::before, .hero h1 span::after { content: " "; }
+.hero p {
+  max-width: 640px;
+  color: var(--text-muted);
+  font-size: 1.125rem;
+}
+.data-sources {
+  margin: 16px 0;
+  font-size: 0.8125rem;
+}
+.homepage-stats .kpi-label { color: var(--text-dark); font-size: 0.875rem; }
+@media (max-width: 600px) {
+  .hero h1 { font-size: clamp(1.75rem, 8vw, 2rem); }
 }
