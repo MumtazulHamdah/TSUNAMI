@@ -14,6 +14,20 @@ const api = {
     return h;
   },
 
+  unavailableAdminAction(method, path) {
+    // Server JSON aktif belum menyediakan endpoint autentikasi dan pengelolaan admin.
+    const route = path.split('?')[0];
+    const adminAction = route.startsWith('/admin/') || /^\/auth\/(login|logout)$/.test(route) ||
+      (method === 'POST' && route === '/tsunami') ||
+      (['PUT', 'DELETE'].includes(method) && /^\/tsunami\/[^/]+$/.test(route)) ||
+      (['POST', 'PUT', 'DELETE'].includes(method) && /^\/education\/artikel(?:\/[^/]+)?$/.test(route)) ||
+      (['POST', 'PUT', 'DELETE'].includes(method) && /^\/simulation\/skenario(?:\/[^/]+)?$/.test(route)) ||
+      (['PATCH', 'DELETE'].includes(method) && /^\/victims\/orang-hilang\/[^/]+(?:\/status)?$/.test(route));
+    return adminAction
+      ? { success: false, message: 'Fungsi admin belum aktif pada backend JSON yang digunakan.' }
+      : null;
+  },
+
   async get(path, params = {}) {
     const url = new URL(API_BASE + path, window.location.origin);
     Object.keys(params).forEach(k => { if (params[k] !== undefined && params[k] !== '') url.searchParams.set(k, params[k]); });
@@ -22,6 +36,8 @@ const api = {
   },
 
   async post(path, body) {
+    const unavailable = this.unavailableAdminAction('POST', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'POST', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
@@ -34,16 +50,22 @@ const api = {
   },
 
   async put(path, body) {
+    const unavailable = this.unavailableAdminAction('PUT', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'PUT', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
 
   async patch(path, body) {
+    const unavailable = this.unavailableAdminAction('PATCH', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'PATCH', headers: this.headers(), body: JSON.stringify(body) });
     return r.json();
   },
 
   async delete(path) {
+    const unavailable = this.unavailableAdminAction('DELETE', path);
+    if (unavailable) return unavailable;
     const r = await fetch(API_BASE + path, { method: 'DELETE', headers: this.headers() });
     return r.json();
   }
@@ -60,18 +82,18 @@ const fmt = {
   province: (s) => s || '-',
   statusLabel(s) {
     const map = {
-      'dalam_pencarian': '🔍 Dalam Pencarian',
-      'ditemukan': '✅ Ditemukan',
-      'teridentifikasi': '🔬 Teridentifikasi',
-      'dipertemukan': '🤝 Dipertemukan',
-      'ditutup': '🔒 Ditutup'
+      'dalam_pencarian': 'Dalam Pencarian',
+      'ditemukan': 'Ditemukan',
+      'teridentifikasi': 'Teridentifikasi',
+      'dipertemukan': 'Dipertemukan',
+      'ditutup': 'Ditutup'
     };
     return map[s] || s;
   },
   statusClass(s) {
     return `status-${s?.replace('_', '-')}`;
   },
-  riskLabel: (r) => ({ tinggi: '⛔ Tinggi', sedang: '⚠️ Sedang', rendah: '✅ Rendah' }[r] || r),
+  riskLabel: (r) => ({ tinggi: 'Tinggi', sedang: 'Sedang', rendah: 'Rendah' }[r] || r),
   riskClass: (r) => `risk-${r}`,
   magClass: (m) => m >= 7 ? 'high' : m >= 5 ? 'med' : 'low'
 };
@@ -93,7 +115,7 @@ function showLoading(container, msg = 'Memuat data...') {
 function showEmpty(container, title = 'Tidak ada data', desc = '') {
   setHtml(container, `
     <div class="empty-state">
-      <div class="empty-icon">🌊</div>
+      <div class="empty-icon"></div>
       <h3>${title}</h3>
       ${desc ? `<p>${desc}</p>` : ''}
     </div>`);
@@ -102,7 +124,6 @@ function showEmpty(container, title = 'Tidak ada data', desc = '') {
 function showError(container, msg = 'Gagal memuat data. Coba lagi.') {
   setHtml(container, `
     <div class="alert alert-danger">
-      <span>⚠️</span>
       <div>${msg}</div>
     </div>`);
 }
@@ -112,10 +133,8 @@ function showNotification(message, type = 'info', duration = 4000) {
   const existing = document.querySelector('.ga-notification');
   if (existing) existing.remove();
   const el = document.createElement('div');
-  const icons = { info: 'ℹ️', success: '✅', warning: '⚠️', danger: '❌' };
   el.className = `alert alert-${type} ga-notification`;
-  el.style.cssText = 'position:fixed;top:80px;right:1.5rem;z-index:9999;max-width:380px;box-shadow:0 4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.3s ease;';
-  el.innerHTML = `<span>${icons[type] || '•'}</span><div>${message}</div>`;
+  el.innerHTML = `<div>${message}</div>`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), duration);
 }
@@ -170,7 +189,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.navbar-toggle');
   const nav = document.querySelector('.navbar-nav');
   if (toggle && nav) {
-    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+    const setMenuOpen = open => {
+      nav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+    };
+    toggle.addEventListener('click', () => setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenuOpen(false)));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    });
   }
   // Set active nav link
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -195,7 +223,7 @@ function isLoggedIn() { return !!localStorage.getItem('ga_token'); }
 
 // ===== CHART DEFAULTS =====
 if (typeof Chart !== 'undefined') {
-  Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
+  Chart.defaults.font.family = "'Public Sans', 'Segoe UI', Arial, sans-serif";
   Chart.defaults.color = '#546e7a';
   Chart.defaults.plugins.legend.position = 'bottom';
 }

@@ -5,16 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pusat Edukasi Tsunami — GELOMBANG AMAN</title>
   <link rel="stylesheet" href="../assets/css/main.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    .article-content h2 { font-size: 1.3rem; font-weight: 700; color: var(--deep-navy); margin: 1.5rem 0 0.75rem; }
-    .article-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--primary-blue); margin: 1.2rem 0 0.5rem; }
-    .article-content p { margin-bottom: 1rem; line-height: 1.8; color: #374151; }
-    .article-content ul, .article-content ol { margin: 0.5rem 0 1rem 1.5rem; }
-    .article-content li { margin-bottom: 0.4rem; line-height: 1.7; color: #374151; }
-    .article-content blockquote { border-left: 4px solid var(--sky-blue); background: var(--pale-blue); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; font-style: italic; margin: 1rem 0; }
-    .article-content .alert-box { background: #fde8e8; border-left: 4px solid var(--alert-red); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-weight: 600; margin: 1rem 0; color: #7f1d1d; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar">
@@ -23,41 +14,45 @@
       <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
     </a>
-    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <button class="navbar-toggle" aria-label="Buka menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="navbar-nav">
-      <li><a href="../index.html">🏠 Beranda</a></li>
-      <li><a href="dashboard.html">📊 Statistik</a></li>
-      <li><a href="peta.html">🗺️ Peta</a></li>
-      <li><a href="database.html">🗂️ Database</a></li>
-      <li><a href="monitoring.html">📡 Monitoring</a></li>
-      <li><a href="korban.html">🔍 Korban</a></li>
-      <li><a href="edukasi.html" class="active">📚 Edukasi</a></li>
-      <li><a href="simulasi.html">🎮 Simulasi</a></li>
+      <li><a href="../index.html"> Beranda</a></li>
+      <li><a href="dashboard.html"> Statistik</a></li>
+      <li><a href="peta.html"> Peta</a></li>
+      <li><a href="database.html"> Database</a></li>
+      <li><a href="monitoring.html"> Monitoring</a></li>
+      <li><a href="korban.html"> Korban</a></li>
+      <li><a href="edukasi.html" class="active"> Edukasi</a></li>
+      <li><a href="simulasi.html"> Simulasi</a></li>
     </ul>
   </div>
 </nav>
 
-<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+<div class="page-heading">
   <div class="container">
-    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Pusat Edukasi</span>
-    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Pusat Edukasi Tsunami</h1>
-    <p style="color:#94a3b8;font-size:0.95rem">Pelajari tsunami — dari pengertian, proses pembentukan, tanda-tanda, hingga mitigasi dan kesiapsiagaan</p>
+    <span class="section-badge">Pusat Edukasi</span>
+    <h1>Pusat Edukasi Tsunami</h1>
+    <p>Pelajari tsunami — dari pengertian, proses pembentukan, tanda-tanda, hingga mitigasi dan kesiapsiagaan</p>
   </div>
 </div>
 
 <section class="section section-pale">
   <div class="container">
 
+    <div class="alert alert-info">
+      <span>Artikel dibaca dari berkas JSON proyek. Tanggal pembaruan dan rujukan per artikel tidak dicatat di dalam data; untuk keputusan keselamatan, ikuti informasi BMKG dan petugas setempat.</span>
+    </div>
+
     <!-- Category Filter -->
     <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
-      <button class="btn btn-primary btn-sm" onclick="filterCategory('')">📚 Semua</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('pengertian')">🌊 Pengertian</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('proses')">⚙️ Proses</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('penyebab')">🔍 Penyebab</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('tanda')">⚠️ Tanda-tanda</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('dampak')">💥 Dampak</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('mitigasi')">🛡️ Mitigasi</button>
-      <button class="btn btn-sm" style="border:1.5px solid #dde8f0" onclick="filterCategory('checklist')">✅ Checklist</button>
+      <button class="btn btn-sm category-filter active" data-category-filter="" aria-pressed="true" onclick="filterCategory('')"> Semua</button>
+      <button class="btn btn-sm category-filter" data-category-filter="pengertian" aria-pressed="false" onclick="filterCategory('pengertian')"> Pengertian</button>
+      <button class="btn btn-sm category-filter" data-category-filter="proses" aria-pressed="false" onclick="filterCategory('proses')"> Proses</button>
+      <button class="btn btn-sm category-filter" data-category-filter="penyebab" aria-pressed="false" onclick="filterCategory('penyebab')"> Penyebab</button>
+      <button class="btn btn-sm category-filter" data-category-filter="tanda" aria-pressed="false" onclick="filterCategory('tanda')"> Tanda-tanda</button>
+      <button class="btn btn-sm category-filter" data-category-filter="dampak" aria-pressed="false" onclick="filterCategory('dampak')"> Dampak</button>
+      <button class="btn btn-sm category-filter" data-category-filter="mitigasi" aria-pressed="false" onclick="filterCategory('mitigasi')"> Mitigasi</button>
+      <button class="btn btn-sm category-filter" data-category-filter="checklist" aria-pressed="false" onclick="filterCategory('checklist')"> Checklist</button>
     </div>
 
     <!-- Articles Grid -->
@@ -79,22 +74,18 @@
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('modal-article')">Tutup</button>
-      <a href="simulasi.html" class="btn btn-primary">🎮 Coba Simulasi →</a>
+      <a href="simulasi.html" class="btn btn-primary"> Coba Simulasi →</a>
     </div>
   </div>
 </div>
 
-<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
-  <span>© 2024 GELOMBANG AMAN • Materi edukasi berdasarkan panduan BMKG & BNPB</span>
+<footer class="page-footer">
+  <span>© 2024 GELOMBANG AMAN • Materi tersimpan di berkas JSON proyek</span>
 </footer>
 
 <script src="../assets/js/api.js"></script>
 <script>
 let allArticles = [];
-
-const catEmoji = {
-  pengertian: '🌊', proses: '⚙️', penyebab: '🔍', tanda: '⚠️', dampak: '💥', mitigasi: '🛡️', checklist: '✅'
-};
 
 async function loadArticles() {
   const grid = document.getElementById('articles-grid');
@@ -115,9 +106,9 @@ function renderArticles(articles) {
   const grid = document.getElementById('articles-grid');
   if (!articles.length) { showEmpty(grid, 'Tidak ada artikel di kategori ini.'); return; }
   grid.innerHTML = articles.map(a => `
-    <div class="card" onclick="readArticle('${a.id}')" style="cursor:pointer">
+    <div class="card" role="button" tabindex="0" aria-label="Baca artikel: ${a.judul}" onclick="readArticle('${a.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();readArticle('${a.id}')}" style="cursor:pointer">
       <div class="card-body">
-        <div class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
+        <div class="edu-category cat-${a.kategori}">${a.kategori.charAt(0).toUpperCase() + a.kategori.slice(1)}</div>
         <div class="card-title">${a.judul}</div>
         <div class="card-text">${a.ringkasan || ''}</div>
         <div class="text-sm text-primary mt-2 fw-600">Baca Selengkapnya →</div>
@@ -128,6 +119,11 @@ function renderArticles(articles) {
 function filterCategory(cat) {
   const filtered = cat ? allArticles.filter(a => a.kategori === cat) : allArticles;
   renderArticles(filtered);
+  document.querySelectorAll('.category-filter').forEach(button => {
+    const isActive = button.dataset.categoryFilter === cat;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', String(isActive));
+  });
 }
 
 async function readArticle(id) {
@@ -142,8 +138,8 @@ async function readArticle(id) {
     title.textContent = a.judul;
     body.innerHTML = `
       <div class="flex align-center gap-2 mb-3">
-        <span class="edu-category cat-${a.kategori}">${catEmoji[a.kategori] || '📄'} ${a.kategori}</span>
-        <span class="text-xs text-muted">Diperbarui: ${fmt.date(a.diperbarui_pada)}</span>
+        <span class="edu-category cat-${a.kategori}">${a.kategori}</span>
+        <span class="text-xs text-muted">Materi edukasi proyek</span>
       </div>
       <div class="article-content">${a.konten}</div>`;
   } catch(e) {
