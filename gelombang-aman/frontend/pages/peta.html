@@ -72,8 +72,6 @@
     <div id="hazard-status" class="alert alert-warning" role="status" aria-live="polite">
       Memeriksa ketersediaan data zona bahaya...
     </div>
-    <div id="demo-mode-label" class="badge badge-warning d-none mb-2" role="status">Mode Demonstrasi: data contoh, bukan peta keselamatan</div>
-
     <!-- Map + Legend Layout -->
     <div class="map-layout">
       <div>
@@ -173,51 +171,9 @@ async function loadMapData() {
       document.getElementById('hazard-status').textContent = 'Data zona bahaya tidak dapat dimuat. Area kosong pada peta tidak berarti aman. Periksa InaRISK BNPB.';
     }
   } catch(e) {
-    // Load demo data if API not available
-    loadDemoData();
-    document.getElementById('hazard-status').textContent = 'Server tidak tersedia. Titik dan zona yang tampil adalah data demonstrasi, bukan peta keselamatan. Periksa InaRISK BNPB.';
+    document.getElementById('legend-count').textContent = '—';
+    document.getElementById('hazard-status').textContent = 'Server tidak tersedia. Titik kejadian dan zona bahaya tidak dapat dimuat. Periksa InaRISK BNPB.';
   }
-}
-
-function loadDemoData() {
-  show(document.getElementById('demo-mode-label'));
-  const demoPoints = [
-    { lat: 5.0, lng: 95.3, name: 'Tsunami Aceh 2004', tahun: 2004, mag: 9.1, meninggal: 167540 },
-    { lat: -9.25, lng: 107.41, name: 'Tsunami Pangandaran 2006', tahun: 2006, mag: 7.7, meninggal: 668 },
-    { lat: -4.44, lng: 101.37, name: 'Tsunami Bengkulu 2007', tahun: 2007, mag: 8.4, meninggal: 25 },
-    { lat: -3.49, lng: 99.95, name: 'Tsunami Mentawai 2010', tahun: 2010, mag: 7.7, meninggal: 435 },
-    { lat: -6.82, lng: 105.63, name: 'Tsunami Selat Sunda 2018', tahun: 2018, mag: null, meninggal: 437 },
-    { lat: -0.26, lng: 119.84, name: 'Tsunami Palu-Donggala 2018', tahun: 2018, mag: 7.5, meninggal: 4340 },
-    { lat: -8.48, lng: 121.93, name: 'Tsunami Flores 1992', tahun: 1992, mag: 7.8, meninggal: 2500 },
-    { lat: -0.89, lng: 136.95, name: 'Tsunami Biak 1996', tahun: 1996, mag: 8.1, meninggal: 166 },
-    { lat: -11.1, lng: 118.4, name: 'Tsunami Sumba 1977', tahun: 1977, mag: 8.3, meninggal: 316 },
-    { lat: -3.43, lng: 130.24, name: 'Tsunami Maluku 2019', tahun: 2019, mag: 6.5, meninggal: 38 }
-  ];
-
-  allHistorical = demoPoints.map(p => ({
-    type: 'Feature',
-    properties: {
-      nama_kejadian: p.name,
-      tahun: p.tahun,
-      magnitudo: p.mag,
-      korban_meninggal: p.meninggal
-    },
-    geometry: { type: 'Point', coordinates: [p.lng, p.lat] }
-  }));
-  document.getElementById('legend-count').textContent = demoPoints.length;
-  renderHistoricalPoints(allHistorical);
-
-  // Demo hazard zones (bounding boxes for illustration)
-  const demoZones = [
-    { bounds: [[5.5, 95.0], [3.0, 97.5]], color: '#D32F2F', name: 'Pesisir Barat Aceh', risk: 'tinggi' },
-    { bounds: [[-6.0, 105.2], [-7.5, 108.0]], color: '#F9A825', name: 'Pantai Selatan Jawa Barat', risk: 'sedang' },
-    { bounds: [[1.0, 120.0], [-2.0, 122.0]], color: '#D32F2F', name: 'Pesisir Sulawesi Tengah', risk: 'tinggi' },
-    { bounds: [[-8.0, 115.5], [-9.5, 117.0]], color: '#388E3C', name: 'Selatan Bali', risk: 'rendah' },
-    { bounds: [[-3.0, 99.0], [-5.0, 101.0]], color: '#F9A825', name: 'Pesisir Sumatra Barat', risk: 'sedang' },
-  ];
-
-  allHazardZones = demoZones;
-  renderHazardZones(allHazardZones);
 }
 
 function renderHistoricalPoints(features) {

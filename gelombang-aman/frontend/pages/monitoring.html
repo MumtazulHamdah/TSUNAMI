@@ -77,19 +77,16 @@
       <div class="grid grid-3" style="gap:1rem">
         <a href="https://www.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
           <div class="card-body" style="display:flex;align-items:center;gap:1rem">
-            <div style="font-size:2rem"></div>
             <div><div class="card-title">BMKG</div><div class="text-sm text-muted">Pusat Gempa Bumi & Tsunami</div></div>
           </div>
         </a>
         <a href="https://inatews.bmkg.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
           <div class="card-body" style="display:flex;align-items:center;gap:1rem">
-            <div style="font-size:2rem"></div>
             <div><div class="card-title">InaTEWS</div><div class="text-sm text-muted">Sistem Peringatan Dini Tsunami</div></div>
           </div>
         </a>
         <a href="https://www.bnpb.go.id" target="_blank" rel="noopener" class="card" style="text-decoration:none">
           <div class="card-body" style="display:flex;align-items:center;gap:1rem">
-            <div style="font-size:2rem"></div>
             <div><div class="card-title">BNPB</div><div class="text-sm text-muted">Badan Nasional Penanggulangan Bencana</div></div>
           </div>
         </a>
@@ -112,7 +109,7 @@ async function loadWarningStatus() {
       const w = res.peringatan;
       const isActive = w.aktif;
       el.innerHTML = `
-        <div style="background:${isActive ? 'var(--alert-red)' : 'var(--safe-green)'};border-radius:var(--radius-md);padding:1.25rem;color:var(--white)">
+        <div class="monitoring-status ${isActive ? 'active' : 'normal'}">
           <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem">
             <div style="font-size:2.5rem">${isActive ? '' : ''}</div>
             <div>
@@ -156,9 +153,9 @@ async function loadGempaTerkini() {
           <div class="gempa-meta mt-1">Koordinat: ${g.lintang}, ${g.bujur}</div>
           ${g.dirasakan ? `<div class="gempa-meta mt-1">Dirasakan: ${g.dirasakan}</div>` : ''}
         </div>
-        <div class="gempa-card" style="background:${isPotential ? '#fde8e8' : '#f0fdf4'};border-color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
+        <div class="gempa-card ${isPotential ? 'potential' : 'normal'}">
           <div class="gempa-meta mb-1">Potensi Tsunami</div>
-          <div style="font-weight:800;font-size:1rem;color:${isPotential ? 'var(--alert-red)' : 'var(--safe-green)'}">
+          <div class="gempa-status-text" style="font-weight:800;font-size:1rem">
             ${isPotential ? 'Data BMKG mencantumkan potensi tsunami' : 'Potensi tidak tercantum pada data ini'}
           </div>
           <div class="gempa-meta mt-1 text-xs">${g.potensi}</div>
