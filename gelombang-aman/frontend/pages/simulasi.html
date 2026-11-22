@@ -5,17 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulasi Mitigasi Tsunami — GELOMBANG AMAN</title>
   <link rel="stylesheet" href="../assets/css/main.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    .sim-container { max-width: 720px; margin: 0 auto; }
-    .q-number { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-    .q-text { font-size: 1.1rem; font-weight: 700; color: var(--deep-navy); margin: 0.75rem 0 1.2rem; line-height: 1.5; }
-    .eval-item { padding: 0.9rem; border-radius: 8px; margin-bottom: 0.75rem; }
-    .eval-benar { background: #f0fdf4; border: 1.5px solid var(--safe-green); }
-    .eval-salah { background: #fde8e8; border: 1.5px solid var(--alert-red); }
-    .rec-article { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--pale-blue); border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; border: 1.5px solid #dde8f0; transition: border-color 0.2s; }
-    .rec-article:hover { border-color: var(--primary-blue); }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar">
@@ -24,36 +14,39 @@
       <svg class="logo-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="#1565C0"/><path d="M6 22 Q9 16 12 22 Q15 28 18 22 Q21 16 24 22 Q27 28 30 22" stroke="#4FC3F7" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M18 8 L18 16 M14 12 L18 8 L22 12" stroke="#F9A825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div>GELOMBANG AMAN<span class="tagline">Kenali Risiko, Siaga Hadapi Tsunami</span></div>
     </a>
-    <button class="navbar-toggle"><span></span><span></span><span></span></button>
+    <button class="navbar-toggle" aria-label="Buka menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="navbar-nav">
-      <li><a href="../index.html">🏠 Beranda</a></li>
-      <li><a href="dashboard.html">📊 Statistik</a></li>
-      <li><a href="peta.html">🗺️ Peta</a></li>
-      <li><a href="database.html">🗂️ Database</a></li>
-      <li><a href="monitoring.html">📡 Monitoring</a></li>
-      <li><a href="korban.html">🔍 Korban</a></li>
-      <li><a href="edukasi.html">📚 Edukasi</a></li>
-      <li><a href="simulasi.html" class="active">🎮 Simulasi</a></li>
+      <li><a href="../index.html"> Beranda</a></li>
+      <li><a href="dashboard.html"> Statistik</a></li>
+      <li><a href="peta.html"> Peta</a></li>
+      <li><a href="database.html"> Database</a></li>
+      <li><a href="monitoring.html"> Monitoring</a></li>
+      <li><a href="korban.html"> Korban</a></li>
+      <li><a href="edukasi.html"> Edukasi</a></li>
+      <li><a href="simulasi.html" class="active"> Simulasi</a></li>
     </ul>
   </div>
 </nav>
 
-<div style="background:var(--deep-navy);padding:2rem 1.5rem">
+<div class="page-heading">
   <div class="container">
-    <span class="section-badge" style="background:rgba(79,195,247,0.15);color:#4FC3F7">Mini-Game Edukatif</span>
-    <h1 style="color:var(--white);font-size:1.8rem;font-weight:800;margin-top:0.5rem">Simulasi Mitigasi Tsunami</h1>
-    <p style="color:#94a3b8;font-size:0.95rem">Uji pengetahuan kesiapsiagaan Anda melalui skenario interaktif</p>
+    <span class="section-badge">Mini-Game Edukatif</span>
+    <h1>Simulasi Mitigasi Tsunami</h1>
+    <p>Uji pengetahuan kesiapsiagaan Anda melalui skenario interaktif</p>
   </div>
 </div>
 
 <section class="section section-pale">
   <div class="container sim-container">
+    <div class="alert alert-info">
+      <span>Skenario dan pertanyaan berasal dari berkas JSON proyek; tanggal pembaruan dan rujukan per skenario tidak dicatat. Skor dihitung dari kecocokan jawaban dengan kunci di dataset dan bukan penilaian kesiapsiagaan resmi.</span>
+    </div>
 
     <!-- PHASE 1: Choose Scenario -->
     <div id="phase-choose">
       <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2>🎯 Pilih Skenario Simulasi</h2>
-        <p>Setiap skenario mensimulasikan situasi nyata yang mungkin Anda hadapi dalam bencana tsunami</p>
+        <h2> Pilih Skenario Simulasi</h2>
+        <p>Latihan ini menggunakan skenario edukasi yang tersedia di proyek dan bukan pengganti arahan petugas saat bencana.</p>
       </div>
       <div id="scenario-list">
         <div class="loading"><div class="spinner"></div><span>Memuat skenario...</span></div>
@@ -63,7 +56,7 @@
     <!-- PHASE 2: Quiz -->
     <div id="phase-quiz" class="d-none">
       <!-- Header -->
-      <div style="background:var(--white);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem;border:1px solid #dde8f0">
+      <div style="background:var(--white);border-radius:var(--radius-md);padding:1.2rem;margin-bottom:1.5rem;border:1px solid var(--border)">
         <div class="flex-between">
           <div id="scenario-title" style="font-weight:700;color:var(--deep-navy)"></div>
           <div>
@@ -88,20 +81,20 @@
         <h2 id="score-label" style="font-size:1.4rem;font-weight:800;color:var(--deep-navy);margin-bottom:0.5rem"></h2>
         <p id="score-msg" class="text-muted"></p>
         <div class="flex justify-center gap-2 mt-2">
-          <button class="btn btn-primary" onclick="startOver()">🔄 Coba Lagi</button>
-          <a href="edukasi.html" class="btn" style="border:1.5px solid var(--primary-blue);color:var(--primary-blue)">📚 Belajar Lebih Lanjut</a>
+          <button class="btn btn-primary" onclick="startOver()"> Coba Lagi</button>
+          <a href="edukasi.html" class="btn" style="border:1.5px solid var(--primary-blue);color:var(--primary-blue)"> Belajar Lebih Lanjut</a>
         </div>
       </div>
 
       <!-- Evaluation -->
       <div style="margin-top:2rem">
-        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📊 Evaluasi Jawaban</h3>
+        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem"> Evaluasi Jawaban</h3>
         <div id="eval-list"></div>
       </div>
 
       <!-- Recommendations -->
       <div id="reco-section" style="margin-top:2rem">
-        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem">📖 Rekomendasi Materi Edukasi</h3>
+        <h3 style="font-size:1rem;font-weight:700;color:var(--deep-navy);margin-bottom:1rem"> Rekomendasi Materi Edukasi</h3>
         <div id="reco-list"></div>
       </div>
     </div>
@@ -109,7 +102,7 @@
   </div>
 </section>
 
-<footer style="background:var(--deep-navy);color:#94a3b8;padding:1.5rem;text-align:center;font-size:0.82rem">
+<footer class="page-footer">
   <span>© 2024 GELOMBANG AMAN • Simulasi edukasi berbasis panduan BMKG & BNPB</span>
 </footer>
 
@@ -122,7 +115,7 @@ let currentQ = 0;
 let questions = [];
 let isAnswered = false;
 
-const diffLabel = { mudah: '🟢 Mudah', sedang: '🟡 Sedang', sulit: '🔴 Sulit' };
+const diffLabel = { mudah: ' Mudah', sedang: ' Sedang', sulit: ' Sulit' };
 
 async function loadScenarios() {
   const el = document.getElementById('scenario-list');
@@ -132,8 +125,8 @@ async function loadScenarios() {
     scenarios = res.data;
     el.innerHTML = `<div class="grid grid-2" style="gap:1rem">
       ${scenarios.map(s => `
-        <div class="scenario-card" onclick="startScenario('${s.id}')">
-          <div style="font-size:1.5rem margin-bottom:0.5rem">${s.kategori === 'evakuasi' ? '🏃' : s.kategori === 'sebelum_tsunami' ? '🌊' : s.kategori === 'pasca_tsunami' ? '🏠' : '⚠️'}</div>
+        <div class="scenario-card" role="button" tabindex="0" aria-label="Mulai skenario: ${s.judul}" onclick="startScenario('${s.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();startScenario('${s.id}')}">
+          <div style="font-size:1.5rem margin-bottom:0.5rem">${s.kategori === 'evakuasi' ? '' : s.kategori === 'sebelum_tsunami' ? '' : s.kategori === 'pasca_tsunami' ? '' : ''}</div>
           <div style="font-weight:700;color:var(--deep-navy);margin:0.5rem 0">${s.judul}</div>
           <div class="text-sm text-muted mb-2">${s.deskripsi || ''}</div>
           <span class="badge badge-info">${diffLabel[s.tingkat_kesulitan] || s.tingkat_kesulitan}</span>
@@ -185,7 +178,7 @@ function renderQuestion() {
       <div id="explanation" class="d-none mt-2"></div>
       <div class="flex justify-center mt-3">
         <button id="btn-next" class="btn btn-primary d-none" onclick="nextQuestion()">
-          ${currentQ < questions.length - 1 ? 'Pertanyaan Berikutnya →' : '🎯 Lihat Hasil'}
+          ${currentQ < questions.length - 1 ? 'Pertanyaan Berikutnya →' : ' Lihat Hasil'}
         </button>
       </div>
     </div>`;
@@ -208,7 +201,7 @@ function selectAnswer(key, btnEl) {
   const expEl = document.getElementById('explanation');
   expEl.classList.remove('d-none');
   expEl.innerHTML = `<div class="alert ${benar ? 'alert-success' : 'alert-danger'}">
-    <span>${benar ? '✅' : '❌'}</span>
+    <span>${benar ? '' : ''}</span>
     <div><strong>${benar ? 'Benar!' : 'Kurang tepat.'}</strong> ${q.penjelasan || ''}</div>
   </div>`;
   show(document.getElementById('btn-next'));
@@ -239,7 +232,7 @@ async function submitResult() {
     evalList.innerHTML = d.evaluasi.map((ev, i) => `
       <div class="eval-item ${ev.benar ? 'eval-benar' : 'eval-salah'}">
         <div style="display:flex;gap:0.75rem;align-items:flex-start">
-          <span style="font-size:1.2rem;flex-shrink:0">${ev.benar ? '✅' : '❌'}</span>
+          <span style="font-size:1.2rem;flex-shrink:0">${ev.benar ? '' : ''}</span>
           <div>
             <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.25rem">P${i+1}: ${ev.pertanyaan}</div>
             <div class="text-sm text-muted">Jawaban Anda: <strong>${ev.jawaban_user}</strong> • Benar: <strong>${ev.jawaban_benar}</strong></div>
@@ -250,8 +243,8 @@ async function submitResult() {
     // Recommendations
     if (d.rekomendasi_edukasi?.length) {
       document.getElementById('reco-list').innerHTML = d.rekomendasi_edukasi.map(r => `
-        <div class="rec-article" onclick="window.location='edukasi.html'">
-          <span style="font-size:1.4rem">📖</span>
+        <div class="rec-article" role="button" tabindex="0" aria-label="Buka pusat edukasi untuk materi ${r.judul}" onclick="window.location='edukasi.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location='edukasi.html'}">
+          <span style="font-size:1.4rem"></span>
           <div><div style="font-weight:600;font-size:0.9rem">${r.judul}</div><div class="text-xs text-muted">${r.kategori}</div></div>
         </div>`).join('');
     } else {

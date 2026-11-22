@@ -183,12 +183,12 @@ INSERT INTO education_articles (judul, slug, kategori, konten, ringkasan, urutan
 
 ('Tanda-tanda Alam Tsunami', 'tanda-tanda-alam-tsunami', 'tanda',
 '<h2>Tanda-tanda Alam Sebelum Tsunami</h2>
-<div class="alert-box">⚠️ Kenali tanda-tanda ini dan segera evakuasi tanpa menunggu peringatan resmi!</div>
+<div class="alert-box"> Kenali tanda-tanda ini dan segera evakuasi tanpa menunggu peringatan resmi!</div>
 <h3>1. Gempa Bumi Kuat</h3>
 <p>Merasakan gempa bumi yang sangat kuat dan lama (lebih dari 20 detik) di wilayah pesisir merupakan peringatan pertama. Jika Anda kesulitan berdiri, gempa tersebut cukup kuat untuk memicu tsunami.</p>
 <h3>2. Surutnya Air Laut Secara Tiba-tiba</h3>
 <p>Air laut surut secara dramatis dan tidak biasa dalam waktu singkat — biasanya beberapa menit hingga puluhan menit sebelum gelombang datang. Ikan dan biota laut dapat terlihat di permukaan atau bahkan di dasar laut yang terkena.</p>
-<p><strong>⚠️ JANGAN mendekat ke pantai untuk melihat. Segera lari ke tempat tinggi!</strong></p>
+<p><strong> JANGAN mendekat ke pantai untuk melihat. Segera lari ke tempat tinggi!</strong></p>
 <h3>3. Suara Gemuruh Keras</h3>
 <p>Suara gemuruh keras seperti kereta api atau ledakan dari arah laut menandakan gelombang sedang datang.</p>
 <h3>4. Perilaku Hewan yang Tidak Biasa</h3>
@@ -226,7 +226,7 @@ INSERT INTO education_articles (judul, slug, kategori, konten, ringkasan, urutan
 
 ('Panduan Mitigasi Tsunami', 'panduan-mitigasi-tsunami', 'mitigasi',
 '<h2>Panduan Mitigasi Tsunami</h2>
-<h3>🔵 SEBELUM Tsunami (Kesiapsiagaan)</h3>
+<h3> SEBELUM Tsunami (Kesiapsiagaan)</h3>
 <ul>
 <li>Pelajari peta zona bahaya tsunami di wilayah Anda</li>
 <li>Ketahui rute evakuasi dan titik kumpul terdekat</li>
@@ -235,7 +235,7 @@ INSERT INTO education_articles (judul, slug, kategori, konten, ringkasan, urutan
 <li>Diskusikan rencana evakuasi dengan seluruh anggota keluarga</li>
 <li>Daftarkan diri ke sistem peringatan dini BMKG/BPBD setempat</li>
 </ul>
-<h3>🔴 SAAT Tsunami (Respons Darurat)</h3>
+<h3> SAAT Tsunami (Respons Darurat)</h3>
 <ul>
 <li>Jika merasakan gempa kuat di pesisir: SEGERA evakuasi ke tempat tinggi TANPA menunggu peringatan</li>
 <li>Jika melihat air laut surut tiba-tiba: lari ke tempat tinggi SEKARANG</li>
@@ -245,7 +245,7 @@ INSERT INTO education_articles (judul, slug, kategori, konten, ringkasan, urutan
 <li>Bantu orang lanjut usia, anak-anak, dan penyandang disabilitas</li>
 <li>Jangan kembali ke pantai meski gelombang pertama sudah surut — gelombang berikutnya bisa lebih besar</li>
 </ul>
-<h3>🟢 SETELAH Tsunami (Pemulihan)</h3>
+<h3> SETELAH Tsunami (Pemulihan)</h3>
 <ul>
 <li>Tetap di tempat aman hingga ada pernyataan resmi bahwa situasi sudah aman</li>
 <li>Hindari area yang tergenang — mungkin ada arus balik berbahaya</li>
@@ -259,32 +259,32 @@ INSERT INTO education_articles (judul, slug, kategori, konten, ringkasan, urutan
 ('Checklist Kesiapsiagaan Tsunami', 'checklist-kesiapsiagaan-tsunami', 'checklist',
 '<h2>Checklist Kesiapsiagaan Tsunami</h2>
 <p>Gunakan checklist ini untuk memastikan Anda dan keluarga siap menghadapi kemungkinan tsunami.</p>
-<h3>✅ Pengetahuan dan Rencana</h3>
+<h3> Pengetahuan dan Rencana</h3>
 <ul>
-<li>☐ Saya mengetahui apakah wilayah saya berada di zona rawan tsunami</li>
-<li>☐ Saya mengetahui rute evakuasi terdekat</li>
-<li>☐ Saya mengetahui lokasi titik kumpul (assembly point)</li>
-<li>☐ Saya memiliki rencana evakuasi bersama keluarga</li>
-<li>☐ Semua anggota keluarga mengetahui tanda-tanda tsunami</li>
+<li> Saya mengetahui apakah wilayah saya berada di zona rawan tsunami</li>
+<li> Saya mengetahui rute evakuasi terdekat</li>
+<li> Saya mengetahui lokasi titik kumpul (assembly point)</li>
+<li> Saya memiliki rencana evakuasi bersama keluarga</li>
+<li> Semua anggota keluarga mengetahui tanda-tanda tsunami</li>
 </ul>
-<h3>✅ Perlengkapan Siaga Bencana (Tas Siaga)</h3>
+<h3> Perlengkapan Siaga Bencana (Tas Siaga)</h3>
 <ul>
-<li>☐ Air minum bersih (minimal 3 liter per orang)</li>
-<li>☐ Makanan tahan lama (biskuit, roti kering)</li>
-<li>☐ Obat-obatan dan P3K</li>
-<li>☐ Senter dan baterai cadangan</li>
-<li>☐ Peluit (untuk meminta pertolongan)</li>
-<li>☐ Radio portabel bertenaga baterai</li>
-<li>☐ Dokumen penting (KTP, KK, akta) dalam plastik kedap air</li>
-<li>☐ Uang tunai secukupnya</li>
-<li>☐ Pakaian ganti dan jas hujan</li>
-<li>☐ Kontak darurat tertulis</li>
+<li> Air minum bersih (minimal 3 liter per orang)</li>
+<li> Makanan tahan lama (biskuit, roti kering)</li>
+<li> Obat-obatan dan P3K</li>
+<li> Senter dan baterai cadangan</li>
+<li> Peluit (untuk meminta pertolongan)</li>
+<li> Radio portabel bertenaga baterai</li>
+<li> Dokumen penting (KTP, KK, akta) dalam plastik kedap air</li>
+<li> Uang tunai secukupnya</li>
+<li> Pakaian ganti dan jas hujan</li>
+<li> Kontak darurat tertulis</li>
 </ul>
-<h3>✅ Perangkat Peringatan Dini</h3>
+<h3> Perangkat Peringatan Dini</h3>
 <ul>
-<li>☐ Mendaftar di layanan peringatan dini BMKG</li>
-<li>☐ Mengunduh aplikasi InaWARE atau Info BMKG</li>
-<li>☐ Mengetahui bunyi sirine peringatan tsunami di wilayah saya</li>
+<li> Mendaftar di layanan peringatan dini BMKG</li>
+<li> Mengunduh aplikasi InaWARE atau Info BMKG</li>
+<li> Mengetahui bunyi sirine peringatan tsunami di wilayah saya</li>
 </ul>',
 'Checklist lengkap kesiapsiagaan tsunami: pengetahuan, rencana evakuasi, dan perlengkapan siaga bencana.', 7);
 

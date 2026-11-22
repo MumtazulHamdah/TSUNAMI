@@ -98,11 +98,11 @@ gelombang-aman/
 
 | Halaman | Fitur |
 |---------|-------|
-| Beranda | Statistik ringkasan, monitoring BMKG live, panduan edukasi |
+| Beranda | Statistik ringkasan dari data historis proyek, data gempa BMKG saat diminta, panduan edukasi |
 | Dashboard | 4 grafik interaktif (Chart.js), filter tahun/provinsi |
-| Peta | Leaflet.js, titik kejadian historis, klik untuk detail |
+| Peta | Leaflet.js, titik kejadian historis, pencarian dan filter; zona bahaya belum tersedia pada backend JSON aktif |
 | Database | Tabel 14 kejadian, search & filter, modal detail |
-| Monitoring | Proxy API BMKG real-time, status potensi tsunami |
+| Monitoring | Proxy API BMKG saat halaman dimuat atau diperbarui; status hanya informasi pendukung |
 | Korban | Statistik, pencarian orang hilang, formulir laporan |
 | Edukasi | 7 artikel per kategori, filter, baca konten lengkap |
 | Simulasi | Mini-game 4 skenario, evaluasi, skor, rekomendasi |

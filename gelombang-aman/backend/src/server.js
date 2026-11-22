@@ -382,9 +382,9 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🌊 GELOMBANG AMAN API berjalan di http://localhost:${PORT}`);
-  console.log(`📂 Mode: JSON file (tidak memerlukan database)`);
-  console.log(`✅ API siap diakses`);
+  console.log(` GELOMBANG AMAN API berjalan di http://localhost:${PORT}`);
+  console.log(` Mode: JSON file (tidak memerlukan database)`);
+  console.log(` API siap diakses`);
 });
 
 module.exports = app;
